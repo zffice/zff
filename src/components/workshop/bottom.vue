@@ -14,7 +14,7 @@
                   <span class="title">车间名</span>
 
                   <br />
-                  <h2 class="content">三车间</h2>
+                  <h2 class="content">{{ workshopInfo.workshop_name }}</h2>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -24,7 +24,7 @@
                 <div class="item_4">
                   <span class="title">设备数量</span>
                   <br />
-                  <span class="content">5</span>
+                  <span class="content">{{ workshopInfo.mCount }}</span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -34,7 +34,7 @@
                 <div class="item_4">
                   <span class="title">作业数量</span>
                   <br />
-                  <span class="content">5</span>
+                  <span class="content">{{ workshopInfo.runCount }}</span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -44,7 +44,7 @@
                 <div class="item_4">
                   <span class="title">待机数量</span>
                   <br />
-                  <span class="content">5</span>
+                  <span class="content">{{ workshopInfo.standbyCount }}</span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -54,7 +54,7 @@
                 <div class="item_4">
                   <span class="title">报警数量</span>
                   <br />
-                  <span class="content">5</span>
+                  <span class="content">{{ workshopInfo.alarmCount }}</span>
                 </div>
               </el-col>
             </el-row>
@@ -65,14 +65,37 @@
   </div>
 </template>
 <script>
+import API from "@/api/busin";
 // import echarts from "echarts";
 export default {
   name: "bottom",
   data() {
-    return {};
+    return {
+      workshopInfo: {
+        workshop_name: "",
+        alarmCount: 0,
+        mCount: 0,
+        runCount: 0,
+        stopCount: 0,
+        standbyCount: 0
+      }
+    };
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.findMachineListByWsId();
+  },
+  methods: {
+    findMachineListByWsId() {
+      const params = {
+        wsId: 1
+      };
+      API.findMachineListByWsId(params).then(res => {
+        if (res.code == "200") {
+          this.workshopInfo = res.info;
+        }
+      });
+    }
+  }
 };
 </script>
 

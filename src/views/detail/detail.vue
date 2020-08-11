@@ -3,7 +3,7 @@
     <section class="section">
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navone" default-active="3">
+          <el-menu class="navone" default-active="1">
             <el-menu-item index="1">
               <span slot="title">一车间</span>
             </el-menu-item>
@@ -25,34 +25,70 @@
       <div class="cloum2">
         <div class="clocen">
           <el-carousel :interval="0" type="card" height="70vh">
-            <el-carousel-item v-for="n in 4" :key="n" class="items">
-              <div class="mask">设备{{ n }}</div>
+            <el-carousel-item
+              v-for="item in machineList"
+              :key="item.id"
+              class="items"
+            >
+              <div class="mask">{{ item.machine_name }}</div>
               <div class="item">
                 <el-tooltip placement="right" popper-class="popperTooltip">
                   <div slot="content">
-                    设备名：设备{{ n }}<br />
-                    品牌：设备{{ n }}<br />
-                    型号：设备{{ n }}<br />
-                    出厂日期：设备{{ n }}<br />
-                    外形尺寸：设备{{ n }}<br />
-                    用途：设备{{ n }}<br />
+                    品牌：{{ item.machine_brand }}<br />
+                    型号：{{ item.machine_model }}<br />
+                    出厂日期：{{ item.manufacture_date }}<br />
+                    外形尺寸：{{ item.boundary_dimension }}<br />
+                    用途：{{ item.use }}<br />
                   </div>
                   <img src="../../assets/images/sb.png" alt="" />
                 </el-tooltip>
-                <div class="imgdata">
+                <div class="imgdata" v-if="item.status == 1">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2" :id="'product' + n"></div>
+                  <p style="color:#fff">
+                    运行时长：{{ item.today_rtime }} 秒 转换成小时或者分钟<br />
+                    开机产量：{{ item.today_production }}<br />
+                    报警次数：{{ item.today_alarm_num }}<br />
+                  </p>
+                  <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
+                  <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
+                </div>
+                <div class="imgdata" v-if="item.status == 2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <p style="color:#fff">
+                    待机
+                  </p>
+                  <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
+                  <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
+                </div>
+                <div class="imgdata" v-if="item.status == 3">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <p style="color:red">
+                    报警
+                  </p>
+                  <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
+                  <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
+                </div>
+                <div class="imgdata" v-if="item.status == 0">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <p style="color:orange">
+                    未开机
+                  </p>
+                  <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
+                  <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata3">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_1" :id="'productChart' + n"></div>
+                  <div
+                    class="item_1"
+                    :id="'productChart' + item.dpu_code"
+                  ></div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
               </div>
             </el-carousel-item>
           </el-carousel>
 
+          <!-- 其他设备 -->
           <!-- <div class="items">
             <div class="mask">设备三</div>
             <div class="item">
@@ -79,7 +115,7 @@
       </div>
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navtwo" default-active="2">
+          <el-menu class="navtwo" default-active="1">
             <el-menu-item index="1">
               <span slot="title">生产设备</span>
             </el-menu-item>
@@ -123,7 +159,7 @@
 
 <script>
 // @ is an alias to /src
-// import API from "@/api/busin";
+import API from "@/api/busin";
 import bottom from "@/components/workshop/bottom";
 import echarts from "echarts";
 export default {
@@ -141,31 +177,36 @@ export default {
         client: null,
         wsuri: "ws://localhost:9531/ws/asset/300219050525"
       },
-      productDate: {
-        xData: [
-          "21:43:02",
-          "21:43:22",
-          "21:43:42",
-          "21:44:02",
-          "21:44:22",
-          "21:44:42",
-          "21:45:02"
-        ],
-        pNum: [10, 10, 30, 12, 15, 3, 7],
-        bNum: [5, 12, 11, 14, 25, 16, 10]
-      },
+
       dialogVisible: false,
-      content: ""
+      content: "",
+      machineList: []
     };
+  },
+  created() {
+    //根据车间编号查询车间信息（车间名、dpuCode、状态）
+    this.findMachineByWsId();
   },
   mounted() {
     require("../../assets/js/common.js");
-    this.$nextTick(function() {
-      this.product();
-      // this.machine()
-    });
+    this.product();
   },
   methods: {
+    findMachineByWsId() {
+      const params = {
+        wsId: 1
+      };
+      API.findMachineByWsId(params)
+        .then(res => {
+          this.machineList = [];
+          res.info.forEach(item => {
+            this.machineList.push(item);
+          });
+        })
+        .then(() => {
+          this.product();
+        });
+    },
     //创建socket连接功能函数
     connect(wsobj, dpuCode) {
       //浏览器支持？
@@ -185,6 +226,46 @@ export default {
 
           //消息事件
           this.socket[wsobj].onmessage = msg => {
+            this.machineList.forEach(item => {
+              if (item.dpu_code == dpuCode) {
+                item.today_rtime = item.today_rtime + 20;
+                item.today_production =
+                  item.today_production + JSON.parse(msg.data).data.production;
+                item.status = JSON.parse(msg.data).data.status;
+                if (JSON.parse(msg.data).data.status == "3") {
+                  item.today_alarm_num =
+                    item.today_alarm_num +
+                    JSON.parse(msg.data).data.alarming.length;
+                }
+              }
+            });
+            if (JSON.parse(msg.data).data.status == "1") {
+              this.productCharts[dpuCode].productDate.xData.shift();
+              this.productCharts[dpuCode].productDate.xData.push(
+                JSON.parse(msg.data).data.time
+              );
+              this.productCharts[dpuCode].productDate.pNum.shift();
+              this.productCharts[dpuCode].productDate.pNum.push(
+                JSON.parse(msg.data).data.production
+              );
+              this.productCharts[dpuCode].productDate.bNum.shift();
+              this.productCharts[dpuCode].productDate.bNum.push(
+                JSON.parse(msg.data).data.unqualified
+              );
+              this.productCharts[dpuCode].chart.setOption({
+                xAxis: {
+                  data: this.productCharts[dpuCode].productDate.xData
+                },
+                series: [
+                  {
+                    data: this.productCharts[dpuCode].productDate.pNum
+                  },
+                  {
+                    data: this.productCharts[dpuCode].productDate.bNum
+                  }
+                ]
+              });
+            }
             if (JSON.parse(msg.data).data.status == "3") {
               this.content =
                 this.content +
@@ -261,15 +342,27 @@ export default {
       const color = ["rgba(23, 255, 243", "rgba(255,100,97"];
 
       var roseCharts = document.getElementsByClassName("item_1"); // 对应地使用ByClassName
-      var dpuCode = [
-        "300219050523",
-        "300219050524",
-        "300219050525",
-        "300219050526"
-      ];
+      var dpuCode = [];
+      this.machineList.forEach(item => {
+        dpuCode.push(item.dpu_code);
+      });
+
       for (var i = 0; i < roseCharts.length; i++) {
+        var productDate = {
+          xData: [
+            "21:43:02",
+            "21:43:22",
+            "21:43:42",
+            "21:44:02",
+            "21:44:22",
+            "21:44:42",
+            "21:45:02"
+          ],
+          pNum: [0, 0, 0, 0, 0, 0, 0],
+          bNum: [0, 0, 0, 0, 0, 0, 0]
+        };
         // 通过for循环，在相同class的dom内绘制元素
-        this.productCharts = echarts.init(roseCharts[i]);
+        var productCharts = echarts.init(roseCharts[i]);
         const option = {
           tooltip: {
             trigger: "axis",
@@ -299,7 +392,7 @@ export default {
           xAxis: [
             {
               type: "category",
-              data: this.productDate.xData,
+              data: productDate.xData,
               axisLabel: {
                 interval: 0,
                 rotate: 20,
@@ -376,7 +469,7 @@ export default {
             {
               name: "产量",
               type: "line",
-              data: this.productDate.pNum,
+              data: productDate.pNum,
               symbolSize: 1,
               symbol: "circle",
               // smooth: true,
@@ -411,7 +504,7 @@ export default {
             {
               name: "回退量",
               type: "line",
-              data: this.productDate.bNum,
+              data: productDate.bNum,
               symbolSize: 1,
               symbol: "circle",
               // smooth: true,
@@ -446,17 +539,16 @@ export default {
           ]
         };
 
-        this.productCharts.setOption(option);
+        productCharts.setOption(option);
         window.addEventListener("resize", function() {
-          this.productCharts.resize();
+          productCharts.resize();
         });
+        var info = {
+          chart: productCharts,
+          productDate: productDate
+        };
+        this.productCharts[dpuCode[i]] = info;
         this.connect(i, dpuCode[i]);
-
-        // this.initWebSocket(dpuCode[i]);
-
-        // setInterval(function () {
-
-        // }, 20000);
       }
     },
     machine() {
@@ -586,7 +678,6 @@ export default {
       });
     },
     machine2() {
-      var value = 10;
       var option = {
         backgroundColor: "#000",
         xAxis: {
@@ -1093,103 +1184,13 @@ border-top-color: blue ;
 }
 .detail {
   width: 100%;
-  background: url("~@/assets/beijing.png") no-repeat;
-  height: 100vh;
-  background-size: 100% 100%;
-
-  .header {
-    background: url("~@/assets/title.png") no-repeat;
-    background-size: 100% 100%;
-    color: #fff;
-    font-size: 0.45rem;
-    .title {
-      text-align: center;
-      line-height: 1.1rem;
-      font-weight: 800;
-      // text-shadow: 2px 2px 2px #275bdb;
-      text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
-    }
-    #company {
-      width: 15%;
-      height: 5%;
-      position: absolute;
-      top: 0.38rem;
-      right: 0.375rem;
-      font-size: 0.45rem;
-      font-family: "electronicFont" !important;
-      text-align: center;
-      color: #15a0db;
-      .warm {
-        width: 20%;
-        height: 90%;
-        float: left;
-        .item {
-          margin-top: 5px;
-        }
-        img {
-          width: 60%;
-        }
-      }
-      .loginUser {
-        width: 36%;
-        height: 90%;
-        margin-left: 4%;
-        margin-top: 3px;
-        float: left;
-        img {
-          margin-top: 3px;
-          width: 25%;
-          float: left;
-        }
-        .text {
-          font-size: 0.3rem;
-          color: gainsboro;
-          font-family: "幼圆";
-        }
-      }
-      .logoutUser {
-        width: 20%;
-        height: 90%;
-        margin-top: 3px;
-        float: left;
-        img {
-          margin-top: 3px;
-          width: 50%;
-        }
-      }
-      .back {
-        width: 15%;
-        height: 90%;
-        margin-top: 3px;
-        float: left;
-        img {
-          margin-top: 3px;
-          width: 60%;
-        }
-      }
-    }
-    #date {
-      position: absolute;
-      top: 0.38rem;
-      left: 0.375rem;
-      font-size: 0.45rem;
-      font-family: "electronicFont" !important;
-      text-align: center;
-      color: #00ccff;
-    }
-    .dropdown {
-      position: absolute;
-      top: 0.625rem;
-      right: 0.375rem;
-      font-size: 0.275rem;
-    }
-  }
+  height: calc(100% - 1.1rem);
   .section {
     width: 99.8%;
     // display: flex;
     // border: 1px solid red;
     border-radius: 5px;
-    height: calc(100% - 1.1rem);
+    height: 100%;
     .cloum {
       float: left;
       margin: 0.2rem;

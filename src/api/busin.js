@@ -53,5 +53,9 @@ export default {
   // 根据公司查询公司内各车间信息（车间名、设备数量、各状态设备数量【作业、待机、报警】）
   findMachineListByCompany: params => {
     return API.POST("alarm/findMachineListByCompany", params);
+  },
+  // 根据车间编号查询车间信息（车间名、dpuCode、状态）
+  findMachineByWsId: params => {
+    return API.POST("alarm/findMachineByWsId", params);
   }
 };

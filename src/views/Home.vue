@@ -1684,23 +1684,19 @@ export default {
 }
 .home {
   width: 100%;
-  // background: url("../assets/beijing.png") rgba(42, 49, 127, 0.1) no-repeat;
-  height: 100vh;
-  background-size: 100% 100%;
-  background-blend-mode: multiply;
-
+  height: calc(100% - 1.1rem);
   .section {
     width: 99.8%;
     // display: flex;
     // border: 1px solid red;
     border-radius: 5px;
-    height: calc(100% - 1.1rem);
+    height: 100%;
     // background: rgba(20, 35, 90, 0.4);
     .cloum {
       // flex: 1;
       float: left;
       width: 28%;
-      margin: 0 0.2rem 0.1rem 0.2rem;
+      margin: 0.2rem 0.2rem 0.1rem 0.2rem;
       height: 90vh;
       border: 1px solid #274774;
       border-radius: 10px;

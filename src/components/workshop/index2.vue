@@ -57,21 +57,33 @@
           <div class="indicator mid">
             <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
-              <div class="text">作业数</div>
-              <img src="../../assets/images/line3.png" alt="" />
               <div class="mid_con" id="ybp"></div>
+              <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="mid_items">
-              <img src="../../assets/images/line3.png" alt="" />
-              <div class="text">待机数</div>
               <img src="../../assets/images/line3.png" alt="" />
               <div class="mid_con" id="ybp2"></div>
+              <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
-              <div class="text">预警数</div>
-              <img src="../../assets/images/line3.png" alt="" />
               <div class="mid_con" id="ybp3"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp4"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp5"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp6"></div>
+              <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="clear"></div>
           </div>
@@ -106,15 +118,29 @@ export default {
         alarm_count: 0
       },
       workshopList: [],
-      allDevice: "",
-      onDevice: "",
-      alarmDevice: "",
-      offDevice: ""
+      //待机数
+      standby: "",
+      //设备数
+      mcount: "",
+      //车间数
+      wscount: "",
+      //报警数
+      alarm: "",
+      //本次开机产量
+      tp: "",
+      //停机数
+      down: "",
+      //总产量
+      sp: "",
+      //使用率/利用率
+      userate: "",
+      //作业数
+      run: ""
     };
   },
   mounted() {
-    this.findMachineListByExample();
     this.findMachineListByCompany();
+    this.statistics();
   },
   methods: {
     // 查询企业内设备（车间名、设备数量、各状态设备数量【作业、待机、报警】）
@@ -166,10 +192,26 @@ export default {
         this.onDevice = ocount;
         this.alarmDevice = acount;
         this.offDevice = fcount;
+      });
+    },
+    statistics() {
+      API.statistics().then(res => {
+        console.log(res);
+        this.standby = res.info.standby;
+        this.mcount = res.info.mcount;
+        this.alarm = res.info.alarm;
+        this.wscount = res.info.wscount;
+        this.run = res.info.run;
+        this.down = res.info.down;
+        this.tp = res.info.tp;
+        this.sp = res.info.sp;
         this.chart9();
         this.chart10();
         this.chart11();
         this.chart12();
+        this.chart13();
+        this.chart14();
+        this.chart15();
       });
     },
     findMachineListByCompany() {
@@ -222,7 +264,7 @@ export default {
         tooltip: {},
         series: [
           {
-            center: ["55%", "50%"], //仪表的位置
+            center: ["50%", "50%"], //仪表的位置
             name: "刻度", //仪表的名字
             type: "gauge", //统计图类型为仪表
             radius: "80%", //统计图的半径大小
@@ -289,421 +331,7 @@ export default {
           {
             type: "gauge", //刻度轴表盘
             radius: "80%", //刻度盘的大小
-            center: ["55%", "50%"], //刻度盘的位置
-            splitNumber: 8, //刻度数量
-            startAngle: 225, //开始刻度的角度
-            endAngle: -45, //结束刻度的角度
-            axisLine: {
-              //刻度的线条
-              show: true,
-              lineStyle: {
-                width: 5, //定义一个宽15的数轴
-                color: [
-                  //颜色为渐变色
-                  [
-                    1,
-                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                      {
-                        offset: 0,
-                        color: "#1FFBFF"
-                      },
-                      {
-                        offset: 0.2,
-                        color: "#25E43E"
-                      },
-                      {
-                        offset: 0.7,
-                        color: "#FFC21F"
-                      },
-                      {
-                        offset: 0.9,
-                        color: "#E166A0"
-                      },
-                      {
-                        offset: 1,
-                        color: "#C74787"
-                      }
-                    ])
-                  ]
-                ]
-              }
-            },
-            //分隔线样式。
-            splitLine: {
-              //表盘上的轴线
-              show: false
-            },
-            axisLabel: {
-              //表盘上的刻度数值文字
-              show: false
-            },
-            axisTick: {
-              //表盘上的刻度线
-              show: false
-            },
-            pointer: {
-              //表盘上的指针
-              show: true,
-              width: "10%",
-              length: "80%"
-            },
-            itemStyle: {
-              //表盘指针的颜色
-              color: "rgba(52, 136, 219, 1)"
-            },
-            title: {
-              //标题
-              show: false,
-              offsetCenter: [0, "-26%"], // x, y，单位px
-              textStyle: {
-                color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
-              }
-            },
-            //仪表盘详情，用于显示数据。
-            detail: {
-              show: true,
-              offsetCenter: [0, "70%"],
-              color: "#DFFFFF",
-              formatter: function(params) {
-                return params + "%";
-              },
-              textStyle: {
-                fontSize: 10
-              }
-            },
-            data: [
-              //当前数值的数据
-              {
-                name: "作业数",
-                value: this.onDevice
-              }
-            ]
-          }
-        ]
-      };
-      myChart.setOption(option);
-      window.addEventListener("resize", function() {
-        myChart.resize();
-      });
-    },
-    chart10() {
-      var myChart = echarts.init(document.getElementById("devicenum"));
-      var option = {
-        grid: {
-          top: "20%",
-          bottom: "10%"
-        },
-        tooltip: {},
-        xAxis: {
-          data: ["作业设备", "总设备"],
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          }
-        },
-        yAxis: {
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          }
-        },
-        series: [
-          {
-            name: "",
-            type: "pictorialBar",
-            symbolSize: [20, 5],
-            symbolOffset: [0, -3],
-            z: 12,
-            data: [
-              {
-                name: "作业设备",
-                value: this.onDevice,
-                trueVal: "77",
-                symbolPosition: "end",
-                itemStyle: {
-                  normal: {
-                    color: "#00fff5"
-                  }
-                }
-              },
-              {
-                name: "总设备",
-                value: this.allDevice,
-                trueVal: "99",
-                symbolPosition: "end",
-                itemStyle: {
-                  normal: {
-                    color: "#ffcc00"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: "",
-            type: "pictorialBar",
-            symbolSize: [20, 5],
-            symbolOffset: [0, 3],
-            z: 12,
-            data: [
-              {
-                name: "作业设备",
-                value: this.onDevice,
-                trueVal: "77",
-                itemStyle: {
-                  normal: {
-                    color: "#43bafe"
-                  }
-                }
-              },
-              {
-                name: "总设备",
-                value: this.allDevice,
-                trueVal: "99",
-                itemStyle: {
-                  normal: {
-                    color: "#ff7800"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: "",
-            type: "pictorialBar",
-            symbolSize: [15, 5],
-            symbolOffset: [0, 6],
-            z: 11,
-            data: [
-              {
-                name: "作业设备",
-                value: this.onDevice,
-                trueVal: "77",
-                itemStyle: {
-                  normal: {
-                    color: "transparent",
-                    borderColor: "#43bafe",
-                    borderWidth: 8
-                  }
-                }
-              },
-              {
-                name: "总设备",
-                value: this.allDevice,
-                trueVal: "99",
-                itemStyle: {
-                  normal: {
-                    color: "transparent",
-                    borderColor: "#ff7800",
-                    borderWidth: 8
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: "",
-            type: "pictorialBar",
-            symbolSize: [20, 10],
-            symbolOffset: [0, 12],
-            z: 10,
-            data: [
-              {
-                name: "作业设备",
-                value: this.onDevice,
-                trueVal: "77",
-                itemStyle: {
-                  normal: {
-                    color: "transparent",
-                    borderColor: "#43bafe",
-                    borderType: "dashed",
-                    borderWidth: 20
-                  }
-                }
-              },
-              {
-                name: "总设备",
-                value: this.allDevice,
-                trueVal: "99",
-                itemStyle: {
-                  normal: {
-                    color: "transparent",
-                    borderColor: "#ff7800",
-                    borderType: "dashed",
-                    borderWidth: 20
-                  }
-                }
-              }
-            ]
-          },
-          {
-            type: "bar",
-            silent: true,
-            barWidth: 20,
-            barGap: "-100%",
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-                distance: 10,
-                textStyle: {
-                  color: "#fff",
-                  fontSize: 10
-                }
-              }
-            },
-            data: [
-              {
-                name: "作业设备",
-                value: this.onDevice,
-                trueVal: "98",
-                itemStyle: {
-                  normal: {
-                    color: {
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      type: "linear",
-                      global: false,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: "rgba(0,255,245,0.5)"
-                        },
-                        {
-                          offset: 1,
-                          color: "#43bafe"
-                        }
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                name: "总设备",
-                value: this.allDevice,
-                trueVal: "499",
-                itemStyle: {
-                  normal: {
-                    color: {
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      type: "linear",
-                      global: false,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: "rgba(255,204,0,0.5)"
-                        },
-                        {
-                          offset: 1,
-                          color: "#ff7800"
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      };
-      myChart.setOption(option);
-      window.addEventListener("resize", function() {
-        myChart.resize();
-      });
-    },
-    chart11() {
-      var myChart = echarts.init(document.getElementById("ybp2"));
-      var option = {
-        tooltip: {},
-        series: [
-          {
-            center: ["55%", "50%"], //仪表的位置
-            name: "刻度", //仪表的名字
-            type: "gauge", //统计图类型为仪表
-            radius: "80%", //统计图的半径大小
-            min: 0, //最小刻度
-            max: 16, //最大刻度
-            splitNumber: 8, //刻度数量
-            startAngle: 225, //开始刻度的角度
-            endAngle: -45, //结束刻度的角度
-            axisLine: {
-              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
-              show: false,
-              lineStyle: {
-                width: 1,
-                color: [[1, "rgba(255,255,255,0)"]]
-              }
-            }, //仪表盘轴线
-            axisLabel: {
-              //仪表盘上的数据
-              show: false,
-              color: "#00FAFF", //仪表盘上的轴线颜色
-              distance: 15, //图形与刻度的间距
-              formatter: function(v) {
-                //刻度轴上的数据相关显示
-                switch (v + "") {
-                  case "0":
-                    return "0";
-                  case "2":
-                    return "2W";
-                  case "4":
-                    return "4W";
-                  case "6":
-                    return "6W";
-                  case "8":
-                    return "8W";
-                  case "10":
-                    return "10W";
-                  case "12":
-                    return "12W";
-                  case "14":
-                    return "14W";
-                  case "16":
-                    return "16W";
-                }
-              }
-            }, //刻度标签。
-            axisTick: {
-              show: true,
-              splitNumber: 5, //刻度的段落数
-              lineStyle: {
-                color: "#00FAFF",
-                width: 1 //刻度的宽度
-              },
-              length: -5 //刻度的长度
-            }, //刻度样式
-            splitLine: {
-              //文字和刻度的偏移量
-              show: true,
-              length: -8, //便宜的长度
-              lineStyle: {
-                color: "#00FAFF"
-              }
-            } //分隔线样式
-          },
-          {
-            type: "gauge", //刻度轴表盘
-            radius: "80%", //刻度盘的大小
-            center: ["55%", "50%"], //刻度盘的位置
+            center: ["50%", "50%"], //刻度盘的位置
             splitNumber: 8, //刻度数量
             startAngle: 225, //开始刻度的角度
             endAngle: -45, //结束刻度的角度
@@ -790,7 +418,7 @@ export default {
               //当前数值的数据
               {
                 name: "待机数",
-                value: this.offDevice
+                value: this.standby
               }
             ]
           }
@@ -801,13 +429,256 @@ export default {
         myChart.resize();
       });
     },
-    chart12() {
-      var myChart = echarts.init(document.getElementById("ybp3"));
+    chart10() {
+      var myChart = echarts.init(document.getElementById("devicenum"));
+      var option = {
+        grid: {
+          top: "20%",
+          bottom: "10%"
+        },
+        tooltip: {},
+        xAxis: {
+          data: ["本次开机产量", "总产量"],
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            show: false
+          }
+        },
+        yAxis: {
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            show: false
+          }
+        },
+        series: [
+          {
+            name: "",
+            type: "pictorialBar",
+            symbolSize: [20, 5],
+            symbolOffset: [0, -3],
+            z: 12,
+            data: [
+              {
+                name: "本次开机产量",
+                value: this.tp,
+                trueVal: "77",
+                symbolPosition: "end",
+                itemStyle: {
+                  normal: {
+                    color: "#00fff5"
+                  }
+                }
+              },
+              {
+                name: "总产量",
+                value: this.sp,
+                trueVal: "99",
+                symbolPosition: "end",
+                itemStyle: {
+                  normal: {
+                    color: "#ffcc00"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: "",
+            type: "pictorialBar",
+            symbolSize: [20, 5],
+            symbolOffset: [0, 3],
+            z: 12,
+            data: [
+              {
+                name: "本次开机产量",
+                value: this.tp,
+                trueVal: "77",
+                itemStyle: {
+                  normal: {
+                    color: "#43bafe"
+                  }
+                }
+              },
+              {
+                name: "总产量",
+                value: this.sp,
+                trueVal: "99",
+                itemStyle: {
+                  normal: {
+                    color: "#ff7800"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: "",
+            type: "pictorialBar",
+            symbolSize: [15, 5],
+            symbolOffset: [0, 6],
+            z: 11,
+            data: [
+              {
+                name: "本次开机产量",
+                value: this.tp,
+                trueVal: "77",
+                itemStyle: {
+                  normal: {
+                    color: "transparent",
+                    borderColor: "#43bafe",
+                    borderWidth: 8
+                  }
+                }
+              },
+              {
+                name: "总产量",
+                value: this.sp,
+                trueVal: "99",
+                itemStyle: {
+                  normal: {
+                    color: "transparent",
+                    borderColor: "#ff7800",
+                    borderWidth: 8
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: "",
+            type: "pictorialBar",
+            symbolSize: [20, 10],
+            symbolOffset: [0, 12],
+            z: 10,
+            data: [
+              {
+                name: "本次开机产量",
+                value: this.tp,
+                trueVal: "77",
+                itemStyle: {
+                  normal: {
+                    color: "transparent",
+                    borderColor: "#43bafe",
+                    borderType: "dashed",
+                    borderWidth: 20
+                  }
+                }
+              },
+              {
+                name: "总产量",
+                value: this.sp,
+                trueVal: "99",
+                itemStyle: {
+                  normal: {
+                    color: "transparent",
+                    borderColor: "#ff7800",
+                    borderType: "dashed",
+                    borderWidth: 20
+                  }
+                }
+              }
+            ]
+          },
+          {
+            type: "bar",
+            silent: true,
+            barWidth: 20,
+            barGap: "-100%",
+            label: {
+              normal: {
+                show: true,
+                position: "top",
+                distance: 10,
+                textStyle: {
+                  color: "#fff",
+                  fontSize: 10
+                }
+              }
+            },
+            data: [
+              {
+                name: "本次开机产量",
+                value: this.tp,
+                trueVal: "98",
+                itemStyle: {
+                  normal: {
+                    color: {
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      type: "linear",
+                      global: false,
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: "rgba(0,255,245,0.5)"
+                        },
+                        {
+                          offset: 1,
+                          color: "#43bafe"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                name: "总产量",
+                value: this.sp,
+                trueVal: "499",
+                itemStyle: {
+                  normal: {
+                    color: {
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      type: "linear",
+                      global: false,
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: "rgba(255,204,0,0.5)"
+                        },
+                        {
+                          offset: 1,
+                          color: "#ff7800"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    chart11() {
+      var myChart = echarts.init(document.getElementById("ybp2"));
       var option = {
         tooltip: {},
         series: [
           {
-            center: ["55%", "50%"], //仪表的位置
+            center: ["50%", "50%"], //仪表的位置
             name: "刻度", //仪表的名字
             type: "gauge", //统计图类型为仪表
             radius: "80%", //统计图的半径大小
@@ -874,7 +745,520 @@ export default {
           {
             type: "gauge", //刻度轴表盘
             radius: "80%", //刻度盘的大小
-            center: ["55%", "50%"], //刻度盘的位置
+            center: ["50%", "50%"], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: "#1FFBFF"
+                      },
+                      {
+                        offset: 0.2,
+                        color: "#25E43E"
+                      },
+                      {
+                        offset: 0.7,
+                        color: "#FFC21F"
+                      },
+                      {
+                        offset: 0.9,
+                        color: "#E166A0"
+                      },
+                      {
+                        offset: 1,
+                        color: "#C74787"
+                      }
+                    ])
+                  ]
+                ]
+              }
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: "10%",
+              length: "80%"
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: "rgba(52, 136, 219, 1)"
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, "-26%"], // x, y，单位px
+              textStyle: {
+                color: "#fff",
+                fontSize: 8 //表盘上的标题文字大小
+              }
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, "70%"],
+              color: "#DFFFFF",
+              formatter: function(params) {
+                return params + "%";
+              },
+              textStyle: {
+                fontSize: 10
+              }
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: "设备数",
+                value: this.mcount
+              }
+            ]
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    chart12() {
+      var myChart = echarts.init(document.getElementById("ybp3"));
+      var option = {
+        tooltip: {},
+        series: [
+          {
+            center: ["50%", "50%"], //仪表的位置
+            name: "刻度", //仪表的名字
+            type: "gauge", //统计图类型为仪表
+            radius: "80%", //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, "rgba(255,255,255,0)"]]
+              }
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: "#00FAFF", //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + "") {
+                  case "0":
+                    return "0";
+                  case "2":
+                    return "2W";
+                  case "4":
+                    return "4W";
+                  case "6":
+                    return "6W";
+                  case "8":
+                    return "8W";
+                  case "10":
+                    return "10W";
+                  case "12":
+                    return "12W";
+                  case "14":
+                    return "14W";
+                  case "16":
+                    return "16W";
+                }
+              }
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: "#00FAFF",
+                width: 1 //刻度的宽度
+              },
+              length: -5 //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: "#00FAFF"
+              }
+            } //分隔线样式
+          },
+          {
+            type: "gauge", //刻度轴表盘
+            radius: "80%", //刻度盘的大小
+            center: ["50%", "50%"], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: "#1FFBFF"
+                      },
+                      {
+                        offset: 0.2,
+                        color: "#25E43E"
+                      },
+                      {
+                        offset: 0.7,
+                        color: "#FFC21F"
+                      },
+                      {
+                        offset: 0.9,
+                        color: "#E166A0"
+                      },
+                      {
+                        offset: 1,
+                        color: "#C74787"
+                      }
+                    ])
+                  ]
+                ]
+              }
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: "10%",
+              length: "80%"
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: "rgba(52, 136, 219, 1)"
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, "-26%"], // x, y，单位px
+              textStyle: {
+                color: "#fff",
+                fontSize: 8 //表盘上的标题文字大小
+              }
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, "70%"],
+              color: "#DFFFFF",
+              formatter: function(params) {
+                return params + "%";
+              },
+              textStyle: {
+                fontSize: 10
+              }
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: "车间数",
+                value: this.wscount
+              }
+            ]
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    chart13() {
+      var myChart = echarts.init(document.getElementById("ybp4"));
+      var option = {
+        tooltip: {},
+        series: [
+          {
+            center: ["50%", "50%"], //仪表的位置
+            name: "刻度", //仪表的名字
+            type: "gauge", //统计图类型为仪表
+            radius: "80%", //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, "rgba(255,255,255,0)"]]
+              }
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: "#00FAFF", //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + "") {
+                  case "0":
+                    return "0";
+                  case "2":
+                    return "2W";
+                  case "4":
+                    return "4W";
+                  case "6":
+                    return "6W";
+                  case "8":
+                    return "8W";
+                  case "10":
+                    return "10W";
+                  case "12":
+                    return "12W";
+                  case "14":
+                    return "14W";
+                  case "16":
+                    return "16W";
+                }
+              }
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: "#00FAFF",
+                width: 1 //刻度的宽度
+              },
+              length: -5 //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: "#00FAFF"
+              }
+            } //分隔线样式
+          },
+          {
+            type: "gauge", //刻度轴表盘
+            radius: "80%", //刻度盘的大小
+            center: ["50%", "50%"], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: "#1FFBFF"
+                      },
+                      {
+                        offset: 0.2,
+                        color: "#25E43E"
+                      },
+                      {
+                        offset: 0.7,
+                        color: "#FFC21F"
+                      },
+                      {
+                        offset: 0.9,
+                        color: "#E166A0"
+                      },
+                      {
+                        offset: 1,
+                        color: "#C74787"
+                      }
+                    ])
+                  ]
+                ]
+              }
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: "10%",
+              length: "80%"
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: "rgba(52, 136, 219, 1)"
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, "-26%"], // x, y，单位px
+              textStyle: {
+                color: "#fff",
+                fontSize: 8 //表盘上的标题文字大小
+              }
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, "70%"],
+              color: "#DFFFFF",
+              formatter: function(params) {
+                return params + "%";
+              },
+              textStyle: {
+                fontSize: 10
+              }
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: "作业数",
+                value: this.run
+              }
+            ]
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    chart14() {
+      var myChart = echarts.init(document.getElementById("ybp5"));
+      var option = {
+        tooltip: {},
+        series: [
+          {
+            center: ["50%", "50%"], //仪表的位置
+            name: "刻度", //仪表的名字
+            type: "gauge", //统计图类型为仪表
+            radius: "80%", //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, "rgba(255,255,255,0)"]]
+              }
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: "#00FAFF", //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + "") {
+                  case "0":
+                    return "0";
+                  case "2":
+                    return "2W";
+                  case "4":
+                    return "4W";
+                  case "6":
+                    return "6W";
+                  case "8":
+                    return "8W";
+                  case "10":
+                    return "10W";
+                  case "12":
+                    return "12W";
+                  case "14":
+                    return "14W";
+                  case "16":
+                    return "16W";
+                }
+              }
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: "#00FAFF",
+                width: 1 //刻度的宽度
+              },
+              length: -5 //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: "#00FAFF"
+              }
+            } //分隔线样式
+          },
+          {
+            type: "gauge", //刻度轴表盘
+            radius: "80%", //刻度盘的大小
+            center: ["50%", "50%"], //刻度盘的位置
             splitNumber: 8, //刻度数量
             startAngle: 225, //开始刻度的角度
             endAngle: -45, //结束刻度的角度
@@ -961,7 +1345,178 @@ export default {
               //当前数值的数据
               {
                 name: "预警数",
-                value: this.alarmDevice
+                value: this.alarm
+              }
+            ]
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    chart15() {
+      var myChart = echarts.init(document.getElementById("ybp6"));
+      var option = {
+        tooltip: {},
+        series: [
+          {
+            center: ["50%", "50%"], //仪表的位置
+            name: "刻度", //仪表的名字
+            type: "gauge", //统计图类型为仪表
+            radius: "80%", //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, "rgba(255,255,255,0)"]]
+              }
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: "#00FAFF", //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + "") {
+                  case "0":
+                    return "0";
+                  case "2":
+                    return "2W";
+                  case "4":
+                    return "4W";
+                  case "6":
+                    return "6W";
+                  case "8":
+                    return "8W";
+                  case "10":
+                    return "10W";
+                  case "12":
+                    return "12W";
+                  case "14":
+                    return "14W";
+                  case "16":
+                    return "16W";
+                }
+              }
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: "#00FAFF",
+                width: 1 //刻度的宽度
+              },
+              length: -5 //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: "#00FAFF"
+              }
+            } //分隔线样式
+          },
+          {
+            type: "gauge", //刻度轴表盘
+            radius: "80%", //刻度盘的大小
+            center: ["50%", "50%"], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: "#1FFBFF"
+                      },
+                      {
+                        offset: 0.2,
+                        color: "#25E43E"
+                      },
+                      {
+                        offset: 0.7,
+                        color: "#FFC21F"
+                      },
+                      {
+                        offset: 0.9,
+                        color: "#E166A0"
+                      },
+                      {
+                        offset: 1,
+                        color: "#C74787"
+                      }
+                    ])
+                  ]
+                ]
+              }
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: "10%",
+              length: "80%"
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: "rgba(52, 136, 219, 1)"
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, "-26%"], // x, y，单位px
+              textStyle: {
+                color: "#fff",
+                fontSize: 8 //表盘上的标题文字大小
+              }
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, "70%"],
+              color: "#DFFFFF",
+              formatter: function(params) {
+                return params + "%";
+              },
+              textStyle: {
+                fontSize: 10
+              }
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: "停机数",
+                value: this.down
               }
             ]
           }
@@ -1017,8 +1572,9 @@ li {
     }
     .hover_con {
       position: absolute;
-      width: 300px;
-      height: 200px;
+      width: 20%;
+      height: 25%;
+      padding: 0.1rem;
       background: rgba(1, 19, 67, 0.8);
       border: 2px solid #00a1ff;
       border-radius: 8px;
@@ -1029,6 +1585,8 @@ li {
       padding: 0.2rem;
       // text-align: center;
       color: #00a1ff;
+      font-weight: 600;
+      text-shadow: 2px 2px 2px grey;
     }
   }
 }
@@ -1096,31 +1654,22 @@ li {
     width: 100%;
   }
   .mid {
-    // align-items: center;
-    // flex-wrap: wrap;
+    align-items: center;
+    flex-wrap: wrap;
     width: 55% !important;
     .mid_items {
-      float: left;
-      width: 30%;
-      height: 80%;
-      margin: 4% 2%;
-      background: rgba(21, 49, 122, 0.5);
+      width: 32%;
+      height: 50%;
+      // margin: 0px 2px;
+
       img {
-        width: 100%;
-        margin-top: -12%;
-      }
-      .text {
-        text-align: center;
-        color: ivory;
-        font-weight: 600;
+        width: 90%;
       }
       .mid_con {
         width: 90%;
         height: 75%;
+        background: rgba(21, 49, 122, 0.5);
       }
-    }
-    .clear {
-      clear: both;
     }
   }
   // flex-wrap: wrap;

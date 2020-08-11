@@ -3,9 +3,34 @@
     <header class="header">
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
-      <div id="company">
-        <!-- <dv-decoration-3 style="width:250px;height:30px;" /> -->
+      <!-- <div id="company">
+        <dv-decoration-3 style="width:250px;height:30px;" />
         <el-button class="btn" round @click="backCompany">返回公司</el-button>
+      </div> -->
+      <div id="company">
+        <div class="warm">
+          <el-badge :value="7" :max="99" class="item">
+            <img src="../../assets/images/warm.png" alt="预警数" />
+          </el-badge>
+        </div>
+        <div class="loginUser">
+          <img src="../../assets/images/loginUser.png" alt="用户信息" />
+          <span class="text">管理员</span>
+        </div>
+        <div class="logoutUser">
+          <img
+            src="../../assets/images/logoutUser.png"
+            alt="登出"
+            @click="loginout"
+          />
+        </div>
+        <div class="back">
+          <img
+            src="../../assets/images/back.png"
+            alt="返回上一屏"
+            @click="backCompany"
+          />
+        </div>
       </div>
     </header>
     <section class="section">
@@ -594,6 +619,7 @@ export default {
       });
     },
     machine2() {
+      var value = 10;
       var option = {
         backgroundColor: "#000",
         xAxis: {
@@ -1014,6 +1040,25 @@ export default {
     },
     backCompany() {
       this.$router.push("/home");
+    },
+    loginout() {
+      var self = this;
+      this.$confirm("您确定要退出吗？", "退出管理平台", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(() => {
+          const info = {
+            userkey: localStorage.getItem("token")
+          };
+          self.$store
+            .dispatch("LogOut", info)
+            .then(() => {
+              self.$router.push({ path: "/" });
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     }
   }
 };
@@ -1120,21 +1165,62 @@ border-top-color: blue ;
       text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
     #company {
+      width: 15%;
+      height: 5%;
       position: absolute;
-      top: 0.27rem;
+      top: 0.38rem;
       right: 0.375rem;
-      font-size: 0.3rem;
-      font-weight: 700;
+      font-size: 0.45rem;
       font-family: "electronicFont" !important;
       text-align: center;
-      height: 10%;
       color: #15a0db;
-      .btn {
-        font-size: 0.25rem;
-        background-color: royalblue;
-        color: seashell;
-        border: 0px;
-        // padding-top: 1%;
+      .warm {
+        width: 20%;
+        height: 90%;
+        float: left;
+        .item {
+          margin-top: 5px;
+        }
+        img {
+          width: 60%;
+        }
+      }
+      .loginUser {
+        width: 36%;
+        height: 90%;
+        margin-left: 4%;
+        margin-top: 3px;
+        float: left;
+        img {
+          margin-top: 3px;
+          width: 25%;
+          float: left;
+        }
+        .text {
+          font-size: 0.3rem;
+          color: gainsboro;
+          font-family: "幼圆";
+        }
+      }
+      .logoutUser {
+        width: 20%;
+        height: 90%;
+        margin-top: 3px;
+        float: left;
+        img {
+          margin-top: 3px;
+          width: 50%;
+        }
+      }
+      .back {
+        width: 15%;
+        height: 90%;
+        margin-top: 3px;
+        float: left;
+        img {
+          margin-top: 3px;
+          width: 60%;
+        }
       }
     }
     #date {

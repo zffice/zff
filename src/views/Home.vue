@@ -14,7 +14,7 @@
           <span class="text">管理员</span>
         </div>
         <div class="logoutUser">
-          <img src="../assets/images/logoutUser.png" alt="" />
+          <img src="../assets/images/logoutUser.png" @click="loginout" alt="" />
         </div>
       </div>
     </header>
@@ -552,6 +552,7 @@ export default {
         },
         dataZoom: [
           {
+            show: false,
             type: "slider",
             yAxisIndex: 0,
             zoomLock: true,
@@ -1282,7 +1283,7 @@ export default {
           left: "4%",
           right: "4%",
           bottom: "2%",
-          top: "50%",
+          top: "30%",
           containLabel: true
         },
         xAxis: [
@@ -1605,6 +1606,20 @@ export default {
       window.addEventListener("resize", function() {
         myChart.resize();
       });
+    },
+    loginout() {
+      var self = this;
+      this.$confirm("您确定要退出吗？", "退出管理平台", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(() => {
+          const info = {
+            userkey: localStorage.getItem("token")
+          };
+          self.$router.push({ path: "/" }).catch(() => {});
+        })
+        .catch(() => {});
     }
   }
 };

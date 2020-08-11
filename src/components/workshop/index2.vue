@@ -196,7 +196,7 @@ export default {
     },
     statistics() {
       API.statistics().then(res => {
-        console.log(res);
+        // console.log(res);
         this.standby = res.info.standby;
         this.mcount = res.info.mcount;
         this.alarm = res.info.alarm;

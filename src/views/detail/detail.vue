@@ -1,38 +1,5 @@
 <template>
   <div class="detail">
-    <header class="header">
-      <div class="title">智能工厂生产车间大屏</div>
-      <div id="date"></div>
-      <!-- <div id="company">
-        <dv-decoration-3 style="width:250px;height:30px;" />
-        <el-button class="btn" round @click="backCompany">返回公司</el-button>
-      </div> -->
-      <div id="company">
-        <div class="warm">
-          <el-badge :value="7" :max="99" class="item">
-            <img src="../../assets/images/warm.png" alt="预警数" />
-          </el-badge>
-        </div>
-        <div class="loginUser">
-          <img src="../../assets/images/loginUser.png" alt="用户信息" />
-          <span class="text">管理员</span>
-        </div>
-        <div class="logoutUser">
-          <img
-            src="../../assets/images/logoutUser.png"
-            alt="登出"
-            @click="loginout"
-          />
-        </div>
-        <div class="back">
-          <img
-            src="../../assets/images/back.png"
-            alt="返回上一屏"
-            @click="backCompany"
-          />
-        </div>
-      </div>
-    </header>
     <section class="section">
       <div class="cloum">
         <div class="navmenu">
@@ -1037,28 +1004,6 @@ export default {
       window.addEventListener("resize", function() {
         myChart.resize();
       });
-    },
-    backCompany() {
-      this.$router.push("/home");
-    },
-    loginout() {
-      var self = this;
-      this.$confirm("您确定要退出吗？", "退出管理平台", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(() => {
-          const info = {
-            userkey: localStorage.getItem("token")
-          };
-          self.$store
-            .dispatch("LogOut", info)
-            .then(() => {
-              self.$router.push({ path: "/" });
-            })
-            .catch(() => {});
-        })
-        .catch(() => {});
     }
   }
 };

@@ -1,23 +1,5 @@
 <template>
   <div class="home">
-    <header class="header">
-      <div class="title">智能工厂生产车间大屏</div>
-      <div id="date"></div>
-      <div id="company">
-        <div class="warm">
-          <el-badge :value="alarmCount" :max="99" class="item">
-            <img src="../assets/images/warm.png" alt="" />
-          </el-badge>
-        </div>
-        <div class="loginUser">
-          <img src="../assets/images/loginUser.png" alt="" />
-          <span class="text">管理员</span>
-        </div>
-        <div class="logoutUser">
-          <img src="../assets/images/logoutUser.png" @click="loginout" alt="" />
-        </div>
-      </div>
-    </header>
     <section class="section">
       <div class="cloum">
         <div class="items">
@@ -170,7 +152,6 @@ export default {
     // 月报警趋势
     alarmGroupMonth() {
       API.alarmGroupMonth().then(res => {
-        console.log("alarmGroupMonth" + res);
         this.Xaxis1 = [];
         this.data1 = [];
         for (var i = 0; i < res.info.length; i++) {
@@ -233,7 +214,7 @@ export default {
         // var list = [];
         for (var i = 0; i < res.info.length; i++) {
           this.Xaxis5.push(
-            res.info[i].workshop_name + "\n" + res.info[i].machine_name
+            res.info[i].workshop_name + "\n\n" + res.info[i].machine_name
           );
           this.data5.push(
             Math.floor(
@@ -280,7 +261,7 @@ export default {
       };
       API.ThisTimeAlarmInfo(params).then(res => {
         this.alarmData = [];
-        console.log(res);
+        // console.log(res);
         for (var i = 0; i < res.info.length; i++) {
           if (res.info[i].STATUS == "1") {
             res.info[i].STATUS = "已处理";
@@ -967,16 +948,28 @@ export default {
         tooltip: {
           trigger: "axis",
           formatter(params) {
-            console.log(params);
-            return (
-              params[0].name +
-              "<br><br>总产量：" +
-              params[3].value +
-              "<br>合格率: " +
-              ((params[1].value / params[3].value) * 100).toFixed(2) +
-              "%<br>合格量：" +
-              params[1].value
-            );
+            if (params[3].value == 0) {
+              return (
+                params[0].name +
+                "<br><br>总产量：" +
+                params[3].value +
+                "<br>合格量：" +
+                params[1].value +
+                "<br>合格率: --"
+              );
+            } else {
+              return (
+                params[0].name +
+                "<br><br>总产量：" +
+                params[3].value +
+                "<br>合格量：" +
+                params[1].value +
+                "<br>合格率: " +
+                ((params[1].value / params[3].value) * 100).toFixed(2) +
+                "%"
+              );
+            }
+
             ///
           }
         },
@@ -1691,88 +1684,11 @@ export default {
 }
 .home {
   width: 100%;
-  background: url("../assets/beijing.png") rgba(42, 49, 127, 0.1) no-repeat;
+  // background: url("../assets/beijing.png") rgba(42, 49, 127, 0.1) no-repeat;
   height: 100vh;
   background-size: 100% 100%;
   background-blend-mode: multiply;
 
-  .header {
-    background: url("~@/assets/title.png") no-repeat;
-    background-size: 100% 100%;
-    color: #fff;
-    font-size: 0.45rem;
-    .title {
-      text-align: center;
-      line-height: 1.1rem;
-      font-weight: 800;
-      // text-shadow: 2px 2px 2px #275bdb;
-      text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
-    }
-    #company {
-      width: 15%;
-      height: 5%;
-      position: absolute;
-      top: 0.38rem;
-      right: 0.375rem;
-      font-size: 0.45rem;
-      font-family: "electronicFont" !important;
-      text-align: center;
-      color: #15a0db;
-      .warm {
-        width: 20%;
-        height: 90%;
-        float: left;
-        .item {
-          margin-top: 5px;
-        }
-        img {
-          width: 60%;
-        }
-      }
-      .loginUser {
-        width: 38%;
-        height: 90%;
-        margin-left: 10%;
-        margin-top: 3px;
-        float: left;
-        img {
-          margin-top: 3px;
-          width: 25%;
-          float: left;
-        }
-        .text {
-          font-size: 0.3rem;
-          color: gainsboro;
-          font-family: "幼圆";
-        }
-      }
-      .logoutUser {
-        width: 20%;
-        height: 90%;
-        margin-top: 3px;
-        float: left;
-        img {
-          margin-top: 3px;
-          width: 50%;
-        }
-      }
-    }
-    #date {
-      position: absolute;
-      top: 0.38rem;
-      left: 0.375rem;
-      font-size: 0.45rem;
-      font-family: "electronicFont" !important;
-      text-align: center;
-      color: #15a0db;
-    }
-    .dropdown {
-      position: absolute;
-      top: 0.625rem;
-      right: 0.375rem;
-      font-size: 0.275rem;
-    }
-  }
   .section {
     width: 99.8%;
     // display: flex;

@@ -1,8 +1,6 @@
 <template>
   <div class="login">
-    <div class="earth1"
-         id="earth">
-    </div>
+    <div class="earth1" id="earth"></div>
     <div class="logbox">
       <div class="titled">智能工厂生产车间大屏</div>
       <div class="loginbox">
@@ -10,38 +8,42 @@
           <p class="p1">登录</p>
           <p class="p2">SIGN IN</p>
         </div>
-        <el-form :model="user"
-                 ref="user"
-                 class="demo-dynamic formstlyle">
-          <el-form-item prop="name"
-                        :rules="[
+        <el-form :model="user" ref="user" class="demo-dynamic formstlyle">
+          <el-form-item
+            prop="name"
+            :rules="[
               { required: true, message: '请输入账户名称', trigger: 'blur' }
-            ]">
-            <el-input v-model="user.name"
-                      placeholder="请输入用户名"
-                      size="small"
-                      clearable>
+            ]"
+          >
+            <el-input
+              v-model="user.name"
+              placeholder="请输入用户名"
+              size="small"
+              clearable
+            >
               <template slot="prepend">用户名</template>
             </el-input>
           </el-form-item>
-          <el-form-item class="mima"
-                        prop="pwd"
-                        :rules="[
+          <el-form-item
+            class="mima"
+            prop="pwd"
+            :rules="[
               { required: true, message: '请输入密码', trigger: 'blur' }
-            ]">
-            <el-input v-model="user.pwd"
-                      placeholder="请输入密码"
-                      size="small"
-                      type="password"
-                      clearable>
+            ]"
+          >
+            <el-input
+              v-model="user.pwd"
+              placeholder="请输入密码"
+              size="small"
+              type="password"
+              clearable
+            >
               <template slot="prepend">密码</template>
             </el-input>
           </el-form-item>
           <div class="btn">
-            <div class="btnitem"
-                 @click="submitForm('user')">登录</div>
-            <div class="btnitem btn2"
-                 @click="resetForm('user')">重置</div>
+            <div class="btnitem" @click="submitForm('user')">登录</div>
+            <div class="btnitem btn2" @click="resetForm('user')">重置</div>
             <!-- <el-form-item>
             <el-button type="primary" @click="submitForm('user')"
               >提交</el-button
@@ -55,14 +57,12 @@
   </div>
 </template>
 
-
 <script>
-
 import API from "@/api/user";
 import { mapMutations } from "vuex";
 import axios from "axios";
 export default {
-  data () {
+  data() {
     return {
       user: {
         name: "",
@@ -78,18 +78,18 @@ export default {
           silent: true,
           baseTexture: require("../assets/earth_atmos_4096.jpg"), //背景
           heightTexture: require("../assets/earth_atmos_4096.jpg"), //地球的整个纹路
-          shading: 'realistic',
+          shading: "realistic",
           light: {
             main: {
-              color: '#fff',
+              color: "#fff",
               intensity: 0,
               shadow: false,
-              shadowQuality: 'high',
+              shadowQuality: "high",
               alpha: 55,
               beta: 10
             },
             ambient: {
-              color: '#fff',
+              color: "#fff",
               intensity: 1
             }
           },
@@ -105,7 +105,7 @@ export default {
           viewControl: {
             autoRotate: true,
             animationDurationUpdate: 2000,
-            targetCoord: ''
+            targetCoord: ""
           }
         },
         series: [
@@ -143,35 +143,32 @@ export default {
                }
            }*/
           {
-            name: 'lines3D',
-            type: 'lines3D',
-            coordinateSystem: 'globe',
+            name: "lines3D",
+            type: "lines3D",
+            coordinateSystem: "globe",
             effect: {
               show: true,
               period: 6,
               trailWidth: 3,
               trailLength: 0.5,
               trailOpacity: 1,
-              trailColor: '#0087f4'
+              trailColor: "#0087f4"
             },
-            blendMode: 'lighter',
+            blendMode: "lighter",
             lineStyle: {
               width: 1,
-              color: '#0087f4',
+              color: "#0087f4",
               opacity: 0
             },
             data: [],
-            silent: false,
-
+            silent: false
           }
-
         ]
-
       },
 
       //平面地球 主要是设置地球的样式
       mapOption: {
-        backgroundColor: 'rgba(20,104,121,0.71)',//当和立体球形贴图是海洋的颜色
+        backgroundColor: "rgba(20,104,121,0.71)", //当和立体球形贴图是海洋的颜色
         visualMap: {
           show: false,
           min: 0,
@@ -179,13 +176,13 @@ export default {
         },
         series: [
           {
-            type: 'map',
-            map: 'world',
+            type: "map",
+            map: "world",
             left: 0,
             top: 0,
             right: 0,
             bottom: 0,
-            environment: 'rgba(0,0,0,0)',
+            environment: "rgba(0,0,0,0)",
             boundingCoords: [
               [-180, 90],
               [180, -90]
@@ -193,48 +190,58 @@ export default {
             itemStyle: {
               normal: {
                 borderWidth: 2,
-                borderColor: 'rgb(0,232,232)',//地球纹路的颜色
+                borderColor: "rgb(0,232,232)", //地球纹路的颜色
                 areaColor: {
-                  type: 'linear',
+                  type: "linear",
                   x: 0,
                   y: 0,
                   x2: 0,
                   y2: 1,
                   //相邻每个板块 从上到下的颜色变化
-                  colorStops: [{
-                    offset: 0.2, color: 'rgb(0,48,62)' // 0% 处的颜色
-                  }, {
-                    offset: 0.8, color: 'rgba(0,179,188,0.8)' // 100% 处的颜色
-                  }],
+                  colorStops: [
+                    {
+                      offset: 0.2,
+                      color: "rgb(0,48,62)" // 0% 处的颜色
+                    },
+                    {
+                      offset: 0.8,
+                      color: "rgba(0,179,188,0.8)" // 100% 处的颜色
+                    }
+                  ],
                   global: false // 缺省为 false
-                },
+                }
               }
             }
           }
         ]
       }
-
-    }
+    };
   },
-  mounted () {
-    this.earth()
+  mounted() {
+    this.earth();
   },
   methods: {
-    earth () {
-      this.mapChart = this.$echarts.init(document.createElement('canvas'), null, {
-        width: 3086,
-        height: 3048
-      });
+    earth() {
+      this.mapChart = this.$echarts.init(
+        document.createElement("canvas"),
+        null,
+        {
+          width: 3086,
+          height: 3048
+        }
+      );
       //获取容器并对其初始化
-      this.myChart = this.$echarts.init(document.getElementById('earth'))
+      this.myChart = this.$echarts.init(document.getElementById("earth"));
 
       //将平面地球和立体球形的纹路重叠
-      this.mapChart.setOption(this.mapOption)
+      this.mapChart.setOption(this.mapOption);
       // this.option.globe.baseTexture = this.mapChart
 
       //随机划多条线
       for (let i = 0; i < 10; i++) {
-        this.option.series[0].data = this.option.series[0].data.concat(this.rodamData())
+        this.option.series[0].data = this.option.series[0].data.concat(
+          this.rodamData()
+        );
       }
 
       this.myChart.setOption(this.option);
@@ -242,24 +249,24 @@ export default {
     },
 
     //调用划线方法
-    rodamData () {
+    rodamData() {
       //let name = '随机点' + Math.random().toFixed(5) * 100000
       // let longitude = Math.random() * 62 + 73
-      let longitude = 105.18
-      let longitude2 = Math.random() * 360 - 180
+      let longitude = 105.18;
+      let longitude2 = Math.random() * 360 - 180;
       // let latitude = Math.random() * 50 + 3.52
-      let latitude = 37.51
-      let latitude2 = Math.random() * 180 - 90
+      let latitude = 37.51;
+      let latitude2 = Math.random() * 180 - 90;
       return {
         coords: [
           [longitude2, latitude2],
           [longitude, latitude]
         ],
         value: (Math.random() * 3000).toFixed(2)
-      }
+      };
     },
     // ...mapMutations(['login']),
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           const params = {
@@ -292,23 +299,21 @@ export default {
         }
       });
     },
-    resetForm (formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields();
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-
 .earth1 {
-
-   width: 8.5rem;
-   height: 8.5rem;
+  width: 8.5rem;
+  height: 8.5rem;
   //  position: relative;
   //   transform:translate(-50%,-50%) ;
   //  margin-top: 50%;
   // background: pink;
-    .earth2{
+  .earth2 {
     //   position: relative;
     //   width:7.5rem;
     //   height: 7.5rem;
@@ -319,7 +324,7 @@ export default {
     //  background: url('../assets/images/earth.png') no-repeat ;
     //  background-size: 100%;
     //  margin: auto;
-    }
+  }
   .line {
     position: absolute;
     right: 0.125rem;
@@ -350,20 +355,17 @@ export default {
   }
 }
 
-
 @keyframes myfirst {
   0% {
-   transform: rotate(0deg) ;
-   
+    transform: rotate(0deg);
   }
   100% {
-   transform: rotate(360deg) ;
-   
+    transform: rotate(360deg);
   }
 }
 // @-webkit-keyframes myfirst {
 //   0% {
-    
+
 //     transform: rotate(0deg);
 //   }
 //   100% {

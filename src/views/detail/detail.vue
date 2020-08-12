@@ -200,8 +200,8 @@ export default {
   },
   computed: {
     alarmCount1: () => {
-      var count = 0;
-
+      // var count = 0;
+      // this.machineList;
       return this.machineList.trim().toLowerCase();
     }
   },

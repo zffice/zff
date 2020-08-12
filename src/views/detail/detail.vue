@@ -180,7 +180,8 @@ export default {
 
       dialogVisible: false,
       content: "",
-      machineList: []
+      machineList: [],
+      alarmCount: 0
     };
   },
   created() {
@@ -192,11 +193,27 @@ export default {
     this.product();
     this.goShopList();
   },
+  watch: {
+    alarmCount() {
+      this.goShopList();
+    }
+  },
+  computed: {
+    alarmCount1: () => {
+      var count = 0;
+
+      return this.machineList.trim().toLowerCase();
+    }
+  },
   methods: {
+    showAlarm() {
+      this.dialogVisible = true;
+    },
     goShopList() {
-      this.$emit("getShopCode", 10);
+      this.$emit("getShopCode", this.alarmCount);
       // this.router.push("/");
     },
+
     findMachineByWsId() {
       const params = {
         wsId: 1
@@ -232,12 +249,14 @@ export default {
           //消息事件
           this.socket[wsobj].onmessage = msg => {
             this.machineList.forEach(item => {
+              this.alarmCount = 0;
               if (item.dpu_code == dpuCode) {
                 item.today_rtime = item.today_rtime + 20;
                 item.today_production =
                   item.today_production + JSON.parse(msg.data).data.production;
                 item.status = JSON.parse(msg.data).data.status;
                 if (JSON.parse(msg.data).data.status == "3") {
+                  this.alarmCount = JSON.parse(msg.data).data.alarming.length;
                   item.today_alarm_num =
                     item.today_alarm_num +
                     JSON.parse(msg.data).data.alarming.length;
@@ -272,6 +291,8 @@ export default {
               });
             }
             if (JSON.parse(msg.data).data.status == "3") {
+              this.alarmCount =
+                this.alarmCount + JSON.parse(msg.data).data.alarming.length;
               this.content =
                 this.content +
                 "\n" +

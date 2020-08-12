@@ -59,8 +59,8 @@
 
 <script>
 import API from "@/api/user";
-import { mapMutations } from "vuex";
-import axios from "axios";
+// import { mapMutations } from "vuex";
+// import axios from "axios";
 export default {
   data() {
     return {

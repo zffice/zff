@@ -4,8 +4,8 @@
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
       <div id="company">
-        <div class="warm" v-if="routeName === 'detail'">
-          <el-badge :value="7" :max="99" class="item">
+        <div class="warm" v-if="routeName === 'detail'" @click="handleClick">
+          <el-badge :value="alarmCount" :max="99" class="item">
             <img src="../../assets/images/warm.png" alt="预警数" />
           </el-badge>
         </div>
@@ -33,7 +33,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>-->
-    <router-view @getShopCode="getShopCode" />
+    <router-view @getShopCode="getShopCode" ref="child" />
     <!-- <transition>
       <router-view></router-view>
     </transition> -->
@@ -44,7 +44,8 @@
 export default {
   data() {
     return {
-      routeName: ""
+      routeName: "",
+      alarmCount: 0
     };
   },
   // 监听,当路由发生变化的时候执行
@@ -58,8 +59,11 @@ export default {
     this.getRouteInfo();
   },
   methods: {
+    handleClick() {
+      this.$refs.child.showAlarm();
+    },
     getShopCode(value) {
-      console.log(value);
+      this.alarmCount = value;
     },
     getRouteInfo() {
       this.routeName = this.$route.name;
@@ -120,6 +124,7 @@ export default {
       text-align: center;
       color: #15a0db;
       .warm {
+        cursor: pointer;
         width: 20%;
         height: 90%;
         float: left;
@@ -127,10 +132,12 @@ export default {
           margin-top: 5px;
         }
         img {
+          margin-top: 5px;
           width: 60%;
         }
       }
       .loginUser {
+        cursor: pointer;
         width: 38%;
         height: 90%;
         margin-left: 10%;
@@ -148,6 +155,7 @@ export default {
         }
       }
       .logoutUser {
+        cursor: pointer;
         width: 20%;
         height: 90%;
         margin-top: 3px;
@@ -156,6 +164,13 @@ export default {
           margin-top: 3px;
           width: 50%;
         }
+      }
+      .back {
+        img {
+          margin-top: 0.1rem;
+          width: 10%;
+        }
+        cursor: pointer;
       }
     }
     #date {

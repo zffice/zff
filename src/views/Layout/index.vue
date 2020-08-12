@@ -4,7 +4,7 @@
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
       <div id="company">
-        <div class="warm">
+        <div class="warm" v-if="routeName === 'detail'">
           <el-badge :value="7" :max="99" class="item">
             <img src="../../assets/images/warm.png" alt="预警数" />
           </el-badge>
@@ -20,9 +20,8 @@
             @click="loginout"
           />
         </div>
-        <div class="back">
+        <div class="back" v-if="routeName === 'detail'">
           <img
-            v-if="routeName === 'detail'"
             src="../../assets/images/back.png"
             alt="返回上一屏"
             @click="backCompany"
@@ -34,7 +33,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>-->
-    <router-view />
+    <router-view @getShopCode="getShopCode" />
     <!-- <transition>
       <router-view></router-view>
     </transition> -->
@@ -59,6 +58,9 @@ export default {
     this.getRouteInfo();
   },
   methods: {
+    getShopCode(value) {
+      console.log(value);
+    },
     getRouteInfo() {
       this.routeName = this.$route.name;
     },

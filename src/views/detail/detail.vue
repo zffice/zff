@@ -190,8 +190,13 @@ export default {
   mounted() {
     require("../../assets/js/common.js");
     this.product();
+    this.goShopList();
   },
   methods: {
+    goShopList() {
+      this.$emit("getShopCode", 10);
+      // this.router.push("/");
+    },
     findMachineByWsId() {
       const params = {
         wsId: 1

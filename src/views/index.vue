@@ -270,7 +270,7 @@
           <div class="slider2"></div>
         </div>
         <b class="line2"></b>
-      </div>-->
+      </div> -->
     </div>
   </div>
 </template>

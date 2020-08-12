@@ -118,7 +118,8 @@ export default {
       //
       chart: "",
       // 报警次数
-      alarmCount: 0
+      alarmCount: 0,
+      comId: ""
     };
   },
   created() {
@@ -136,8 +137,13 @@ export default {
     this.groupByDate();
     this.ThisTimeAlarmInfo();
     this.sumRtimeOfMachineTop();
+    this.getComId();
   },
   methods: {
+    //获取用户登录cId
+    getComId() {
+      this.comId = localStorage.getItem("comId");
+    },
     //change,play实现表格自动滚动
     change() {
       //把第一条数据插入数组最后一条
@@ -205,7 +211,7 @@ export default {
     outputOfMachineTop() {
       const params = {
         limit: 5,
-        cid: 1
+        cid: this.comId
       };
       API.outputOfMachineTop(params).then(res => {
         this.data5 = [];
@@ -257,7 +263,7 @@ export default {
     ThisTimeAlarmInfo() {
       const params = {
         limit: 7,
-        cId: 1
+        cId: this.comId
       };
       API.ThisTimeAlarmInfo(params).then(res => {
         this.alarmData = [];
@@ -283,7 +289,7 @@ export default {
     sumRtimeOfMachineTop() {
       const params = {
         limit: 7,
-        cId: 1
+        cId: this.comId
       };
       API.sumRtimeOfMachineTop(params).then(res => {
         // console.log(res)

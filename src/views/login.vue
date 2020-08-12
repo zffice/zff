@@ -279,7 +279,17 @@ export default {
               const token = res.info;
               localStorage.setItem("token", token);
               API.getUserInfo().then(res => {
-                console.log("用户信息", res);
+                console.log("getUserInfo", res);
+
+                const loginName = res.info.nickName;
+                localStorage.setItem("loginName", loginName);
+                //用户登录Id
+                if (res.info.com_id) {
+                  const comId = res.info.com_id;
+                  localStorage.setItem("comId", comId);
+                } else {
+                  localStorage.setItem("comId", 1);
+                }
                 if (res.info.type == 1) {
                   this.$router.push("/index");
                 } else {

@@ -11,7 +11,7 @@
         </div>
         <div class="loginUser">
           <img src="../../assets/images/loginUser.png" alt="用户信息" />
-          <span class="text">管理员</span>
+          <span class="text">{{ userName }}</span>
         </div>
         <div class="logoutUser">
           <img
@@ -45,7 +45,8 @@ export default {
   data() {
     return {
       routeName: "",
-      alarmCount: 0
+      alarmCount: 0,
+      userName: ""
     };
   },
   // 监听,当路由发生变化的时候执行
@@ -57,13 +58,19 @@ export default {
   created() {
     // 获取当前路由的信息
     this.getRouteInfo();
+    this.getComId();
   },
   methods: {
     handleClick() {
       this.$refs.child.showAlarm();
     },
     getShopCode(value) {
-      this.alarmCount = value;
+      this.alarmCount = value.count;
+    },
+    //获取用户登录cId
+    getComId() {
+      this.userName = localStorage.getItem("loginName");
+      console.log(this.userName);
     },
     getRouteInfo() {
       this.routeName = this.$route.name;

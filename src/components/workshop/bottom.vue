@@ -12,7 +12,6 @@
                 </div>
                 <div class="item_4">
                   <span class="title">车间名</span>
-
                   <br />
                   <h2 class="content">{{ workshopInfo.workshop_name }}</h2>
                 </div>
@@ -69,6 +68,11 @@ import API from "@/api/busin";
 // import echarts from "echarts";
 export default {
   name: "bottom",
+  props: {
+    workshop: {
+      type: Object
+    }
+  },
   data() {
     return {
       workshopInfo: {
@@ -81,13 +85,24 @@ export default {
       }
     };
   },
+  watch: {
+    workshop: {
+      handler: function(newvalue) {
+        // console.log(newvalue);
+        this.workshopInfo.alarmCount = newvalue.acount;
+        this.workshopInfo.runCount = newvalue.rcount;
+        this.workshopInfo.standbyCount = newvalue.standbycount;
+      },
+      deep: true
+    }
+  },
   mounted() {
     this.findMachineListByWsId();
   },
   methods: {
     findMachineListByWsId() {
       const params = {
-        wsId: 1
+        wsId: this.$route.query.id
       };
       API.findMachineListByWsId(params).then(res => {
         if (res.code == "200") {

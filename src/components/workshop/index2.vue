@@ -87,7 +87,7 @@
             </div>
             <div class="clear"></div>
           </div>
-          <div class="indicator">
+          <div class="indicator2">
             <div id="devicenum"></div>
           </div>
           <div class="p_title">摘要信息</div>
@@ -135,7 +135,8 @@ export default {
       //使用率/利用率
       userate: "",
       //作业数
-      run: ""
+      run: "",
+      comId: ""
     };
   },
   mounted() {
@@ -143,60 +144,11 @@ export default {
     this.statistics();
   },
   methods: {
-    // 查询企业内设备（车间名、设备数量、各状态设备数量【作业、待机、报警】）
-    findMachineListByExample() {
-      const params = {
-        limit: 5
-      };
-      API.findMachineListByExample(params).then(res => {
-        var acount = 0;
-        var ocount = 0;
-        var fcount = 0;
-        this.allDevice = res.info.length * res.info[0].List.length;
-        for (var i = 0; i < res.info[0].List.length; i++) {
-          if (res.info[0].List[i].status == "1") {
-            ocount++;
-          } else if (res.info[0].List[i].status == "2") {
-            acount++;
-          } else if (res.info[0].List[i].status == "0") {
-            fcount++;
-          }
-        }
-        for (var i = 0; i < res.info[1].List.length; i++) {
-          if (res.info[1].List[i].status == "1") {
-            ocount++;
-          } else if (res.info[1].List[i].status == "2") {
-            acount++;
-          } else if (res.info[1].List[i].status == "0") {
-            fcount++;
-          }
-        }
-        for (var i = 0; i < res.info[2].List.length; i++) {
-          if (res.info[2].List[i].status == "1") {
-            ocount++;
-          } else if (res.info[2].List[i].status == "2") {
-            acount++;
-          } else if (res.info[2].List[i].status == "0") {
-            fcount++;
-          }
-        }
-        for (var i = 0; i < res.info[3].List.length; i++) {
-          if (res.info[3].List[i].status == "1") {
-            ocount++;
-          } else if (res.info[3].List[i].status == "2") {
-            acount++;
-          } else if (res.info[3].List[i].status == "0") {
-            fcount++;
-          }
-        }
-        this.onDevice = ocount;
-        this.alarmDevice = acount;
-        this.offDevice = fcount;
-      });
-    },
     statistics() {
-      API.statistics().then(res => {
-        // console.log(res);
+      const params = {
+        cId: localStorage.getItem("comId")
+      };
+      API.statistics(params).then(res => {
         this.standby = res.info.standby;
         this.mcount = res.info.mcount;
         this.alarm = res.info.alarm;
@@ -216,7 +168,7 @@ export default {
     },
     findMachineListByCompany() {
       const params = {
-        cId: 1
+        cId: this.comId
       };
       API.findMachineListByCompany(params).then(res => {
         this.workshopList = res.info;
@@ -254,13 +206,20 @@ export default {
       alert(top_rel_to_parent + "," + left_rel_to_parent + ",");
     },
     detail(id) {
-      console.log(id);
-      // this.$router.push("/detail/detail");
-      this.$router.push("detail");
+      this.$router.push({ path: "detail", query: { id: id } });
     },
     chart9() {
       var myChart = echarts.init(document.getElementById("ybp"));
       var option = {
+        // title: {
+        //   // top: 5,
+        //   text: '公司分布',
+        //   subtext: '',
+        //   x: 'center',
+        //   textStyle: {
+        //     color: '#ccc',
+        //   },
+        // },
         tooltip: {},
         series: [
           {
@@ -395,11 +354,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -408,7 +367,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -809,11 +768,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -822,7 +781,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -980,11 +939,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -993,7 +952,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -1151,11 +1110,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -1164,7 +1123,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -1322,11 +1281,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -1335,7 +1294,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -1493,11 +1452,11 @@ export default {
             },
             title: {
               //标题
-              show: false,
+              show: true,
               offsetCenter: [0, "-26%"], // x, y，单位px
               textStyle: {
                 color: "#fff",
-                fontSize: 8 //表盘上的标题文字大小
+                fontSize: 11 //表盘上的标题文字大小
               }
             },
             //仪表盘详情，用于显示数据。
@@ -1506,7 +1465,7 @@ export default {
               offsetCenter: [0, "70%"],
               color: "#DFFFFF",
               formatter: function(params) {
-                return params + "%";
+                return params;
               },
               textStyle: {
                 fontSize: 10
@@ -1646,6 +1605,12 @@ li {
     margin: 0px 5px;
     display: flex;
   }
+  .indicator2 {
+    width: 18%;
+    height: 90%;
+    margin: 0px 5px;
+    display: flex;
+  }
   .sb {
     width: 90%;
     //  margin-top: 0.625rem;
@@ -1656,9 +1621,9 @@ li {
   .mid {
     align-items: center;
     flex-wrap: wrap;
-    width: 55% !important;
+    width: 59% !important;
     .mid_items {
-      width: 32%;
+      width: 33.33%;
       height: 50%;
       // margin: 0px 2px;
 

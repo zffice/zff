@@ -44,35 +44,62 @@
                 </el-tooltip>
                 <div class="imgdata" v-if="item.status == 1">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <p style="color:#fff">
-                    运行时长：{{ item.today_rtime }} 秒 转换成小时或者分钟<br />
-                    开机产量：{{ item.today_production }}<br />
-                    报警次数：{{ item.today_alarm_num }}<br />
-                  </p>
+                  <div>
+                    <div
+                      class="showinfo"
+                      style="border-right: 2px solid #2e7fc8;"
+                    >
+                      {{ (item.today_rtime / 60).toFixed(1) }}
+                      <span style="color:#476699;font-size:0.1rem">分钟</span
+                      ><br />
+                      <span style="color:#91ABC6;font-size:0.25rem"
+                        >运行时长</span
+                      >
+                    </div>
+                    <div
+                      class="showinfo"
+                      style="border-right: 2px solid #2e7fc8;"
+                    >
+                      {{ item.today_production }}
+                      <span style="color:#476699;font-size:0.1rem">件</span
+                      ><br />
+                      <span style="color:#91ABC6;font-size:0.25rem"
+                        >开机产量</span
+                      >
+                    </div>
+                    <div class="showinfo">
+                      {{ item.today_alarm_num }}
+                      <span style="color:#476699;font-size:0.1rem">次</span
+                      ><br />
+                      <span style="color:#91ABC6;font-size:0.25rem"
+                        >报警次数</span
+                      >
+                    </div>
+                  </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata" v-if="item.status == 2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <p style="color:#fff">
+                  <div style="color:#fff">
                     待机
-                  </p>
+                  </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata" v-if="item.status == 3">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <p style="color:red">
+                  <div style="color:red">
                     报警
-                  </p>
+                  </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata" v-if="item.status == 0">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <p style="color:orange">
+                  <div style="color:orange">
                     未开机
-                  </p>
+                  </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
@@ -92,8 +119,7 @@
           <!-- <div class="items">
             <div class="mask">设备三</div>
             <div class="item">
-              <img src="../../assets/images/sb.png"
-                   alt="" />
+              <img src="../../assets/images/sb.png" alt="" />
               <div class="imgdata2">
                 <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 <div class="item_1"></div>
@@ -110,7 +136,7 @@
           <div class="clear"></div>
         </div>
         <div class="bottom">
-          <bottom></bottom>
+          <bottom :workshop="alarmCount"></bottom>
         </div>
       </div>
       <div class="cloum">
@@ -146,7 +172,7 @@
       :show-close="true"
       :center="true"
     >
-      {{ content }}
+      {{ alarmCount.content }}
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
@@ -181,31 +207,72 @@ export default {
       dialogVisible: false,
       content: "",
       machineList: [],
-      alarmCount: 0
+      id: 1
     };
   },
   created() {
     //根据车间编号查询车间信息（车间名、dpuCode、状态）
     this.findMachineByWsId();
+    this.getWsId();
   },
   mounted() {
     require("../../assets/js/common.js");
+    // 获取url上的车间号
     this.product();
-    this.goShopList();
   },
   watch: {
-    alarmCount() {
-      this.goShopList();
+    machineList: {
+      handler: function() {
+        this.goShopList();
+      },
+      deep: true
     }
   },
   computed: {
-    alarmCount1: () => {
-      // var count = 0;
-      // this.machineList;
-      return this.machineList.trim().toLowerCase();
+    alarmCount: {
+      get() {
+        var statis = {};
+        var count = 0;
+        var rcount = 0;
+        var standbycount = 0;
+        var acount = 0;
+        var alarmInfoList = [];
+        this.machineList.forEach(item => {
+          if (item.acount !== undefined) {
+            count = item.acount + count;
+          }
+          if (item.content !== undefined) {
+            item.content.forEach(alarm => {
+              alarmInfoList.push({
+                wsname: item.workshop_name,
+                mname: item.machine_name,
+                info: alarm,
+                time: item.time
+              });
+            });
+          }
+          if (item.status == 1) {
+            rcount++;
+          }
+          if (item.status == 2) {
+            standbycount++;
+          }
+          if (item.status == 3) {
+            acount++;
+          }
+        });
+        statis.count = count;
+        statis.rcount = rcount;
+        statis.standbycount = standbycount;
+        statis.acount = acount;
+        statis.content = alarmInfoList;
+        return statis;
+      },
+      set: function() {}
     }
   },
   methods: {
+    getWsId() {},
     showAlarm() {
       this.dialogVisible = true;
     },
@@ -216,7 +283,7 @@ export default {
 
     findMachineByWsId() {
       const params = {
-        wsId: 1
+        wsId: this.$route.query.id
       };
       API.findMachineByWsId(params)
         .then(res => {
@@ -249,17 +316,20 @@ export default {
           //消息事件
           this.socket[wsobj].onmessage = msg => {
             this.machineList.forEach(item => {
-              this.alarmCount = 0;
               if (item.dpu_code == dpuCode) {
+                item.acount = 0;
                 item.today_rtime = item.today_rtime + 20;
                 item.today_production =
                   item.today_production + JSON.parse(msg.data).data.production;
                 item.status = JSON.parse(msg.data).data.status;
                 if (JSON.parse(msg.data).data.status == "3") {
-                  this.alarmCount = JSON.parse(msg.data).data.alarming.length;
+                  item.time = JSON.parse(msg.data).data.time;
+                  item.acount = JSON.parse(msg.data).data.alarming.length;
                   item.today_alarm_num =
                     item.today_alarm_num +
                     JSON.parse(msg.data).data.alarming.length;
+                  item.content = JSON.parse(msg.data).data.alarming;
+                  this.dialogVisible = true;
                 }
               }
             });
@@ -290,19 +360,6 @@ export default {
                 ]
               });
             }
-            if (JSON.parse(msg.data).data.status == "3") {
-              this.alarmCount =
-                this.alarmCount + JSON.parse(msg.data).data.alarming.length;
-              this.content =
-                this.content +
-                "\n" +
-                JSON.parse(msg.data).data.alarming[0] +
-                "-" +
-                JSON.parse(msg.data).machineInfo.machine_name +
-                ":" +
-                JSON.parse(msg.data).machineInfo.workshop_name;
-              this.dialogVisible = true;
-            }
           };
           //关闭事件
           this.socket[wsobj].onclose = () => {
@@ -329,7 +386,6 @@ export default {
         console.log("开启连接");
       };
       self.queueReceiveSetting.websock.onmessage = msg => {
-        console.log(JSON.parse(msg.data));
         if (JSON.parse(msg.data).data.status == "1") {
           self.productDate.xData.shift();
           self.productDate.xData.push(JSON.parse(msg.data).data.time);
@@ -1290,6 +1346,16 @@ border-top-color: blue ;
               .item_2 {
                 width: 100%;
                 height: 94%;
+              }
+              .showinfo {
+                width: 28%;
+                float: left;
+                font-family: "electronicFont";
+                font-size: 0.4rem;
+                text-align: center;
+                padding: 0.1rem;
+                margin: 0.2rem 0;
+                color: #00ffff;
               }
             }
             .imgdata3 {

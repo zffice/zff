@@ -53,23 +53,23 @@ body {
 .date-timer {
   text-align: center;
   position: absolute;
-  left: 146px;
-  top: 82px;
+  left: 9%;
+  top: 11%;
 }
 .date-timer strong {
   display: inline-block;
   font-family: 'electronicFont';
-  font-size: 36px;
-  padding-bottom: 7px;
-  margin-top: -3px;
+  font-size: 0.65rem;
+  padding-bottom: 10%;
+  margin-top: -1%;
 }
 .date-timer em {
   display: block;
 }
 .date-timer ul {
   font-family: 'electronicFont';
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 0.25rem;
+  margin-top: 1%;
 }
 .date-timer ul li {
   display: inline-block;
@@ -78,66 +78,66 @@ body {
 /* 系统LOGO - 主LOGO - 副LOGO - 动画 */
 h1 {
   font-family: 'microsoft yahei';
-  font-size: 20px;
+  font-size: 0.4rem;
   text-align: center;
-  padding: 12px 0 16px 0;
+  padding: 1% 0 1% 0;
   display: block;
   background: url('../images/bg01top.png') center bottom no-repeat;
 }
 h2 {
-  font-size: 24px;
+  font-size: 0.45rem;
   font-weight: normal;
   position: absolute;
-  left: 34px;
-  top: 81px;
-  padding-bottom: 20px;
+  left: 2%;
+  top: 11%;
+  padding-bottom: 1%;
 }
 h2 sub {
   position: absolute;
   left: 0;
   bottom: 0;
   display: block;
-  width: 92px;
-  height: 8px;
+  width: 100%;
+  height: 15%;
   background: url('../images/logofont.png') 50% 50% no-repeat;
   text-indent: -500px;
 }
 .logoline {
   position: absolute;
   left: 0;
-  top: 35px;
-  width: 206px;
-  height: 2px;
+  top: 70%;
+  width: 220%;
+  height: 5%;
   background: url('../images/logoline.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline1 {
   position: absolute;
   z-index: 3;
-  left: -30px;
-  top: -34px;
-  width: 41px;
-  height: 29px;
+  left: -30%;
+  top: -70%;
+  width: 40%;
+  height: 80%;
   background: url('../images/logoline1.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline2 {
   position: absolute;
   z-index: 3;
-  left: 55px;
-  top: 58px;
-  width: 152px;
-  height: 26px;
+  left: 50%;
+  top: 120%;
+  width: 160%;
+  height: 60%;
   background: url('../images/logoline2.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline3 {
   position: absolute;
   z-index: -1;
-  left: -10px;
-  top: -41px;
-  width: 121px;
-  height: 121px;
+  left: -10%;
+  top: -10%;
+  width: 120%;
+  height: 120%;
   background: url('../images/logoline3.png') 50% 50% no-repeat;
   display: block;
 }
@@ -164,7 +164,7 @@ h2 strong {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  width: 75px;
+  width: 90px;
   height: 44px;
   padding: 10px 0 0 30px;
   background: url(../images/bg01bigindex.png) 0 0 no-repeat;
@@ -1139,14 +1139,25 @@ h2 {
   color: #ff3114;
 }
 .pandect-area-center {
+  width: 100%;
+  height: 100%;
   margin-top: 20px;
   overflow: hidden;
   display: block;
 }
 .pandect-area-center #map {
-  width: 100%;
-  height: 500px;
-  top: 0%;
+  float: left;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.pandect-area-center #rank {
+  float: left;
+  width: 40%;
+  height: 60%;
+  top: 0;
+  right: 0;
 }
 .details1-area {
   position: absolute;

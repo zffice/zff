@@ -19,15 +19,16 @@ const routes = [
     component: login,
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home,
-  },
-  {
     path: '/index',
     name: 'index',
     component: Index,
   },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+  },
+  
   {
     path: '/detail',
     name: 'detail',
@@ -40,7 +41,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../components/workshop/index.vue'),
+      import(/* webpackChunkName: "about" */ '../components/workshop/index2.vue'),
   },
 ]
 

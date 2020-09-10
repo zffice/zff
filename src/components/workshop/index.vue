@@ -83,25 +83,7 @@ export default {
       // this.$router.push("/detail/detail");
       this.$router.push('detail')
     },
-    // 查询企业内设备（车间名、设备数量、各状态设备数量【作业、待机、报警】）
-    findMachineListByExample() {
-      const params = {
-        limit: 5,
-      }
-      API.findMachineListByExample(params).then((res) => {
-        console.log(res)
-        for (var j = 0; j < res.info[0].List.length; j++) {
-          this.children1.push({
-            name: res.info[0].List[j].machineName,
-            type: res.info[0].List[j].status,
-          })
-        }
-        for (var i = 0; i < res.info.length; i++) {
-          this.workshopName.push(res.info[i].workshopName)
-        }
-        // console.log(this.children1)
-      })
-    },
+
     demo() {
       this.machineData = [
         {
@@ -616,7 +598,7 @@ li {
     align-items: center;
     height: 70%;
     // border: 1px solid red;
-    
+
     .title {
       color: #fff;
       text-align: center;

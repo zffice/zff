@@ -4,8 +4,8 @@
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
       <div id="company">
-        <!-- <dv-decoration-6 style="width:300px;height:30px;" /> -->
-        <dv-decoration-3 style="width:250px;height:30px;" />
+        <!-- <dv-decoration-3 style="width:250px;height:30px;" /> -->
+        <el-button class="btn" round @click="backCompany">返回公司</el-button>
       </div>
     </header>
     <section class="section">
@@ -501,7 +501,6 @@ export default {
         // }, 20000);
       }
     },
-
     machine() {
       let chart = document.getElementById("product");
       let myChart = echarts.init(chart);
@@ -1047,6 +1046,9 @@ export default {
       window.addEventListener("resize", function() {
         myChart.resize();
       });
+    },
+    backCompany() {
+      this.$router.push("/home");
     }
   }
 };
@@ -1155,17 +1157,25 @@ border-top-color: blue ;
     #company {
       position: absolute;
       top: 0.27rem;
-      left: 0.375rem;
+      right: 0.375rem;
       font-size: 0.3rem;
       font-weight: 700;
       font-family: "electronicFont" !important;
       text-align: center;
+      height: 10%;
       color: #15a0db;
+      .btn {
+        font-size: 0.25rem;
+        background-color: royalblue;
+        color: seashell;
+        border: 0px;
+        // padding-top: 1%;
+      }
     }
     #date {
       position: absolute;
       top: 0.38rem;
-      right: 0.375rem;
+      left: 0.375rem;
       font-size: 0.45rem;
       font-family: "electronicFont" !important;
       text-align: center;
@@ -1189,8 +1199,7 @@ border-top-color: blue ;
       margin: 0.2rem;
       width: 18%;
       height: 90vh;
-      background: url("../../assets/images/nav_bg.png");
-      background-size: cover;
+      background: url("../../assets/images/nav_left.png") center no-repeat;
       display: flex;
       justify-content: right;
       align-items: center;
@@ -1201,6 +1210,7 @@ border-top-color: blue ;
     }
     .cloum:nth-child(3) {
       border-radius: 50% 0 0 50%;
+      background: url("../../assets/images/nav_right.png") center no-repeat;
     }
     .cloum2 {
       float: left;

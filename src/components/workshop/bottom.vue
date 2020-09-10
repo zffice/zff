@@ -111,3 +111,8 @@ export default {
   }
 }
 </style>
+<style>
+.el-col-5 {
+  width: 20%;
+}
+</style>

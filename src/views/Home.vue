@@ -5,7 +5,7 @@
       <div id="date"></div>
       <div id="company">
         <div class="warm">
-          <el-badge :value="7" :max="99" class="item">
+          <el-badge :value="alarmCount" :max="99" class="item">
             <img src="../assets/images/warm.png" alt="" />
           </el-badge>
         </div>
@@ -134,7 +134,9 @@ export default {
       //
       alarmOption: {},
       //
-      chart: ""
+      chart: "",
+      // 报警次数
+      alarmCount: 0
     };
   },
   created() {
@@ -560,7 +562,7 @@ export default {
             end: 40,
             handleIcon:
               "path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z",
-            handleSize: "110%",
+            // handleSize: "110%",
             handleStyle: {
               color: "#d3dee5"
             },

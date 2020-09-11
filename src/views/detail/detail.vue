@@ -183,31 +183,30 @@ export default {
 
         try {
           //连接事件
-          this.socket[wsobj].onopen = function(msg) {
+          this.socket[wsobj].onopen = () => {
             // alert(wsobj+":连接已建立！");
           };
           //错误事件
-          this.socket[wsobj].onerror = function(msg) {
+          this.socket[wsobj].onerror = msg => {
             alert("错误：" + msg.data);
           };
 
           //消息事件
-          var self = this;
-          this.socket[wsobj].onmessage = function(msg) {
+          this.socket[wsobj].onmessage = msg => {
             if (JSON.parse(msg.data).data.status == "3") {
-              self.content =
-                self.content +
+              this.content =
+                this.content +
                 "\n" +
                 JSON.parse(msg.data).data.alarming[0] +
                 "-" +
                 JSON.parse(msg.data).machineInfo.machine_name +
                 ":" +
                 JSON.parse(msg.data).machineInfo.workshop_name;
-              self.dialogVisible = true;
+              this.dialogVisible = true;
             }
           };
           //关闭事件
-          this.socket[wsobj].onclose = function(msg) {
+          this.socket[wsobj].onclose = () => {
             alert(wsobj + ":socket closed!");
           };
         } catch (ex) {
@@ -227,10 +226,10 @@ export default {
       self.queueReceiveSetting.websock = new WebSocket(
         "ws://localhost:9531/ws/asset/" + dpuCode
       );
-      self.queueReceiveSetting.websock.onopen = function(res) {
+      self.queueReceiveSetting.websock.onopen = () => {
         console.log("开启连接");
       };
-      self.queueReceiveSetting.websock.onmessage = function(msg) {
+      self.queueReceiveSetting.websock.onmessage = msg => {
         console.log(JSON.parse(msg.data));
         if (JSON.parse(msg.data).data.status == "1") {
           self.productDate.xData.shift();
@@ -258,10 +257,10 @@ export default {
           self.dialogVisible = true;
         }
       };
-      self.queueReceiveSetting.websock.onclose = function(res) {
+      self.queueReceiveSetting.websock.onclose = () => {
         console.log("连接关闭");
       };
-      self.queueReceiveSetting.websock.onerror = function(res) {
+      self.queueReceiveSetting.websock.onerror = () => {
         console.log("连接出错");
         // this.initWebSocket();
       };
@@ -280,38 +279,6 @@ export default {
         // 通过for循环，在相同class的dom内绘制元素
         this.productCharts = echarts.init(roseCharts[i]);
         const option = {
-          title: [
-            {
-              text: "无报警",
-              textStyle: {
-                fontWeight: "normal",
-                color: "red",
-                fontSize: 10
-              },
-              top: "2%",
-              left: "1%"
-            },
-            {
-              text: `2017082912`,
-              textStyle: {
-                fontWeight: "normal",
-                color: "blue",
-                fontSize: 10
-              },
-              top: "2%",
-              left: "center"
-            },
-            {
-              text: `000-072`,
-              textStyle: {
-                fontWeight: "normal",
-                color: "blue",
-                fontSize: 10
-              },
-              top: "2%",
-              right: "2"
-            }
-          ],
           tooltip: {
             trigger: "axis",
             axisPointer: {
@@ -388,8 +355,7 @@ export default {
                     global: false // 缺省为 false
                   }
                 }
-              },
-              boundaryGap: false
+              }
             }
           ],
           yAxis: [
@@ -628,7 +594,6 @@ export default {
       });
     },
     machine2() {
-      var value = 10;
       var option = {
         backgroundColor: "#000",
         xAxis: {

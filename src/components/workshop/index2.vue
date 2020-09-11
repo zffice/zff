@@ -123,7 +123,6 @@ export default {
         limit: 5
       };
       API.findMachineListByExample(params).then(res => {
-        var count = 0;
         var acount = 0;
         var ocount = 0;
         var fcount = 0;
@@ -182,7 +181,7 @@ export default {
       });
     },
     enter(i) {
-      this.workshopList.forEach((item, index, array) => {
+      this.workshopList.forEach((item, index, Array) => {
         if (item.ws_id == i) {
           this.content = {
             ws_name: item.workshop_name,

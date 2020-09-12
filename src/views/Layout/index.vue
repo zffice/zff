@@ -44,72 +44,72 @@
 export default {
   data() {
     return {
-      routeName: "",
+      routeName: '',
       alarmCount: 0,
-      userName: ""
-    };
+      userName: '',
+    }
   },
   // 监听,当路由发生变化的时候执行
   watch: {
     $route(to) {
-      this.routeName = to.name;
-    }
+      this.routeName = to.name
+    },
   },
   created() {
     // 获取当前路由的信息
-    this.getRouteInfo();
-    this.getComId();
+    this.getRouteInfo()
+    this.getComId()
   },
   methods: {
     handleClick() {
-      this.$refs.child.showAlarm();
+      this.$refs.child.showAlarm()
     },
     getShopCode(value) {
-      this.alarmCount = value.count;
+      this.alarmCount = value.count
     },
     //获取用户登录cId
     getComId() {
-      this.userName = localStorage.getItem("loginName");
-      console.log(this.userName);
+      this.userName = localStorage.getItem('loginName')
+      console.log(this.userName)
     },
     getRouteInfo() {
-      this.routeName = this.$route.name;
+      this.routeName = this.$route.name
     },
     backCompany() {
-      this.$router.push("/home");
+      this.$router.push('/home')
     },
     loginout() {
-      var self = this;
-      this.$confirm("您确定要退出吗？", "退出管理平台", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      var self = this
+      this.$confirm('您确定要退出吗？', '退出管理平台', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
       })
         .then(() => {
           const info = {
-            userkey: localStorage.getItem("token")
-          };
+            userkey: localStorage.getItem('token'),
+          }
           self.$store
-            .dispatch("LogOut", info)
+            .dispatch('LogOut', info)
             .then(() => {
-              self.$router.push({ path: "/login" });
+              self.$router.push({ path: '/login' })
             })
-            .catch(() => {});
+            .catch(() => {})
         })
-        .catch(() => {});
-    }
-  }
-};
+        .catch(() => {})
+    },
+  },
+}
 </script>
 
 <style lang="scss">
 #app {
   width: 100%;
-  background: url("../../assets/beijing.png") rgba(42, 49, 127, 0.1) no-repeat;
+  background: url('../../assets/beijing.png') rgba(42, 49, 127, 0.1) no-repeat;
   height: 100vh;
   background-size: 100% 100%;
   background-blend-mode: multiply;
   .header {
-    background: url("~@/assets/title.png") no-repeat;
+    background: url('~@/assets/title.png') no-repeat;
     background-size: 100% 100%;
     color: #fff;
     font-size: 0.45rem;
@@ -121,13 +121,13 @@ export default {
       text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
     #company {
-      width: 15%;
+      width: 16%;
       height: 5%;
       position: absolute;
       top: 0.38rem;
       right: 0.375rem;
       font-size: 0.45rem;
-      font-family: "electronicFont" !important;
+      font-family: 'electronicFont' !important;
       text-align: center;
       color: #15a0db;
       .warm {
@@ -156,9 +156,9 @@ export default {
           float: left;
         }
         .text {
-          font-size: 0.3rem;
+          font-size: 0.23rem;
           color: gainsboro;
-          font-family: "幼圆";
+          font-family: '幼圆';
         }
       }
       .logoutUser {
@@ -185,7 +185,7 @@ export default {
       top: 0.38rem;
       left: 0.375rem;
       font-size: 0.45rem;
-      font-family: "electronicFont" !important;
+      font-family: 'electronicFont' !important;
       text-align: center;
       color: #15a0db;
     }

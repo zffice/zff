@@ -81,24 +81,27 @@
                 </div>
                 <div class="imgdata" v-if="item.status == 2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div style="color:#fff">
-                    待机
+                  <div class="dev_info" style="color:#fff">
+                    <img src="../../assets/images/dev_await.png" alt="" />
+                    <span>待机</span>
                   </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata" v-if="item.status == 3">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div style="color:red">
-                    报警
+                  <div class="dev_info" style="color:red">
+                    <img src="../../assets/images/dev_warm.png" alt="" />
+                    <span>报警</span>
                   </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
                 </div>
                 <div class="imgdata" v-if="item.status == 0">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div style="color:orange">
-                    未开机
+                  <div class="dev_info" style="color:orange">
+                    <img src="../../assets/images/dev_off.png" alt="" />
+                    <span>未开机</span>
                   </div>
                   <!-- <div class="item_2" :id="'product' + item.dpu_code"></div> -->
                   <!-- <dv-decoration-10 style="width:100%;height:5px;margin:auto" /> -->
@@ -1381,6 +1384,16 @@ border-top-color: blue ;
                 padding: 0.1rem;
                 margin: 0.2rem 0;
                 color: #00ffff;
+              }
+              .dev_info {
+                width: 100%;
+                font-size: 0.35rem;
+                font-weight: 800;
+                margin-top: 3%;
+                img {
+                  width: 15%;
+                  margin-right: 3%;
+                }
               }
             }
             .imgdata3 {

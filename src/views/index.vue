@@ -33,42 +33,56 @@
             <b class="animation-2"></b>
             <b class="animation-3"></b>
             <p>总车间数</p>
-            <strong>1187</strong>
+            <strong>{{ wscount }}</strong>
           </li>
           <li>
             <b class="animation-1"></b>
             <b class="animation-2"></b>
             <b class="animation-3"></b>
-            <p>设备总数</p>
-            <strong>13977</strong>
+            <p>设备数</p>
+            <strong>{{ mcount }}</strong>
           </li>
           <li>
             <b class="animation-1"></b>
             <b class="animation-2"></b>
             <b class="animation-3"></b>
-            <p>设备作业总数</p>
-            <strong>13800</strong>
+            <p>停机数</p>
+            <strong>{{ down }}</strong>
           </li>
           <li>
             <b class="animation-1"></b>
             <b class="animation-2"></b>
             <b class="animation-3"></b>
-            <p>设备待机总数</p>
-            <strong>1500</strong>
+            <p>作业数</p>
+            <strong>{{ run }}</strong>
           </li>
           <li>
             <b class="animation-1"></b>
             <b class="animation-2"></b>
             <b class="animation-3"></b>
-            <p>设备报警总数</p>
-            <strong>50</strong>
+            <p>待机数</p>
+            <strong>{{ standby }}</strong>
           </li>
           <li>
             <b class="animation-1"></b>
             <b class="animation-2"></b>
             <b class="animation-3"></b>
-            <p>设备闲置总数</p>
-            <strong>3400</strong>
+            <p>报警数</p>
+            <strong>{{ alarm }}</strong>
+          </li>
+          <li>
+            <b class="animation-1"></b>
+            <b class="animation-2"></b>
+            <b class="animation-3"></b>
+            <p>开机产量</p>
+            <strong>{{ tp }}</strong>
+          </li>
+          <li>
+            <b class="animation-1"></b>
+            <b class="animation-2"></b>
+            <b class="animation-3"></b>
+            <p>总产量</p>
+            <strong>{{ sp }}</strong>
           </li>
         </ul>
       </div>
@@ -210,19 +224,19 @@
         </h3>
         <div class="area-inbox-1">
           <dl>
-            <dt>上月利用率</dt>
+            <dt>本次开机报警率</dt>
             <dd class="font12">
-              <span>76.525%</span>
+              <span>{{ talarmrate }}%</span>
               <b></b>
             </dd>
-            <dt class="ml-20">今日利用率</dt>
+            <dt class="ml-20">总报警率</dt>
             <dd class="font-red ml-20">
-              <span>74.113%</span>
+              <span>{{ salarmrate }}%</span>
               <b></b>
             </dd>
-            <dt>今日故障率</dt>
+            <dt>使用率/利用率</dt>
             <dd>
-              <span>8.113%</span>
+              <span>{{ userate }}%</span>
               <b></b>
             </dd>
           </dl>
@@ -269,17 +283,34 @@
 </template>
 
 <script>
+import API from '@/api/busin'
 import echarts from 'echarts'
 export default {
   name: 'index',
   data() {
     return {
-      companyscount: '',
-      shopcount: '',
-      onlinecount: '',
-      offlinecount: '',
-      faultcount: '',
-      freecount: '',
+      //本次开机报警率
+      talarmrate: '',
+      //待机数
+      standby: '',
+      //设备数
+      mcount: '',
+      //车间数
+      wscount: '',
+      //报警数
+      alarm: '',
+      //总报警率
+      salarmrate: '',
+      //本次开机产量
+      tp: '',
+      //停机数
+      down: '',
+      //总产量
+      sp: '',
+      //使用率/利用率
+      userate: '',
+      //作业数
+      run: '',
       //公司经纬度
       comlocation: [],
       //车间机床数
@@ -302,6 +333,7 @@ export default {
     //车间柱状图
     this.comshop()
     // this.comData()
+    this.statistics()
   },
   methods: {
     fontstyle() {
@@ -420,10 +452,8 @@ export default {
       var self = this
       $.getJSON('json/china.json', function(geoJson) {
         echarts.registerMap('china', geoJson)
-        // myChart.hideLoading();
-        var mapDate = self.comlocation
+        var mapDate = [{ name: '苏州砺行', value: [120.62, 31.32] }]
         var option = {
-          // backgroundColor: "#020933",
           title: {
             top: 5,
             text: '公司分布',
@@ -517,6 +547,11 @@ export default {
             },
           ],
         }
+        myChart.on('click', function(cid) {
+          console.log(cid)
+          // window.location.href = '@/views/Home'
+          self.home()
+        })
         myChart.setOption(option)
       })
     },
@@ -807,6 +842,25 @@ export default {
         }
         self.mapinit()
         // console.log(self.comlocation);
+      })
+    },
+    home() {
+      this.$router.push('/home')
+    },
+    statistics() {
+      API.statistics().then((res) => {
+        console.log(res)
+        this.mcount = res.info.mcount
+        this.wscount = res.info.wscount
+        this.alarm = res.info.alarm
+        this.run = res.info.run
+        this.standby = res.info.standby
+        this.talarmrate = res.info.talarmrate
+        this.salarmrate = res.info.salarmrate
+        this.tp = res.info.tp
+        this.down = res.info.down
+        this.sp = res.info.sp
+        this.userate = res.info.userate
       })
     },
   },

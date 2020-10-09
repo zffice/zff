@@ -23,7 +23,18 @@
         </div>
         <div class="items2">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_04"></div>
+          <div class="item" id="box_04">
+            <el-table
+              :data="tableData"
+              :row-style="{ height: '0.1rem' }"
+              :cell-style="{ padding: '0px' }"
+            >
+              <el-table-column prop="name" label="车间名"> </el-table-column>
+              <el-table-column prop="type" label="设备名"> </el-table-column>
+              <el-table-column prop="num" label="报警信息"> </el-table-column>
+              <el-table-column prop="status" label="处理状态"></el-table-column>
+            </el-table>
+          </div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
       </div>
@@ -75,27 +86,71 @@ export default {
   data() {
     return {
       //图一横坐标
-      date1: [],
+      Xaxis1: [],
       //图一数据
       data1: [],
+
       //图二横坐标
-      date2: [],
+      Xaxis2: [],
       //图二数据
       data2: [],
+
       //图三数据
       data3: [],
+      devsum: [],
+      Xaxis3: [],
+
       //图五数据
-      date5: [],
+      Xaxis5: [],
       //图五数据
       data5: [],
       sumpro: [],
+      tableData: [
+        {
+          name: '2222',
+          type: 'test',
+          num: '12',
+          status: '0',
+        },
+        {
+          name: '2342',
+          type: 'test',
+          num: '12',
+          status: '1',
+        },
+        {
+          name: '2552',
+          type: 'test',
+          num: '12',
+          status: '0',
+        },
+        {
+          name: '7787',
+          type: 'test',
+          num: '12',
+          status: '1',
+        },
+        {
+          name: '657',
+          type: 'test',
+          num: '12',
+          status: '1',
+        },
+        {
+          name: '2222',
+          type: 'test',
+          num: '12',
+          status: '0',
+        },
+      ],
     }
+  },
+  created() {
+    //表格自动滚动
+    this.play()
   },
   mounted() {
     require('../assets/js/common.js')
-    this.chart3()
-    this.chart4()
-    this.chart5()
     this.chart6()
     this.chart8()
     this.alarmGroupMonth()
@@ -103,41 +158,55 @@ export default {
     this.alarmTypeTop()
     this.findMachineListByExample()
     this.outputOfMachineTop()
-    // this.statistics()
   },
   methods: {
+    //change,play实现表格自动滚动
+    change() {
+      //把第一条数据插入数组最后一条
+      this.tableData.push(this.tableData[0])
+      //删除数组中第一条数据
+      this.tableData.shift()
+    },
+    play() {
+      //每两秒执行一次插入删除操作
+      setInterval(this.change, 1000)
+    },
     // 月报警趋势
     alarmGroupMonth() {
       API.alarmGroupMonth().then((res) => {
         // console.log(res)
-        this.date1 = []
+        this.Xaxis1 = []
         this.data1 = []
         for (var i = 0; i < res.info.length; i++) {
-          this.date1.push(res.info[i].date)
+          this.Xaxis1.push(res.info[i].date)
           this.data1.push(res.info[i].count)
         }
-        this.chart1()
+        this.chart3()
         // console.log(this.data1)
       })
     },
     // 设备报警排名
-    async alarmOfMachineTop() {
+    alarmOfMachineTop() {
       const params = {
         limit: 5,
       }
-      await API.alarmOfMachineTop(params).then((res) => {
-        // console.log(res)
-        this.data3 = []
+      API.alarmOfMachineTop(params).then((res) => {
+        console.log(res)
+        var list = []
+        this.Xaxis3 = []
+        this.devsum = []
         for (var i = 0; i < res.info.length; i++) {
-          this.data3.push([
-            {
-              name: res.info[i].workshop_name,
-              value: res.info[i].machine_name,
-            },
-          ])
+          list.push({
+            name: res.info[i].workshop_name,
+            value: res.info[i].machine_name,
+          })
+          this.devsum.push(res.info[i].sum_alarm_num)
+          this.Xaxis3.push(res.info[i].machine_name)
         }
-        // console.log(this.data3)
+        this.data3 = list
+        // console.log(list)
         this.chart7()
+        this.chart1()
       })
     },
     // 设备报警类型排名
@@ -147,10 +216,10 @@ export default {
       }
       API.alarmTypeTop(params).then((res) => {
         // console.log(res)
-        this.date2 = []
+        this.Xaxis2 = []
         this.data2 = []
         for (var i = 0; i < res.info.length; i++) {
-          this.date2.push(res.info[i].info)
+          this.Xaxis2.push(res.info[i].info)
           this.data2.push(res.info[i].count)
         }
         this.chart2()
@@ -162,7 +231,7 @@ export default {
         limit: 5,
       }
       API.findMachineListByExample(params).then((res) => {
-        console.log(res)
+        // console.log(res)
       })
     },
     // 各设备产量排名【limit true，cId false】
@@ -173,25 +242,24 @@ export default {
       API.outputOfMachineTop(params).then((res) => {
         console.log(res)
         this.data5 = []
-        this.date5 = []
+        this.Xaxis5 = []
         this.sumpro = []
+        var list = []
         for (var i = 0; i < res.info.length; i++) {
-          this.date5.push(res.info[i].machine_name)
-          this.data5.push(res.info[i].passrate)
+          this.Xaxis5.push(res.info[i].machine_name)
+          this.data5.push(
+            Math.floor(
+              (res.info[i].passrate / 100) * res.info[i].sum_production
+            )
+          )
           this.sumpro.push(res.info[i].sum_production)
         }
         this.chart5()
-        console.log(this.date5)
+        // console.log(this.Xaxis5)
+        // console.log(this.data5)
+        // console.log(this.sumpro)
       })
     },
-    // statistics() {
-    //   const params = {
-    //     limit: 5,
-    //   }
-    //   API.statistics(params).then((res) => {
-    //     console.log(res)
-    //   })
-    // },
     chart1() {
       var myChart = echarts.init(document.getElementById('box_01'))
       var option = {
@@ -212,8 +280,8 @@ export default {
         legend: {
           // data: ['1', '2'],
           data: ['设备总数'],
-          right: 10,
-          top: 12,
+          right: 0,
+          top: 0,
           textStyle: {
             color: '#fff',
           },
@@ -223,7 +291,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: this.date1,
+          data: this.Xaxis3,
           axisLine: {
             show: false,
             lineStyle: {
@@ -266,7 +334,7 @@ export default {
             xAxisIndex: [0],
             bottom: '8%',
             start: 10,
-            end: 100,
+            end: 50,
             handleIcon:
               'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
             handleSize: '110%',
@@ -306,7 +374,7 @@ export default {
                 barBorderRadius: 5,
               },
             },
-            data: this.data1,
+            data: this.devsum,
           },
           // {
           //   name: '2',
@@ -377,7 +445,7 @@ export default {
       }
 
       var attackSourcesData = this.data2
-      var attackSourcesName = this.date2
+      var attackSourcesName = this.Xaxis2
       var attackSourcesColor = [
         '#f36c6c',
         '#e6cf4e',
@@ -616,7 +684,7 @@ export default {
     },
     chart3() {
       const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF']
-      const xData = ['北京', '上海', '广州', '深圳', '香港', '澳门', '台湾']
+      const xData = this.Xaxis1
       const option = {
         legend: {
           icon: 'circle',
@@ -702,7 +770,7 @@ export default {
                 },
               },
             },
-            boundaryGap: false,
+            boundaryGap: true,
           },
         ],
         yAxis: [
@@ -728,42 +796,42 @@ export default {
           },
         ],
         series: [
+          // {
+          //   name: 'Adidas',
+          //   type: 'line',
+          //   data: [10, 10, 30, 12, 15, 3, 7],
+          //   symbolSize: 1,
+          //   symbol: 'circle',
+          //   smooth: true,
+          //   yAxisIndex: 0,
+          //   showSymbol: false,
+          //   lineStyle: {
+          //     width: 2,
+          //     color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+          //       {
+          //         offset: 0,
+          //         color: '#9effff',
+          //       },
+          //       {
+          //         offset: 1,
+          //         color: '#9E87FF',
+          //       },
+          //     ]),
+          //     shadowColor: 'rgba(158,135,255, 0.3)',
+          //     shadowBlur: 10,
+          //     shadowOffsetY: 20,
+          //   },
+          //   itemStyle: {
+          //     normal: {
+          //       color: colorList[0],
+          //       borderColor: colorList[0],
+          //     },
+          //   },
+          // },
           {
-            name: 'Adidas',
+            name: '报警率',
             type: 'line',
-            data: [10, 10, 30, 12, 15, 3, 7],
-            symbolSize: 1,
-            symbol: 'circle',
-            smooth: true,
-            yAxisIndex: 0,
-            showSymbol: false,
-            lineStyle: {
-              width: 2,
-              color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#9effff',
-                },
-                {
-                  offset: 1,
-                  color: '#9E87FF',
-                },
-              ]),
-              shadowColor: 'rgba(158,135,255, 0.3)',
-              shadowBlur: 10,
-              shadowOffsetY: 20,
-            },
-            itemStyle: {
-              normal: {
-                color: colorList[0],
-                borderColor: colorList[0],
-              },
-            },
-          },
-          {
-            name: 'Nike',
-            type: 'line',
-            data: [5, 12, 11, 14, 25, 16, 10],
+            data: this.data1,
             symbolSize: 1,
             symbol: 'circle',
             smooth: true,
@@ -934,15 +1002,8 @@ export default {
     },
     chart5() {
       var myChart = echarts.init(document.getElementById('box_05'))
-      var xData2 = [
-        '容城谷庄',
-        '雄县七间房',
-        '安新三台',
-        '雄县张岗',
-        '安新寨里',
-      ]
-      var data1 = [200, 100, 200, 200, 100]
-      var data2 = [300, 200, 300, 300, 400]
+      var data1 = this.data5
+      var data2 = this.sumpro
       var option = {
         tooltip: {
           trigger: 'item',
@@ -955,7 +1016,7 @@ export default {
           containLabel: true,
         },
         xAxis: {
-          data: xData2,
+          data: this.Xaxis5,
           axisTick: {
             show: false,
           },
@@ -999,8 +1060,9 @@ export default {
             itemStyle: {
               opacity: 1,
               color: function(params) {
-                var a = params.name.slice(0, 2)
-                if (a === '容城') {
+                // console.log(params)
+                var a = params.name
+                if (a === '生产设备02' || a === '生产设备01') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1018,7 +1080,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '雄县' || a === '雄州') {
+                } else if (a === '生产设备03') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1036,7 +1098,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '安新') {
+                } else if (a === '生产设备04') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1069,8 +1131,8 @@ export default {
               //lenged文本
               opacity: 0.7,
               color: function(params) {
-                var a = params.name.slice(0, 2)
-                if (a === '容城') {
+                var a = params.name
+                if (a === '生产设备02' || a === '生产设备01') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1088,7 +1150,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '雄县' || a === '雄州') {
+                } else if (a === '生产设备03') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1106,7 +1168,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '安新') {
+                } else if (a === '生产设备04') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1165,8 +1227,8 @@ export default {
             itemStyle: {
               opacity: 1,
               color: function(params) {
-                var a = params.name.slice(0, 2)
-                if (a === '容城') {
+                var a = params.name
+                if (a === '生产设备02' || a === '生产设备01') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1184,7 +1246,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '雄县' || a === '雄州') {
+                } else if (a === '生产设备03') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1202,7 +1264,7 @@ export default {
                     ],
                     false
                   )
-                } else if (a === '安新') {
+                } else if (a === '生产设备04') {
                   return new echarts.graphic.LinearGradient(
                     0,
                     0,
@@ -1227,7 +1289,7 @@ export default {
             data: data1,
           },
           {
-            name: '2019',
+            name: '设备产量',
             type: 'bar',
             barWidth: 25,
             barGap: '-100%',
@@ -1555,8 +1617,8 @@ export default {
         },
       ]
       var datas = []
-      for (var i = 0; i < plantCap.length; i++) {
-        var item = plantCap[i]
+      for (var i = 0; i < this.data3.length; i++) {
+        var item = this.data3[i]
         var itemToStyle = datalist[i]
         datas.push({
           name: item.name + '\n' + item.value,
@@ -1727,6 +1789,67 @@ export default {
   },
 }
 </script>
+<style>
+.el-table {
+  height: 100%;
+  width: 96% !important;
+  background-color: transparent !important;
+  color: #00d4c7 !important;
+  font-size: 0.3rem !important;
+  margin: 2% 2%;
+}
+
+.el-table thead {
+  color: #ffffff !important;
+  background-color: #1b3565;
+}
+/* 设置table header的背景颜色 */
+.el-table th,
+.el-table tr,
+.el-table td {
+  background-color: transparent !important;
+  padding: 2% 0 !important;
+  text-align: center !important;
+}
+.el-table td,
+.el-table th.is-leaf {
+  border-bottom: 0px solid #05a4b8 !important;
+}
+
+.el-table--border,
+.el-table--group {
+  border: 1px solid #05a4b8 !important;
+}
+.el-table::after {
+  width: 0% !important;
+  height: 0% !important;
+}
+.el-table::before {
+  width: 0% !important;
+  height: 0% !important;
+}
+.el-table .cell {
+  line-height: 100% !important;
+  padding-left: 0 !important;
+}
+.item .el-table th {
+  width: 20% !important;
+}
+element.style {
+  /* width: 400px; */
+}
+.el-table__header {
+  padding: 0;
+  height: 5%;
+}
+.el-table__body,
+.el-table__footer,
+.el-table__header {
+  table-layout: fixed;
+  border-collapse: separate;
+  width: auto !important;
+}
+</style>
 <style lang="scss" scoped>
 /*引用字库*/
 @font-face {

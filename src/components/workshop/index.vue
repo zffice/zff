@@ -38,10 +38,35 @@
           <div class="indicator">
             <img class="sb" src="../../assets/images/sb.png" alt="" />
           </div>
-          <div class="indicator mid">
-            <div class="mid_items" v-for="(i, index) in 6" :key="index">
+          <div class="in-mid">
+            <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
               <div class="mid_con" id="ybp"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp2"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp3"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp4"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp5"></div>
+              <img src="../../assets/images/line3.png" alt="" />
+            </div>
+            <div class="mid_items">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp6"></div>
               <img src="../../assets/images/line3.png" alt="" />
             </div>
           </div>
@@ -68,6 +93,11 @@ export default {
     this.demo()
     this.chart9()
     this.chart10()
+    this.chart11()
+    this.chart12()
+    this.chart13()
+    this.chart14()
+    this.chart15()
   },
   methods: {
     detail(id) {
@@ -313,12 +343,184 @@ export default {
         myChart.resize()
       })
     },
+    chart11() {
+      var myChart = echarts.init(document.getElementById('ybp2'))
+      var option = {
+        series: [
+          {
+            center: ['50%', '50%'], //仪表的位置
+            name: '刻度', //仪表的名字
+            type: 'gauge', //统计图类型为仪表
+            radius: '80%', //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, 'rgba(255,255,255,0)']],
+              },
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: '#00FAFF', //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + '') {
+                  case '0':
+                    return '0'
+                  case '2':
+                    return '2W'
+                  case '4':
+                    return '4W'
+                  case '6':
+                    return '6W'
+                  case '8':
+                    return '8W'
+                  case '10':
+                    return '10W'
+                  case '12':
+                    return '12W'
+                  case '14':
+                    return '14W'
+                  case '16':
+                    return '16W'
+                }
+              },
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: '#00FAFF',
+                width: 1, //刻度的宽度
+              },
+              length: -5, //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: '#00FAFF',
+              },
+            }, //分隔线样式
+          },
+          {
+            type: 'gauge', //刻度轴表盘
+            radius: '80%', //刻度盘的大小
+            center: ['50%', '50%'], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#1FFBFF',
+                      },
+                      {
+                        offset: 0.2,
+                        color: '#25E43E',
+                      },
+                      {
+                        offset: 0.7,
+                        color: '#FFC21F',
+                      },
+                      {
+                        offset: 0.9,
+                        color: '#E166A0',
+                      },
+                      {
+                        offset: 1,
+                        color: '#C74787',
+                      },
+                    ]),
+                  ],
+                ],
+              },
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false,
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false,
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false,
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: '10%',
+              length: '80%',
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: 'rgba(52, 136, 219, 1)',
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, '-26%'], // x, y，单位px
+              textStyle: {
+                color: '#fff',
+                fontSize: 8, //表盘上的标题文字大小
+              },
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, '70%'],
+              color: '#DFFFFF',
+              formatter: function(params) {
+                return params + '%'
+              },
+              textStyle: {
+                fontSize: 10,
+              },
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: '受检率',
+                value: 10,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
     chart10() {
       var myChart = echarts.init(document.getElementById('devicenum'))
       var option = {
         grid: {
           top: '20%',
           bottom: '10%',
+          left: 0,
+          right: 0,
         },
         tooltip: {},
         xAxis: {
@@ -556,6 +758,686 @@ export default {
         myChart.resize()
       })
     },
+    chart12() {
+      var myChart = echarts.init(document.getElementById('ybp3'))
+      var option = {
+        series: [
+          {
+            center: ['50%', '50%'], //仪表的位置
+            name: '刻度', //仪表的名字
+            type: 'gauge', //统计图类型为仪表
+            radius: '80%', //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, 'rgba(255,255,255,0)']],
+              },
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: '#00FAFF', //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + '') {
+                  case '0':
+                    return '0'
+                  case '2':
+                    return '2W'
+                  case '4':
+                    return '4W'
+                  case '6':
+                    return '6W'
+                  case '8':
+                    return '8W'
+                  case '10':
+                    return '10W'
+                  case '12':
+                    return '12W'
+                  case '14':
+                    return '14W'
+                  case '16':
+                    return '16W'
+                }
+              },
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: '#00FAFF',
+                width: 1, //刻度的宽度
+              },
+              length: -5, //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: '#00FAFF',
+              },
+            }, //分隔线样式
+          },
+          {
+            type: 'gauge', //刻度轴表盘
+            radius: '80%', //刻度盘的大小
+            center: ['50%', '50%'], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#1FFBFF',
+                      },
+                      {
+                        offset: 0.2,
+                        color: '#25E43E',
+                      },
+                      {
+                        offset: 0.7,
+                        color: '#FFC21F',
+                      },
+                      {
+                        offset: 0.9,
+                        color: '#E166A0',
+                      },
+                      {
+                        offset: 1,
+                        color: '#C74787',
+                      },
+                    ]),
+                  ],
+                ],
+              },
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false,
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false,
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false,
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: '10%',
+              length: '80%',
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: 'rgba(52, 136, 219, 1)',
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, '-26%'], // x, y，单位px
+              textStyle: {
+                color: '#fff',
+                fontSize: 8, //表盘上的标题文字大小
+              },
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, '70%'],
+              color: '#DFFFFF',
+              formatter: function(params) {
+                return params + '%'
+              },
+              textStyle: {
+                fontSize: 10,
+              },
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: '受检率',
+                value: 10,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
+    chart13() {
+      var myChart = echarts.init(document.getElementById('ybp4'))
+      var option = {
+        series: [
+          {
+            center: ['50%', '50%'], //仪表的位置
+            name: '刻度', //仪表的名字
+            type: 'gauge', //统计图类型为仪表
+            radius: '80%', //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, 'rgba(255,255,255,0)']],
+              },
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: '#00FAFF', //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + '') {
+                  case '0':
+                    return '0'
+                  case '2':
+                    return '2W'
+                  case '4':
+                    return '4W'
+                  case '6':
+                    return '6W'
+                  case '8':
+                    return '8W'
+                  case '10':
+                    return '10W'
+                  case '12':
+                    return '12W'
+                  case '14':
+                    return '14W'
+                  case '16':
+                    return '16W'
+                }
+              },
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: '#00FAFF',
+                width: 1, //刻度的宽度
+              },
+              length: -5, //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: '#00FAFF',
+              },
+            }, //分隔线样式
+          },
+          {
+            type: 'gauge', //刻度轴表盘
+            radius: '80%', //刻度盘的大小
+            center: ['50%', '50%'], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#1FFBFF',
+                      },
+                      {
+                        offset: 0.2,
+                        color: '#25E43E',
+                      },
+                      {
+                        offset: 0.7,
+                        color: '#FFC21F',
+                      },
+                      {
+                        offset: 0.9,
+                        color: '#E166A0',
+                      },
+                      {
+                        offset: 1,
+                        color: '#C74787',
+                      },
+                    ]),
+                  ],
+                ],
+              },
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false,
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false,
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false,
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: '10%',
+              length: '80%',
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: 'rgba(52, 136, 219, 1)',
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, '-26%'], // x, y，单位px
+              textStyle: {
+                color: '#fff',
+                fontSize: 8, //表盘上的标题文字大小
+              },
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, '70%'],
+              color: '#DFFFFF',
+              formatter: function(params) {
+                return params + '%'
+              },
+              textStyle: {
+                fontSize: 10,
+              },
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: '受检率',
+                value: 10,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
+    chart14() {
+      var myChart = echarts.init(document.getElementById('ybp5'))
+      var option = {
+        series: [
+          {
+            center: ['50%', '50%'], //仪表的位置
+            name: '刻度', //仪表的名字
+            type: 'gauge', //统计图类型为仪表
+            radius: '80%', //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, 'rgba(255,255,255,0)']],
+              },
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: '#00FAFF', //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + '') {
+                  case '0':
+                    return '0'
+                  case '2':
+                    return '2W'
+                  case '4':
+                    return '4W'
+                  case '6':
+                    return '6W'
+                  case '8':
+                    return '8W'
+                  case '10':
+                    return '10W'
+                  case '12':
+                    return '12W'
+                  case '14':
+                    return '14W'
+                  case '16':
+                    return '16W'
+                }
+              },
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: '#00FAFF',
+                width: 1, //刻度的宽度
+              },
+              length: -5, //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: '#00FAFF',
+              },
+            }, //分隔线样式
+          },
+          {
+            type: 'gauge', //刻度轴表盘
+            radius: '80%', //刻度盘的大小
+            center: ['50%', '50%'], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#1FFBFF',
+                      },
+                      {
+                        offset: 0.2,
+                        color: '#25E43E',
+                      },
+                      {
+                        offset: 0.7,
+                        color: '#FFC21F',
+                      },
+                      {
+                        offset: 0.9,
+                        color: '#E166A0',
+                      },
+                      {
+                        offset: 1,
+                        color: '#C74787',
+                      },
+                    ]),
+                  ],
+                ],
+              },
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false,
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false,
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false,
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: '10%',
+              length: '80%',
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: 'rgba(52, 136, 219, 1)',
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, '-26%'], // x, y，单位px
+              textStyle: {
+                color: '#fff',
+                fontSize: 8, //表盘上的标题文字大小
+              },
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, '70%'],
+              color: '#DFFFFF',
+              formatter: function(params) {
+                return params + '%'
+              },
+              textStyle: {
+                fontSize: 10,
+              },
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: '受检率',
+                value: 10,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
+    chart15() {
+      var myChart = echarts.init(document.getElementById('ybp6'))
+      var option = {
+        series: [
+          {
+            center: ['50%', '50%'], //仪表的位置
+            name: '刻度', //仪表的名字
+            type: 'gauge', //统计图类型为仪表
+            radius: '80%', //统计图的半径大小
+            min: 0, //最小刻度
+            max: 16, //最大刻度
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //设置默认刻度盘上的刻度不显示，重新定义刻度盘
+              show: false,
+              lineStyle: {
+                width: 1,
+                color: [[1, 'rgba(255,255,255,0)']],
+              },
+            }, //仪表盘轴线
+            axisLabel: {
+              //仪表盘上的数据
+              show: false,
+              color: '#00FAFF', //仪表盘上的轴线颜色
+              distance: 15, //图形与刻度的间距
+              formatter: function(v) {
+                //刻度轴上的数据相关显示
+                switch (v + '') {
+                  case '0':
+                    return '0'
+                  case '2':
+                    return '2W'
+                  case '4':
+                    return '4W'
+                  case '6':
+                    return '6W'
+                  case '8':
+                    return '8W'
+                  case '10':
+                    return '10W'
+                  case '12':
+                    return '12W'
+                  case '14':
+                    return '14W'
+                  case '16':
+                    return '16W'
+                }
+              },
+            }, //刻度标签。
+            axisTick: {
+              show: true,
+              splitNumber: 5, //刻度的段落数
+              lineStyle: {
+                color: '#00FAFF',
+                width: 1, //刻度的宽度
+              },
+              length: -5, //刻度的长度
+            }, //刻度样式
+            splitLine: {
+              //文字和刻度的偏移量
+              show: true,
+              length: -8, //便宜的长度
+              lineStyle: {
+                color: '#00FAFF',
+              },
+            }, //分隔线样式
+          },
+          {
+            type: 'gauge', //刻度轴表盘
+            radius: '80%', //刻度盘的大小
+            center: ['50%', '50%'], //刻度盘的位置
+            splitNumber: 8, //刻度数量
+            startAngle: 225, //开始刻度的角度
+            endAngle: -45, //结束刻度的角度
+            axisLine: {
+              //刻度的线条
+              show: true,
+              lineStyle: {
+                width: 5, //定义一个宽15的数轴
+                color: [
+                  //颜色为渐变色
+                  [
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#1FFBFF',
+                      },
+                      {
+                        offset: 0.2,
+                        color: '#25E43E',
+                      },
+                      {
+                        offset: 0.7,
+                        color: '#FFC21F',
+                      },
+                      {
+                        offset: 0.9,
+                        color: '#E166A0',
+                      },
+                      {
+                        offset: 1,
+                        color: '#C74787',
+                      },
+                    ]),
+                  ],
+                ],
+              },
+            },
+            //分隔线样式。
+            splitLine: {
+              //表盘上的轴线
+              show: false,
+            },
+            axisLabel: {
+              //表盘上的刻度数值文字
+              show: false,
+            },
+            axisTick: {
+              //表盘上的刻度线
+              show: false,
+            },
+            pointer: {
+              //表盘上的指针
+              show: true,
+              width: '10%',
+              length: '80%',
+            },
+            itemStyle: {
+              //表盘指针的颜色
+              color: 'rgba(52, 136, 219, 1)',
+            },
+            title: {
+              //标题
+              show: false,
+              offsetCenter: [0, '-26%'], // x, y，单位px
+              textStyle: {
+                color: '#fff',
+                fontSize: 8, //表盘上的标题文字大小
+              },
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, '70%'],
+              color: '#DFFFFF',
+              formatter: function(params) {
+                return params + '%'
+              },
+              textStyle: {
+                fontSize: 10,
+              },
+            },
+            data: [
+              //当前数值的数据
+              {
+                name: '受检率',
+                value: 10,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
   },
 }
 </script>
@@ -647,7 +1529,7 @@ li {
     font-size: 0.25rem;
   }
   .indicator {
-    width: 22%;
+    width: 20%;
     height: 90%;
     margin: 0px 5px;
     display: flex;
@@ -659,20 +1541,22 @@ li {
   #devicenum {
     width: 100%;
   }
-  .mid {
+  .in-mid {
     align-items: center;
     flex-wrap: wrap;
-    width: 55% !important;
+    width: 60% !important;
+    height: 90%;
+    margin: 0 5px;
+    display: flex;
     .mid_items {
-      width: 32%;
+      width: 30%;
       height: 50%;
-      // margin: 0px 2px;
-
+      margin: 0px 4px;
       img {
-        width: 90%;
+        width: 100%;
       }
       .mid_con {
-        width: 90%;
+        // width: 90%;
         height: 75%;
         background: rgba(21, 49, 122, 0.5);
       }

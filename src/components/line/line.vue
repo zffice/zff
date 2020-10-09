@@ -2,7 +2,8 @@
   <div class="workshop">
     <header>我是头</header>
     <section class="boxwrap">
-      <div class="box" ref="chart">
+      <div class="box"
+           ref="chart">
         报警了率月趋势
       </div>
     </section>
@@ -11,119 +12,119 @@
 <script>
 export default {
   name: "workShop",
-  data() {
+  data () {
     return {};
   },
-  mounted() {
+  mounted () {
     this.demo();
   },
   methods: {
-    demo() {
+    demo () {
       var mychart = this.$echarts.init(this.$refs.chart);
-     
-     var option = {
-    backgroundColor:'#232d36',
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
+
+      var option = {
+        backgroundColor: '#232d36',
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
             lineStyle: {
-                color: {
-                    // type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    // colorStops: [{
-                    //     offset: 0,
-                    //     color: 'rgba(0, 255, 233,0)'
-                    // }, {
-                    //     offset: 0.5,
-                    //     color: 'rgba(255, 255, 255,1)',
-                    // }, {
-                    //     offset: 1,
-                    //     color: 'rgba(0, 255, 233,0)'
-                    // }],
-                    global: false
-                }
+              color: {
+                // type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                // colorStops: [{
+                //     offset: 0,
+                //     color: 'rgba(0, 255, 233,0)'
+                // }, {
+                //     offset: 0.5,
+                //     color: 'rgba(255, 255, 255,1)',
+                // }, {
+                //     offset: 1,
+                //     color: 'rgba(0, 255, 233,0)'
+                // }],
+                global: false
+              }
             },
+          },
         },
-    },
-    grid: {
-        top: '15%',
-        left: '10%',
-        right: '5%',
-        bottom: '15%',
-        // containLabel: true
-    },
-    xAxis: [{
-        type: 'category',
-        axisLine: {
+        grid: {
+          top: '15%',
+          left: '10%',
+          right: '5%',
+          bottom: '15%',
+          // containLabel: true
+        },
+        xAxis: [{
+          type: 'category',
+          axisLine: {
             show: false,
-            color:'#A582EA'
-        },
-    
-        axisLabel: {
+            color: '#A582EA'
+          },
+
+          axisLabel: {
             color: '#A582EA',
-            width:100
-        },
-        splitLine: {
+            width: 100
+          },
+          splitLine: {
             show: false
-        },
-        boundaryGap: false,
-        // data: ["2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27"]//this.$moment(data.times).format("HH-mm") ,
+          },
+          boundaryGap: false,
+          // data: ["2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27"]//this.$moment(data.times).format("HH-mm") ,
 
-    }],
+        }],
 
-    yAxis: [{
-        type: 'value',
-        min: 0,
-        // max: 140,
-        splitNumber: 4,
-        splitLine: {
+        yAxis: [{
+          type: 'value',
+          min: 0,
+          // max: 140,
+          splitNumber: 4,
+          splitLine: {
             show: true,
             lineStyle: {
-                color: '#00BFF3',
-                opacity:0.23
+              color: '#00BFF3',
+              opacity: 0.23
             }
-        },
-        axisLine: {
+          },
+          axisLine: {
             show: false,
-        },
-        axisLabel: {
+          },
+          axisLabel: {
             show: true,
             margin: 20,
             textStyle: {
-                color: '#fff',
+              color: '#fff',
 
             },
-        },
-        axisTick: {
+          },
+          axisTick: {
             show: false,
-        },
-    }],
-    series: [
-        {
-            name:'液压异常报警',
+          },
+        }],
+        series: [
+          {
+            name: '液压异常报警',
             type: 'line',
             showAllSymbol: true,
             symbol: 'circle',
             symbolSize: 10,
             lineStyle: {
-                normal: {
-                    color: "#A582EA",
-                },
+              normal: {
+                color: "#A582EA",
+              },
             },
             label: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                    color: '#A582EA',
-                }
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#A582EA',
+              }
             },
             itemStyle: {
-                color: "#fff",
-                borderColor: "#A582EA",
-                borderWidth: 2,
+              color: "#fff",
+              borderColor: "#A582EA",
+              borderWidth: 2,
             },
             // areaStyle: {
             //     normal: {
@@ -139,30 +140,30 @@ export default {
             //         ], false),
             //     }
             // },
-            data: [4,7,5,4,3,5,8]//data.values
-        },
-        {
-            name:'液位异常报警',
+            data: [4, 7, 5, 4, 3, 5, 8]//data.values
+          },
+          {
+            name: '液位异常报警',
             type: 'line',
             showAllSymbol: true,
             symbol: 'circle',
             symbolSize: 10,
             lineStyle: {
-                normal: {
-                    color: "#2CABE3",
-                },
+              normal: {
+                color: "#2CABE3",
+              },
             },
             label: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                    color: '#2CABE3',
-                }
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#2CABE3',
+              }
             },
             itemStyle: {
-                color: "#fff",
-                borderColor: "#2CABE3",
-                borderWidth: 2,
+              color: "#fff",
+              borderColor: "#2CABE3",
+              borderWidth: 2,
             },
             // areaStyle: {
             //     normal: {
@@ -178,15 +179,15 @@ export default {
             //         ], false),
             //     }
             // },
-            data: [3,5,4,2,1,7,6]//data.values
-        },
-    ]
-};
+            data: [3, 5, 4, 2, 1, 7, 6]//data.values
+          },
+        ]
+      };
 
       mychart.setOption(option);
     },
-  
-   
+
+
   }
 };
 </script>

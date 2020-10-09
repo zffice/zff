@@ -27,7 +27,10 @@ $(document).ready(function() {
     if (m < 10) {
       m = '0' + m
     }
-    var nowdate = y + month + td + ' ' + h + ':' + m
+    if (s < 10) {
+      s = '0' + s
+    }
+    var nowdate = y + month + td + ' ' + h + ':' + m + ':' + s
     timer($('#Y'), y)
     timer($('#MH'), month)
     timer($('#TD'), td)

@@ -3,27 +3,32 @@
     <header class="header">
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
+      <div id="company">测试工厂</div>
     </header>
     <section class="section">
       <div class="cloum">
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_01"></div>
+          <div class="item"
+               id="box_01"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_02"></div>
+          <div class="item"
+               id="box_02"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_03"></div>
+          <div class="item"
+               id="box_03"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items2">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_04"></div>
+          <div class="item"
+               id="box_04"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
       </div>
@@ -32,23 +37,31 @@
       </div>
       <div class="cloum3">
         <div class="items">
+
+          <!-- <dv-decoration-10 style="width:90%;height:5px;margin:auto" /> -->
+          <dv-border-box-13>
+            <div class="item"
+                 id="box_05"></div>
+          </dv-border-box-13>
+
+          <!-- <dv-decoration-10 style="width:90%;height:5px;margin:auto" /> -->
+        </div>
+        <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_05"></div>
+          <div class="item"
+               id="box_06"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_06"></div>
-          <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-        </div>
-        <div class="items">
-          <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_07"></div>
+          <div class="item"
+               id="box_07"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items2">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_08"></div>
+          <div class="item"
+               id="box_08"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
       </div>
@@ -72,14 +85,14 @@ export default {
     linePercent,
     lineOne,
   },
-  data() {
+  data () {
     return {
       configdisplacementofDam: {},
       configdata: {},
       value: '选项1',
     }
   },
-  mounted() {
+  mounted () {
     require('../assets/js/common.js')
     this.chart1()
     this.chart2()
@@ -98,13 +111,13 @@ export default {
   },
   methods: {
     // 月报警趋势
-    alarmGroupMonth() {
+    alarmGroupMonth () {
       API.alarmGroupMonth().then((res) => {
         console.log(res)
       })
     },
     // 设备报警排名
-    alarmOfMachineTop() {
+    alarmOfMachineTop () {
       const params = {
         limit: 5,
       }
@@ -113,7 +126,7 @@ export default {
       })
     },
     // 设备报警类型排名
-    alarmTypeTop() {
+    alarmTypeTop () {
       const params = {
         limit: 5,
       }
@@ -201,7 +214,7 @@ export default {
                 show: true,
                 position: 'outside',
                 color: '#ddd',
-                formatter: function(params) {
+                formatter: function (params) {
                   var percent = 0
                   var total = 0
                   for (var i = 0; i < trafficWay.length; i++) {
@@ -286,12 +299,12 @@ export default {
         series: seriesOption,
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
 
-    findMachineListByExample() {
+    findMachineListByExample () {
       const params = {
         limit: 5,
       }
@@ -403,23 +416,23 @@ export default {
 
       // Enable data zoom when user click bar.
       var zoomSize = 6
-      myChart.on('click', function(params) {
+      myChart.on('click', function (params) {
         console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)])
         myChart.dispatchAction({
           type: 'dataZoom',
           startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
           endValue:
             dataAxis[
-              Math.min(params.dataIndex + zoomSize / 2, data.length - 1)
+            Math.min(params.dataIndex + zoomSize / 2, data.length - 1)
             ],
         })
       })
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    outputOfMachineTop() {
+    outputOfMachineTop () {
       const params = {
         limit: 5,
       }
@@ -427,7 +440,7 @@ export default {
         console.log(res)
       })
     },
-    statistics() {
+    statistics () {
       const params = {
         limit: 5,
       }
@@ -435,7 +448,7 @@ export default {
         console.log(res)
       })
     },
-    chart1() {
+    chart1 () {
       var myChart = echarts.init(document.getElementById('box_01'))
       var option = {
         tooltip: {
@@ -587,7 +600,7 @@ export default {
       var app = {
         currentIndex: -1,
       }
-      setInterval(function() {
+      setInterval(function () {
         var dataLen = option.series[0].data.length
 
         // 取消之前高亮的图形
@@ -612,13 +625,13 @@ export default {
         })
       }, 1000)
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart2() {
+    chart2 () {
       var myChart = echarts.init(document.getElementById('box_02'))
-      function contains(arr, dst) {
+      function contains (arr, dst) {
         var i = arr.length
         while ((i -= 1)) {
           if (arr[i] == dst) {
@@ -654,9 +667,9 @@ export default {
         '#F57474',
       ]
 
-      function attackSourcesDataFmt(sData) {
+      function attackSourcesDataFmt (sData) {
         var sss = []
-        sData.forEach(function(item, i) {
+        sData.forEach(function (item, i) {
           var itemStyle = {
             color: i > 3 ? attackSourcesColor[3] : attackSourcesColor[i],
           }
@@ -819,20 +832,20 @@ export default {
                 padding: 5,
               },
             },
-            formatter: function(value, index) {
+            formatter: function (value, index) {
               index = contains(attackSourcesName, value) + 1
               if (index - 1 < 3) {
                 return [
                   '{nt' +
-                    index +
-                    '|' +
-                    index +
-                    '}' +
-                    '  {title' +
-                    index +
-                    '|' +
-                    value +
-                    '}',
+                  index +
+                  '|' +
+                  index +
+                  '}' +
+                  '  {title' +
+                  index +
+                  '|' +
+                  value +
+                  '}',
                 ].join('\n')
               } else {
                 return ['{nt|' + index + '}' + '  {title|' + value + '}'].join(
@@ -852,7 +865,7 @@ export default {
             data: attackSourcesDataFmt(attackSourcesData),
             itemStyle: {
               normal: {
-                color: function(params) {
+                color: function (params) {
                   return attackSourcesColor[
                     params.dataIndex > 3 ? 3 : params.dataIndex
                   ]
@@ -871,11 +884,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart3() {
+    chart3 () {
       const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF']
       const xData = ['北京', '上海', '广州', '深圳', '香港', '澳门', '台湾']
       const option = {
@@ -1059,8 +1072,7 @@ export default {
       let chart = document.getElementById('box_03')
       let myChart = echarts.init(chart)
       let i = 0
-      setInterval(function() {
-        console.log(i)
+      setInterval(function () {
         i = i === xData.length ? 0 : i + 1
         myChart.dispatchAction({
           type: 'showTip',
@@ -1069,11 +1081,11 @@ export default {
         })
       }, 2000)
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart4() {
+    chart4 () {
       var myChart = echarts.init(document.getElementById('box_04'))
       var option = {
         legend: {
@@ -1189,11 +1201,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart5() {
+    chart5 () {
       var myChart = echarts.init(document.getElementById('box_05'))
       var xData2 = [
         '容城谷庄',
@@ -1259,7 +1271,7 @@ export default {
             z: 12,
             itemStyle: {
               opacity: 1,
-              color: function(params) {
+              color: function (params) {
                 var a = params.name.slice(0, 2)
                 if (a === '容城') {
                   return new echarts.graphic.LinearGradient(
@@ -1329,7 +1341,7 @@ export default {
             itemStyle: {
               //lenged文本
               opacity: 0.7,
-              color: function(params) {
+              color: function (params) {
                 var a = params.name.slice(0, 2)
                 if (a === '容城') {
                   return new echarts.graphic.LinearGradient(
@@ -1425,7 +1437,7 @@ export default {
             z: 12,
             itemStyle: {
               opacity: 1,
-              color: function(params) {
+              color: function (params) {
                 var a = params.name.slice(0, 2)
                 if (a === '容城') {
                   return new echarts.graphic.LinearGradient(
@@ -1502,11 +1514,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart6() {
+    chart6 () {
       var myChart = echarts.init(document.getElementById('box_06'))
       var option = {
         tooltip: {
@@ -1672,11 +1684,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart7() {
+    chart7 () {
       var myChart = echarts.init(document.getElementById('box_07'))
       var plantCap = [
         {
@@ -1894,11 +1906,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
-    chart8() {
+    chart8 () {
       var myChart = echarts.init(document.getElementById('box_08'))
       var option = {
         grid: {
@@ -1981,7 +1993,7 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         myChart.resize()
       })
     },
@@ -2001,7 +2013,7 @@ export default {
   background-size: 100% 100%;
 
   .header {
-    background: url('../assets/header.png') no-repeat;
+    background: url('~@/assets/title.png') no-repeat;
     background-size: 100% 100%;
     color: #fff;
     font-size: 0.45rem;
@@ -2010,17 +2022,25 @@ export default {
       line-height: 1.1rem;
       font-weight: 800;
       // text-shadow: 2px 2px 2px #275bdb;
-      text-shadow: -1px -1px 1px #fff, 1px 2px 2px #00ffff;
+      text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
-
-    #date {
+    #company{
       position: absolute;
-      top: 0.22rem;
+      top: 0.38rem;
       left: 0.375rem;
       font-size: 0.45rem;
       font-family: 'electronicFont' !important;
       text-align: center;
-      color: #00ccff;
+      color: #15a0db;
+    }
+    #date {
+      position: absolute;
+      top: 0.38rem;
+      right: 0.375rem;
+      font-size: 0.45rem;
+      font-family: 'electronicFont' !important;
+      text-align: center;
+      color: #15a0db;
     }
     .dropdown {
       position: absolute;

@@ -82,7 +82,7 @@
 
 <script>
 import API from '@/api/busin'
-import workShop from '@/components/workshop/index'
+import workShop from '@/components/workshop/index2'
 import linePercent from '../components/line/line'
 import lineOne from '../components/line/lineOne'
 import Vue from 'vue'
@@ -1870,9 +1870,10 @@ element.style {
 }
 .home {
   width: 100%;
-  background: url('../assets/beijing.png') no-repeat;
+  background: url('../assets/beijing.png') rgba(42, 49, 127, .1)  no-repeat;
   height: 100vh;
   background-size: 100% 100%;
+  background-blend-mode: multiply;
 
   .header {
     background: url('~@/assets/title.png') no-repeat;

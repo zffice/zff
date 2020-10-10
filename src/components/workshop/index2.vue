@@ -3,32 +3,8 @@
     <section class="boxwrap">
 
       <div class="gc">
-        <div class="machines-grid">
-          <div class="machines-col-1s"
-               v-for="(area, index) in machineData"
-               :key="index">
-            <ul>
-              <li class="machiewrp"
-                  v-for="(row, index) in area.children"
-                  :key="index"
-                  :style="{ transform: 'scale(' + (index + 6) / 10 + ')' }">
-                <div class="machie"
-                     @click="detail">
-                  <div class="point"
-                       :class="
-                      row.type == 0
-                        ? 'bon'
-                        : row.type == 1
-                        ? 'bstandby'
-                        : 'balarm'
-                    "></div>
-                </div>
-              </li>
-            </ul>
-            <div class="title">
-              {{ area.name }}
-            </div>
-          </div>
+        <div class="machines-grid" @click="detail">
+         
         </div>
         <div class="pannel">
           <div class="indicator">
@@ -73,8 +49,7 @@ export default {
     this.chart10()
   },
   methods: {
-    detail (id) {
-      console.log(id)
+    detail () {
       // this.$router.push("/detail/detail");
       this.$router.push('detail')
     },
@@ -585,13 +560,15 @@ li {
   // background: pink;
 
   .machines-grid {
-    // background: yellow;
+    background:url('../../assets/车间.png') no-repeat;
+    margin: 1.6rem 0 0 0;
+	background-size:100% 100%;
+	-moz-background-size:100% 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 70%;
-    // border: 1px solid red;
+    height: 50%;
     
     .title {
       color: #fff;
@@ -628,7 +605,7 @@ li {
   height: 28%;
   border: 1px solid #274774;
   background: rgba(20, 35, 90, 0.6);
-  margin: 0.3rem 0;
+  margin: 1.75rem 0 0 0;
   // left: 5%;
   // bottom: 0px;
   border-radius: 10px;

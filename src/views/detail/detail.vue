@@ -92,70 +92,7 @@
           <div class="clear"></div>
         </div>
         <div class="bottom">
-          <el-main>
-            <el-row>
-              <el-col :span="24">
-                <!--占整行-->
-                <el-row>
-                  <el-col :span="5">
-                    <div class="item_3">
-                      <img src="../../assets/images/workshop.png"
-                           alt="" />
-                    </div>
-                    <div class="item_4">
-                      <span class="title">车间名</span>
-                      <br>
-                      <h2 class="content">三车间</h2>
-                    </div>
-                  </el-col>
-                  <el-col :span="5">
-                    <div class="item_3">
-                      <img src="../../assets/images/machine.png"
-                           alt="" />
-                    </div>
-                    <div class="item_4">
-                      <span class="title">设备数量</span>
-                      <br>
-                      <span class="content">5</span>
-                    </div>
-                  </el-col>
-                  <el-col :span="5">
-                    <div class="item_3">
-                      <img src="../../assets/images/run.png"
-                           alt="" />
-                    </div>
-                    <div class="item_4">
-                      <span class="title">作业数量</span>
-                      <br>
-                      <span class="content">5</span>
-                    </div>
-                  </el-col>
-                  <el-col :span="5">
-                    <div class="item_3">
-                      <img src="../../assets/images/standby.png"
-                           alt="" />
-                    </div>
-                    <div class="item_4">
-                      <span class="title">待机数量</span>
-                      <br>
-                      <span class="content">5</span>
-                    </div>
-                  </el-col>
-                  <el-col :span="5">
-                    <div class="item_3">
-                      <img src="../../assets/images/alarm.png"
-                           alt="" />
-                    </div>
-                    <div class="item_4">
-                      <span class="title">报警数量</span>
-                      <br>
-                      <span class="content">5</span>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-col>
-            </el-row>
-          </el-main>
+        <bottom></bottom>
         </div>
       </div>
       <div class="cloum">
@@ -182,47 +119,156 @@
       </div>
       <div class="clear"></div>
     </section>
+
+    <!--弹框-->
+          <el-dialog title="实时报警" :visible.sync="dialogVisible" :close-on-click-modal="true" :modal="true" :show-close="true" :center="true">
+             {{content}}
+             <span slot="footer" class="dialog-footer">
+     <el-button @click="dialogVisible = false">取 消</el-button>
+     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+   </span>
+         </el-dialog>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import API from '@/api/busin'
-import workShop from '@/components/workshop/index'
-import linePercent from '@/components/line/line'
-import lineOne from '@/components/line/lineOne'
-import Vue from 'vue'
-import { scrollBoard } from '@jiaminghi/data-view'
+import bottom from '@/components/workshop/bottom'
 import echarts from 'echarts'
 export default {
   name: 'Detail',
   components: {
-    workShop,
-    linePercent,
-    lineOne,
+    bottom
   },
   data () {
     return {
       productCharts: {},
+      socket:[],
+      queueReceiveSetting: {
+        //消息队列配置
+        websock: null,
+        client: null,
+        wsuri: "ws://localhost:9531/ws/asset/300219050525"
+      },
+      productDate:{
+        xData : ['21:43:02', '21:43:22', '21:43:42', '21:44:02', '21:44:22', '21:44:42', '21:45:02'],
+        pNum : [10, 10, 30, 12, 15, 3, 7],
+        bNum :[5, 12, 11, 14, 25, 16, 10]
+      },
+      dialogVisible: false,
+      content:""
     }
   },
   mounted () {
     require('../../assets/js/common.js')
     this.$nextTick(function () {
       this.product()
-      this.machine()
+      // this.machine()
     })
+    
   },
   methods: {
+    //创建socket连接功能函数
+ connect(wsobj,dpuCode) {
+//浏览器支持？
+if ("WebSocket" in window)
+{
+var host = "ws://localhost:9531/ws/asset/"+dpuCode
+this.socket[wsobj]= new WebSocket(host);
+
+try {
+//连接事件
+this.socket[wsobj].onopen = function (msg) {
+// alert(wsobj+":连接已建立！");
+};
+//错误事件
+this.socket[wsobj].onerror =function (msg) {
+alert("错误："+msg.data);
+
+}
+
+//消息事件
+var self = this;
+this.socket[wsobj].onmessage = function (msg) {
+  if(JSON.parse(msg.data).data.status == "3"){
+          self.content = JSON.parse(msg.data).data.alarming[0]+"-"+ JSON.parse(msg.data).machineInfo.machine_name+ ":"+JSON.parse(msg.data).machineInfo.workshop_name
+          self.dialogVisible = true
+        }
+};
+//关闭事件
+this.socket[wsobj].onclose = function (msg)
+{
+
+alert(wsobj+":socket closed!")
+
+};
+}
+catch (ex) {
+log(ex);
+}
+
+
+}else
+{
+// 浏览器不支持 WebSocket
+alert("您的浏览器不支持 WebSocket!");
+}
+
+},
+    initWebSocket (dpuCode) {
+      var self = this;
+      //ws地址
+      if (self.queueReceiveSetting.websock) {
+        self.queueReceiveSetting.websock.close();
+      }
+      self.queueReceiveSetting.websock = new WebSocket(
+        "ws://localhost:9531/ws/asset/"+dpuCode
+      );
+      self.queueReceiveSetting.websock.onopen = function (res) {
+        console.log("开启连接");
+      };
+      self.queueReceiveSetting.websock.onmessage = function (msg) {
+        console.log(JSON.parse(msg.data));
+        if(JSON.parse(msg.data).data.status == "1"){
+          self.productDate.xData.shift()
+          self.productDate.xData.push(JSON.parse(msg.data).data.time)
+          self.productDate.pNum.shift()
+          self.productDate.pNum.push(JSON.parse(msg.data).data.production)
+          self.productDate.bNum.shift()
+          self.productDate.bNum.push(JSON.parse(msg.data).data.unqualified)
+          self.productCharts.setOption({
+            xAxis: {
+              data: self.productDate.xData
+            },
+            series: [{
+              data: self.productDate.pNum,
+            },{
+              data: self.productDate.bNum,
+            }]
+          });
+        }
+        if(JSON.parse(msg.data).data.status == "3"){
+          self.content = JSON.parse(msg.data).data.alarming[0]
+          self.dialogVisible = true
+        }
+      };
+      self.queueReceiveSetting.websock.onclose = function (res) {
+        console.log("连接关闭");
+      };
+      self.queueReceiveSetting.websock.onerror = function (res) {
+        console.log("连接出错");
+        // this.initWebSocket();
+      };
+    },
     product () {
       const color = ['rgba(23, 255, 243', 'rgba(255,100,97']
-      const xData = ['21:43:02', '21:43:22', '21:43:42', '21:44:02', '21:44:22', '21:44:42', '21:45:02']
-      const pNum = [10, 10, 30, 12, 15, 3, 7]
-      const bNum = [5, 12, 11, 14, 25, 16, 10]
+      
 
       var roseCharts = document.getElementsByClassName('item_1'); // 对应地使用ByClassName
+      var dpuCode = ["300219050523","300219050524","300219050525","300219050526"]
       for (var i = 0; i < roseCharts.length; i++) { // 通过for循环，在相同class的dom内绘制元素
-        let myChart = echarts.init(roseCharts[i])
+        this.productCharts = echarts.init(roseCharts[i])
         const option = {
           title: [{
             text: '无报警',
@@ -280,7 +326,7 @@ export default {
           xAxis: [
             {
               type: 'category',
-              data: xData,
+              data: this.productDate.xData,
               axisLabel: {
                 interval: 0,
                 rotate: 20,
@@ -358,7 +404,7 @@ export default {
             {
               name: '产量',
               type: 'line',
-              data: pNum,
+              data: this.productDate.pNum,
               symbolSize: 1,
               symbol: 'circle',
               // smooth: true,
@@ -383,7 +429,7 @@ export default {
             {
               name: '回退量',
               type: 'line',
-              data: bNum,
+              data: this.productDate.bNum,
               symbolSize: 1,
               symbol: 'circle',
               // smooth: true,
@@ -410,30 +456,18 @@ export default {
         }
 
 
-        myChart.setOption(option)
+       this.productCharts.setOption(option)
         window.addEventListener('resize', function () {
-          myChart.resize()
+          this.productCharts.resize()
         })
+        this.connect(i,dpuCode[i])
 
-        setInterval(function () {
-          xData.shift()
-          xData.push((Math.random() * 100).toFixed(0))
-          pNum.shift()
-          pNum.push((Math.random() * 100).toFixed(0))
-          myChart.setOption({
-            xAxis: {
-              data: xData
-            },
-            series: {
-              data: pNum,
-            }
-          });
-        }, 20000);
+        // this.initWebSocket(dpuCode[i]);
 
-        function refresh () {
-          // liuru先shift(),再push()
+        // setInterval(function () {
+         
+        // }, 20000);
 
-        }
 
       }
     },
@@ -1002,9 +1036,6 @@ export default {
     color: #fff;
     font-size:	12px；
 }
-.el-col-5{
-  width: 20%;
-}
 </style>
 <style>
 /* 注意
@@ -1200,27 +1231,6 @@ border-top-color: blue ;
         border: 1px solid #274774;
         background: rgba(20, 35, 90, 0.4);
         border-radius: 10px;
-        .item_3{
-           height: 94%;
-           float: left;
-        }
-        .item_4{
-          margin-left:7%;
-           height: 94%;
-           float: left;
-        }
-        .title{
-          font-size:.3rem;
-          color:#fff;
-          line-height:.5rem;
-        }
-        .content{
-          font-weight:700;
-          font-size:.3rem;
-          background-image:-webkit-linear-gradient(bottom,#3962d4,#9db5eb);
-          -webkit-background-clip:text;
-          -webkit-text-fill-color:transparent;
-        }
       }
     }
     .clear {

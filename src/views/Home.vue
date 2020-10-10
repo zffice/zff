@@ -30,7 +30,7 @@
               :row-style="{ height: '0.1rem' }"
               :cell-style="{ padding: '0px' }"
             >
-              <el-table-column prop="name" label="车间"> </el-table-column>
+              <el-table-column prop="name" label="车间名"> </el-table-column>
               <el-table-column prop="result" label="报警设备"></el-table-column>
               <el-table-column prop="info" label="报警内容" width="200"> </el-table-column>
               <el-table-column prop="time" label="报警时间"> </el-table-column>
@@ -132,7 +132,7 @@ export default {
     this.alarmGroupMonth()
     this.alarmOfMachineTop()
     this.alarmTypeTop()
-    this.findMachineListByExample()
+    // this.findMachineListByExample()
     this.outputOfMachineTop()
     this.groupByMonth()
     this.groupByDate()
@@ -185,7 +185,6 @@ export default {
         }
         this.data3 = list
         // console.log(list)
-        this.chart7()
         this.chart1()
       })
     },
@@ -203,15 +202,6 @@ export default {
           this.data2.push(res.info[i].count)
         }
         this.chart2()
-      })
-    },
-    // 查询企业内设备（车间名、设备数量、各状态设备数量【作业、待机、报警】）
-    findMachineListByExample() {
-      const params = {
-        limit: 5,
-      }
-      API.findMachineListByExample(params).then((res) => {
-        // console.log(res)
       })
     },
     // 各设备产量排名【limit true，cId false】
@@ -302,7 +292,7 @@ export default {
         this.runtime = []
         for (var i = 0; i < res.info.length; i++) {
           this.Xaxis8.push(res.info[i].machine_name)
-          this.runtime.push(res.info[i].sum_rtime)
+          this.runtime.push((res.info[i].sum_rtime / 60 / 60).toFixed(2))
         }
         this.chart8()
       })
@@ -374,33 +364,33 @@ export default {
             show: false,
           },
         },
-        dataZoom: [
-          {
-            show: true,
-            height: 8,
-            xAxisIndex: [0],
-            bottom: '8%',
-            start: 10,
-            end: 50,
-            handleIcon:
-              'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-            handleSize: '110%',
-            handleStyle: {
-              color: '#d3dee5',
-            },
-            textStyle: {
-              color: '#fff',
-            },
-            borderColor: '#00C2FF',
-          },
-          {
-            type: 'inside',
-            show: true,
-            height: 10,
-            start: 1,
-            end: 35,
-          },
-        ],
+        // dataZoom: [
+        //   {
+        //     show: true,
+        //     height: 8,
+        //     xAxisIndex: [0],
+        //     bottom: '8%',
+        //     start: 10,
+        //     end: 50,
+        //     handleIcon:
+        //       'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+        //     handleSize: '110%',
+        //     handleStyle: {
+        //       color: '#d3dee5',
+        //     },
+        //     textStyle: {
+        //       color: '#fff',
+        //     },
+        //     borderColor: '#00C2FF',
+        //   },
+        //   {
+        //     type: 'inside',
+        //     show: true,
+        //     height: 10,
+        //     start: 1,
+        //     end: 35,
+        //   },
+        // ],
         series: [
           {
             name: '设备总数',
@@ -473,7 +463,7 @@ export default {
           seriesIndex: 0,
           dataIndex: app.currentIndex,
         })
-      }, 1000)
+      }, 2000)
       myChart.setOption(option)
       window.addEventListener('resize', function() {
         myChart.resize()
@@ -1489,7 +1479,7 @@ export default {
           left: '4%',
           right: '4%',
           bottom: '2%',
-          top: '30%',
+          top: '20%',
           containLabel: true,
         },
         xAxis: {
@@ -1505,7 +1495,7 @@ export default {
           },
         },
         yAxis: {
-          name: '总产量',
+          name: '时长:小时',
           nameTextStyle: {
             color: '#fff',
             fontSize: 10,

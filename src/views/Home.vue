@@ -9,34 +9,32 @@
       <div class="cloum">
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_01"></div>
+          <div class="item" id="box_01"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_02"></div>
+          <div class="item" id="box_02"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_03"></div>
+          <div class="item" id="box_03"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items2">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
           <div class="item" id="box_04">
             <el-table
-              :data="tableData"
+              :data="alarmData"
               :row-style="{ height: '0.1rem' }"
               :cell-style="{ padding: '0px' }"
             >
-              <el-table-column prop="name" label="车间名"> </el-table-column>
-              <el-table-column prop="type" label="设备名"> </el-table-column>
-              <el-table-column prop="num" label="报警信息"> </el-table-column>
-              <el-table-column prop="status" label="处理状态"></el-table-column>
+              <el-table-column prop="name" label="设备编号"> </el-table-column>
+              <el-table-column prop="time" label="报警时间"> </el-table-column>
+              <el-table-column prop="info" label="报警内容"> </el-table-column>
+              <el-table-column prop="result" label="报警设备"></el-table-column>
+              <el-table-column prop="status" label="状态"></el-table-column>
             </el-table>
           </div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
@@ -47,31 +45,26 @@
       </div>
       <div class="cloum3">
         <div class="items">
-
           <!-- <dv-decoration-10 style="width:90%;height:5px;margin:auto" /> -->
           <dv-border-box-13>
-            <div class="item"
-                 id="box_05"></div>
+            <div class="item" id="box_05"></div>
           </dv-border-box-13>
 
           <!-- <dv-decoration-10 style="width:90%;height:5px;margin:auto" /> -->
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_06"></div>
+          <div class="item" id="box_06"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_07"></div>
+          <div class="item" id="box_07"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items2">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item"
-               id="box_08"></div>
+          <div class="item" id="box_08"></div>
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
       </div>
@@ -95,7 +88,7 @@ export default {
     linePercent,
     lineOne,
   },
-  data () {
+  data() {
     return {
       //图一横坐标
       Xaxis1: [],
@@ -117,44 +110,17 @@ export default {
       //图五数据
       data5: [],
       sumpro: [],
-      tableData: [
-        {
-          name: '2222',
-          type: 'test',
-          num: '12',
-          status: '0',
-        },
-        {
-          name: '2342',
-          type: 'test',
-          num: '12',
-          status: '1',
-        },
-        {
-          name: '2552',
-          type: 'test',
-          num: '12',
-          status: '0',
-        },
-        {
-          name: '7787',
-          type: 'test',
-          num: '12',
-          status: '1',
-        },
-        {
-          name: '657',
-          type: 'test',
-          num: '12',
-          status: '1',
-        },
-        {
-          name: '2222',
-          type: 'test',
-          num: '12',
-          status: '0',
-        },
-      ],
+      //图六数据
+      Xaxis6: [],
+      sumpro: [],
+      sumback: [],
+      //报警表格
+      alarmData: [],
+      //日报
+      dayData: [],
+      //运行时长
+      Xaxis8: [],
+      runtime: [],
     }
   },
   created() {
@@ -163,47 +129,49 @@ export default {
   },
   mounted() {
     require('../assets/js/common.js')
-    this.chart6()
-    this.chart8()
     this.alarmGroupMonth()
     this.alarmOfMachineTop()
     this.alarmTypeTop()
     this.findMachineListByExample()
     this.outputOfMachineTop()
+    this.groupByMonth()
+    this.groupByDate()
+    this.ThisTimeAlarmInfo()
+    this.sumRtimeOfMachineTop()
   },
   methods: {
     //change,play实现表格自动滚动
     change() {
       //把第一条数据插入数组最后一条
-      this.tableData.push(this.tableData[0])
+      this.alarmData.push(this.alarmData[0])
       //删除数组中第一条数据
-      this.tableData.shift()
+      this.alarmData.shift()
     },
     play() {
       //每两秒执行一次插入删除操作
       setInterval(this.change, 1000)
     },
     // 月报警趋势
-    alarmGroupMonth () {
+    alarmGroupMonth() {
       API.alarmGroupMonth().then((res) => {
-        // console.log(res)
+        console.log('alarmGroupMonth' + res)
         this.Xaxis1 = []
         this.data1 = []
         for (var i = 0; i < res.info.length; i++) {
           this.Xaxis1.push(res.info[i].date)
           this.data1.push(res.info[i].count)
         }
-        this.chart3()
+        this.chart6()
         // console.log(this.data1)
       })
     },
     // 设备报警排名
-    alarmOfMachineTop () {
+    alarmOfMachineTop() {
       const params = {
         limit: 5,
       }
       API.alarmOfMachineTop(params).then((res) => {
-        console.log(res)
+        // console.log(res)
         var list = []
         this.Xaxis3 = []
         this.devsum = []
@@ -222,7 +190,7 @@ export default {
       })
     },
     // 设备报警类型排名
-    alarmTypeTop () {
+    alarmTypeTop() {
       const params = {
         limit: 5,
       }
@@ -252,7 +220,7 @@ export default {
         limit: 5,
       }
       API.outputOfMachineTop(params).then((res) => {
-        console.log(res)
+        // console.log(res)
         this.data5 = []
         this.Xaxis5 = []
         this.sumpro = []
@@ -267,12 +235,79 @@ export default {
           this.sumpro.push(res.info[i].sum_production)
         }
         this.chart5()
-        // console.log(this.Xaxis5)
-        // console.log(this.data5)
-        // console.log(this.sumpro)
       })
     },
-    chart1 () {
+    // 生产月报
+    groupByMonth() {
+      API.groupByMonth().then((res) => {
+        this.Xaxis6 = []
+        this.sumpro = []
+        this.sumback = []
+        for (var i = 1; i < res[0].data.length; i++) {
+          this.Xaxis6.push(res[0].data[i].time)
+          this.sumpro.push(res[0].data[i].sumpro)
+          this.sumback.push(res[0].data[i].sumback)
+        }
+        this.chart3()
+      })
+    },
+    // 生产日报
+    groupByDate() {
+      API.groupByDate().then((res) => {
+        console.log(res)
+        this.dayData = []
+        for (var i = 1; i < res[0].data.length; i++) {
+          this.dayData.push({
+            day: res[0].data[i].time,
+            count: res[0].data[i].sumpro,
+          })
+        }
+        this.chart7()
+      })
+    },
+    //表格报警信息
+    ThisTimeAlarmInfo() {
+      const params = {
+        limit: 7,
+        cId: 1,
+      }
+      API.ThisTimeAlarmInfo(params).then((res) => {
+        this.alarmData = []
+        for (var i = 0; i < res.info.length; i++) {
+          if (res.info[i].STATUS == '1') {
+            res.info[i].STATUS = '已处理'
+          } else {
+            res.info[i].STATUS = '未处理'
+          }
+          this.alarmData.push({
+            name: res.info[i].id,
+            time: res.info[i].time.slice(11, 19),
+            info: res.info[i].info,
+            result: res.info[i].machine_name,
+            status: res.info[i].STATUS,
+          })
+        }
+        // console.log(this.alarmData)
+      })
+    },
+    // 设备运行时长
+    sumRtimeOfMachineTop() {
+      const params = {
+        limit: 7,
+        cId: 1,
+      }
+      API.sumRtimeOfMachineTop(params).then((res) => {
+        console.log(res)
+        this.Xaxis8 = []
+        this.runtime = []
+        for (var i = 0; i < res.info.length; i++) {
+          this.Xaxis8.push(res.info[i].machine_name)
+          this.runtime.push(res.info[i].sum_rtime)
+        }
+        this.chart8()
+      })
+    },
+    chart1() {
       var myChart = echarts.init(document.getElementById('box_01'))
       var option = {
         tooltip: {
@@ -415,7 +450,7 @@ export default {
       var app = {
         currentIndex: -1,
       }
-      setInterval(function () {
+      setInterval(function() {
         var dataLen = option.series[0].data.length
 
         // 取消之前高亮的图形
@@ -440,13 +475,13 @@ export default {
         })
       }, 1000)
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart2 () {
+    chart2() {
       var myChart = echarts.init(document.getElementById('box_02'))
-      function contains (arr, dst) {
+      function contains(arr, dst) {
         var i = arr.length
         while ((i -= 1)) {
           if (arr[i] == dst) {
@@ -473,9 +508,9 @@ export default {
         '#F57474',
       ]
 
-      function attackSourcesDataFmt (sData) {
+      function attackSourcesDataFmt(sData) {
         var sss = []
-        sData.forEach(function (item, i) {
+        sData.forEach(function(item, i) {
           var itemStyle = {
             color: i > 3 ? attackSourcesColor[3] : attackSourcesColor[i],
           }
@@ -638,20 +673,20 @@ export default {
                 padding: 5,
               },
             },
-            formatter: function (value, index) {
+            formatter: function(value, index) {
               index = contains(attackSourcesName, value) + 1
               if (index - 1 < 3) {
                 return [
                   '{nt' +
-                  index +
-                  '|' +
-                  index +
-                  '}' +
-                  '  {title' +
-                  index +
-                  '|' +
-                  value +
-                  '}',
+                    index +
+                    '|' +
+                    index +
+                    '}' +
+                    '  {title' +
+                    index +
+                    '|' +
+                    value +
+                    '}',
                 ].join('\n')
               } else {
                 return ['{nt|' + index + '}' + '  {title|' + value + '}'].join(
@@ -671,7 +706,7 @@ export default {
             data: attackSourcesDataFmt(attackSourcesData),
             itemStyle: {
               normal: {
-                color: function (params) {
+                color: function(params) {
                   return attackSourcesColor[
                     params.dataIndex > 3 ? 3 : params.dataIndex
                   ]
@@ -690,13 +725,13 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart3 () {
+    chart3() {
       const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF']
-      const xData = this.Xaxis1
+      const xData = this.Xaxis6
       const option = {
         legend: {
           icon: 'circle',
@@ -705,7 +740,7 @@ export default {
           itemWidth: 6,
           itemGap: 20,
           textStyle: {
-            color: '#556677',
+            color: '#ffffff',
           },
         },
         tooltip: {
@@ -746,7 +781,7 @@ export default {
               show: false,
             },
             axisLabel: {
-              interval: 0,
+              // interval: 0,
               textStyle: {
                 color: '#00C2FF', //坐标轴字颜色
               },
@@ -808,42 +843,42 @@ export default {
           },
         ],
         series: [
-          // {
-          //   name: 'Adidas',
-          //   type: 'line',
-          //   data: [10, 10, 30, 12, 15, 3, 7],
-          //   symbolSize: 1,
-          //   symbol: 'circle',
-          //   smooth: true,
-          //   yAxisIndex: 0,
-          //   showSymbol: false,
-          //   lineStyle: {
-          //     width: 2,
-          //     color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
-          //       {
-          //         offset: 0,
-          //         color: '#9effff',
-          //       },
-          //       {
-          //         offset: 1,
-          //         color: '#9E87FF',
-          //       },
-          //     ]),
-          //     shadowColor: 'rgba(158,135,255, 0.3)',
-          //     shadowBlur: 10,
-          //     shadowOffsetY: 20,
-          //   },
-          //   itemStyle: {
-          //     normal: {
-          //       color: colorList[0],
-          //       borderColor: colorList[0],
-          //     },
-          //   },
-          // },
           {
-            name: '报警率',
+            name: '月产量',
             type: 'line',
-            data: this.data1,
+            data: this.sumpro,
+            symbolSize: 1,
+            symbol: 'circle',
+            smooth: true,
+            yAxisIndex: 0,
+            showSymbol: false,
+            lineStyle: {
+              width: 2,
+              color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#9effff',
+                },
+                {
+                  offset: 1,
+                  color: '#9E87FF',
+                },
+              ]),
+              shadowColor: 'rgba(158,135,255, 0.3)',
+              shadowBlur: 10,
+              shadowOffsetY: 20,
+            },
+            itemStyle: {
+              normal: {
+                color: colorList[0],
+                borderColor: colorList[0],
+              },
+            },
+          },
+          {
+            name: '月回退量',
+            type: 'line',
+            data: this.sumback,
             symbolSize: 1,
             symbol: 'circle',
             smooth: true,
@@ -875,7 +910,7 @@ export default {
         ],
       }
 
-      let chart = document.getElementById('box_03')
+      let chart = document.getElementById('box_06')
       let myChart = echarts.init(chart)
       let i = 0
       setInterval(function() {
@@ -888,131 +923,11 @@ export default {
         })
       }, 2000)
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart4 () {
-      var myChart = echarts.init(document.getElementById('box_04'))
-      var option = {
-        legend: {
-          show: false,
-          orient: 'vertical',
-          top: 'center',
-          right: '5%',
-          data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7'],
-          textStyle: {
-            color: '#fff',
-            fontSize: 10,
-          },
-        },
-        grid: {
-          left: '3%',
-          top: 'center',
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)',
-        },
-        series: [
-          {
-            name: '半径模式',
-            type: 'pie',
-            radius: ['30%', '80%'],
-            center: ['50%', '63%'],
-            roseType: 'radius',
-            labelLine: {
-              normal: {
-                show: true,
-                length: 20,
-                length2: 20,
-                lineStyle: {
-                  color: '#CCCCCC',
-                  width: 1,
-                },
-              },
-            },
-            label: {
-              normal: {
-                formatter: '{b|{b}}\n{hr|}\n{c|{c}%}',
-                rich: {
-                  b: {
-                    fontSize: 10,
-                    color: '#FFF',
-                    align: 'left',
-                    padding: 4,
-                  },
-                  hr: {
-                    borderColor: '#CCCCCC',
-                    width: '100%',
-                    borderWidth: 2,
-                    height: 0,
-                  },
-                  c: {
-                    fontSize: 10,
-                    align: 'center',
-                    padding: 4,
-                    color: '#00EDED',
-                  },
-                },
-              },
-            },
-            data: [
-              {
-                value: 1,
-                name: 'rose1',
-                itemStyle: {
-                  color: 'rgba(50,123,250,0.7)',
-                  borderColor: 'rgba(50,123,250,1)',
-                  borderWidth: 1,
-                },
-              },
-              {
-                value: 2,
-                name: 'rose2',
-                itemStyle: {
-                  color: 'rgba(244,201,7,0.7)',
-                  borderColor: 'rgba(244,201,7,1)',
-                  borderWidth: 1,
-                },
-              },
-              {
-                value: 3,
-                name: 'rose3',
-                itemStyle: {
-                  color: 'rgba(23,216,161,0.7)',
-                  borderColor: 'rgba(23,216,161,1)',
-                  borderWidth: 1,
-                },
-              },
-              {
-                value: 4,
-                name: 'rose4',
-                itemStyle: {
-                  color: 'rgba(122,60,235,0.7)',
-                  borderColor: 'rgba(122,60,235,1)',
-                  borderWidth: 1,
-                },
-              },
-              {
-                value: 5,
-                name: 'rose5',
-                itemStyle: {
-                  color: 'rgba(15,197,243,0.7)',
-                  borderColor: 'rgba(15,197,243,1)',
-                  borderWidth: 1,
-                },
-              },
-            ],
-          },
-        ],
-      }
-      myChart.setOption(option)
-      window.addEventListener('resize', function () {
-        myChart.resize()
-      })
-    },
-    chart5 () {
+    chart5() {
       var myChart = echarts.init(document.getElementById('box_05'))
       var data1 = this.data5
       var data2 = this.sumpro
@@ -1315,12 +1230,12 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart6 () {
-      var myChart = echarts.init(document.getElementById('box_06'))
+    chart6() {
+      var myChart = echarts.init(document.getElementById('box_03'))
       var option = {
         tooltip: {
           trigger: 'axis',
@@ -1355,20 +1270,7 @@ export default {
             axisTick: {
               show: false,
             },
-            data: [
-              '11点',
-              '12点',
-              '13点',
-              '14点',
-              '15点',
-              '16点',
-              '17点',
-              '18点',
-              '19点',
-              '20点',
-              '21点',
-              '22点',
-            ],
+            data: this.Xaxis1,
           },
         ],
         yAxis: [
@@ -1480,238 +1382,104 @@ export default {
                 borderWidth: 10,
               },
             },
-            data: [220, 182, 191, 134, 250, 120, 110, 125, 145, 122, 165, 122],
+            data: this.data1,
           },
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart7 () {
+    chart7() {
       var myChart = echarts.init(document.getElementById('box_07'))
-      var plantCap = [
-        {
-          name: '居住',
-          value: 'Settlements',
-        },
-        {
-          name: '行政',
-          value: 'administration',
-        },
-        {
-          name: '文化',
-          value: 'Culture',
-        },
-        {
-          name: '医疗',
-          value: 'hospital ',
-        },
-        {
-          name: '教育',
-          value: 'education ',
-        },
-        {
-          name: '交通',
-          value: 'hospital',
-        },
-        {
-          name: '产业',
-          value: 'industry',
-        },
-      ]
-      var datalist = [
-        {
-          offset: [50, 50],
-          symbolSize: 50,
-          opacity: 0.95,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#29c0fb',
-            },
-            {
-              offset: 1,
-              color: '#2dc5b9',
-            },
-          ]),
-        },
-        {
-          offset: [28, 70],
-          symbolSize: 45,
-          opacity: 0.95,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#35d17e',
-            },
-            {
-              offset: 1,
-              color: '#49ddb2',
-            },
-          ]),
-        },
-        {
-          offset: [10, 40],
-          symbolSize: 30,
-          opacity: 0.95,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#e5d273',
-            },
-            {
-              offset: 1,
-              color: '#e4a37f',
-            },
-          ]),
-        },
-        {
-          offset: [34, 26],
-          symbolSize: 30,
-          opacity: 0.95,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#277aec',
-            },
-            {
-              offset: 1,
-              color: '#57c5ec',
-            },
-          ]),
-        },
-        {
-          offset: [80, 65],
-          symbolSize: 25,
-          opacity: 0.95,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#e54948',
-            },
-            {
-              offset: 1,
-              color: '#f08456',
-            },
-          ]),
-        },
-        {
-          offset: [70, 36],
-          symbolSize: 28,
-          opacity: 0.7,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#11c46e',
-            },
-            {
-              offset: 1,
-              color: '#f08456',
-            },
-          ]),
-        },
-        {
-          offset: [68, 80],
-          symbolSize: 25,
-          opacity: 0.68,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: '#ff4141',
-            },
-            {
-              offset: 1,
-              color: '#ff8989',
-            },
-          ]),
-        },
-      ]
-      var datas = []
-      for (var i = 0; i < this.data3.length; i++) {
-        var item = this.data3[i]
-        var itemToStyle = datalist[i]
-        datas.push({
-          name: item.name + '\n' + item.value,
-          value: itemToStyle.offset,
-          symbolSize: itemToStyle.symbolSize,
-          label: {
-            normal: {
-              textStyle: {
-                fontSize: 10,
-                fontWeight: 600,
-                lineHeight: 12,
-              },
-            },
-          },
-          itemStyle: {
-            normal: {
-              color: itemToStyle.color,
-              opacity: itemToStyle.opacity,
-            },
-          },
-        })
+      var getData = this.dayData
+      var data1 = []
+      for (var i = 0; i < getData.length; i++) {
+        data1.push([getData[i].day, getData[i].count])
       }
       var option = {
-        grid: {
-          show: false,
-          top: 10,
-          bottom: 5,
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a}<br/>{c}',
         },
-        xAxis: [
+        calendar: [
           {
-            gridIndex: 0,
-            type: 'value',
-            show: false,
-            min: 0,
-            max: 100,
-            nameLocation: 'middle',
-            nameGap: 5,
-          },
-        ],
-        yAxis: [
-          {
-            gridIndex: 0,
-            min: 0,
-            show: false,
-            max: 100,
-            nameLocation: 'middle',
-            nameGap: 30,
+            top: 25,
+            left: 'center',
+            // containLabel: true,
+            bottom: '2%',
+            range: [data1[0][0], data1[data1.length - 1][0]],
+            orient: 'vertical',
+            cellSize: 40,
+            itemStyle: {
+              color: '#0D0F4B',
+            },
+            splitLine: {
+              show: false,
+              lineStyle: {
+                color: '#204371',
+                width: 2,
+                type: 'solid',
+              },
+            },
+            yearLabel: {
+              margin: 50,
+              show: false,
+              color: '#ffffff',
+            },
+            monthLabel: {
+              show: false,
+              firstDay: 1,
+              nameMap: 'cn',
+              margin: 10,
+              color: '#ffffff',
+            },
+            dayLabel: {
+              firstDay: 1,
+              nameMap: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+              textStyle: {
+                color: '#ffffff',
+                fontSize: '8px',
+              },
+            },
           },
         ],
         series: [
           {
+            name: '日产量',
             type: 'effectScatter',
-            // symbol: 'circle',
-            // symbolSize: 120,
-
-            hoverAnimation: true,
-            label: {
-              normal: {
-                show: true,
-                formatter: '{b}',
-                color: '#fff',
-                textStyle: {
-                  fontSize: '20',
-                },
-              },
+            coordinateSystem: 'calendar',
+            data: data1,
+            symbolSize: function(val) {
+              val = val[1] / 5
+              val = val < 5 ? 5 : Math.min(val, 10)
+              return val
             },
             itemStyle: {
               normal: {
-                color: '#00acea',
+                color: '#00D3C6',
+                fontSize: '8px',
               },
             },
-            data: datas,
+            label: {
+              show: true,
+              formatter(params) {
+                return params.value[0].split('-')[2]
+              },
+              offset: [12, -2],
+              color: '#ffffff',
+              fontSize: '5px',
+            },
           },
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart8 () {
+    chart8() {
       var myChart = echarts.init(document.getElementById('box_08'))
       var option = {
         grid: {
@@ -1722,7 +1490,7 @@ export default {
           containLabel: true,
         },
         xAxis: {
-          data: ['人员1', '人员2', '人员3', '人员4', '人员5', '人员7', '人员8'],
+          data: this.Xaxis8,
           axisLine: {
             lineStyle: {
               color: '#3d5269',
@@ -1746,7 +1514,6 @@ export default {
           },
           axisLabel: {
             color: '#fff',
-            fontSize: 10,
           },
           splitLine: {
             show: false,
@@ -1754,7 +1521,6 @@ export default {
               color: '#2d3d53',
             },
           },
-          interval: 1000,
         },
         series: [
           {
@@ -1789,12 +1555,12 @@ export default {
                 position: 'top',
               },
             },
-            data: [254, 3254, 1654, 2454, 4757, 2011, 1211],
+            data: this.runtime,
           },
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
@@ -1807,7 +1573,7 @@ export default {
   width: 96% !important;
   background-color: transparent !important;
   color: #00d4c7 !important;
-  font-size: 0.3rem !important;
+  font-size: 0.2rem !important;
   margin: 2% 2%;
 }
 
@@ -1886,7 +1652,7 @@ element.style {
       // text-shadow: 2px 2px 2px #275bdb;
       text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
-    #company{
+    #company {
       position: absolute;
       top: 0.38rem;
       left: 0.375rem;

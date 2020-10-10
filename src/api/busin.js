@@ -32,4 +32,19 @@ export default {
     //查询机器本次作业情况信息（产量、回退、设备运行时长、运行效率）
     return API.POST('machine/findProductionSituationByMachine', params)
   },
+  groupByMonth: () => {
+    //生产月报
+    return API.GET('es/groupByMonth')
+  },
+  groupByDate: () => {
+    //生产日报
+    return API.GET('es/groupByDate')
+  },
+  ThisTimeAlarmInfo: (params) => {
+    //查询机器本次作业情况信息（产量、回退、设备运行时长、运行效率）
+    return API.POST('alarm/ThisTimeAlarmInfo', params)
+  },
+  sumRtimeOfMachineTop: (params) => {
+    return API.POST('machine/sumRtimeOfMachineTop', params)
+  },
 }

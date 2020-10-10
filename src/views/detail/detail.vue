@@ -5,15 +5,13 @@
       <div id="date"></div>
       <div id="company">
         <!-- <dv-decoration-6 style="width:300px;height:30px;" /> -->
-        \
         <dv-decoration-3 style="width:250px;height:30px;" />
       </div>
     </header>
     <section class="section">
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navone"
-                   default-active="3">
+          <el-menu class="navone" default-active="3">
             <el-menu-item index="1">
               <span slot="title">一车间</span>
             </el-menu-item>
@@ -34,37 +32,29 @@
       </div>
       <div class="cloum2">
         <div class="clocen">
-          <el-carousel :interval="0"
-                       type="card"
-                       height="70vh">
-            <el-carousel-item v-for="n in 4"
-                              :key="n"
-                              class="items">
-              <div class="mask">设备{{n}}</div>
+          <el-carousel :interval="0" type="card" height="70vh">
+            <el-carousel-item v-for="n in 4" :key="n" class="items">
+              <div class="mask">设备{{ n }}</div>
               <div class="item">
-                <el-tooltip placement="right"
-                            popper-class="popperTooltip">
+                <el-tooltip placement="right" popper-class="popperTooltip">
                   <div slot="content">
-                    设备名：设备{{n}}<br />
-                    品牌：设备{{n}}<br />
-                    型号：设备{{n}}<br />
-                    出厂日期：设备{{n}}<br />
-                    外形尺寸：设备{{n}}<br />
-                    用途：设备{{n}}<br />
+                    设备名：设备{{ n }}<br />
+                    品牌：设备{{ n }}<br />
+                    型号：设备{{ n }}<br />
+                    出厂日期：设备{{ n }}<br />
+                    外形尺寸：设备{{ n }}<br />
+                    用途：设备{{ n }}<br />
                   </div>
-                  <img src="../../assets/images/sb.png"
-                       alt="" />
+                  <img src="../../assets/images/sb.png" alt="" />
                 </el-tooltip>
                 <div class="imgdata">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"
-                       :id="'product'+n"></div>
+                  <div class="item_2" :id="'product' + n"></div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="imgdata3">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_1"
-                       :id="'productChart'+n"></div>
+                  <div class="item_1" :id="'productChart' + n"></div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
               </div>
@@ -99,56 +89,51 @@
                 <el-row>
                   <el-col :span="5">
                     <div class="item_3">
-                      <img src="../../assets/images/workshop.png"
-                           alt="" />
+                      <img src="../../assets/images/workshop.png" alt="" />
                     </div>
                     <div class="item_4">
                       <span class="title">车间名</span>
-                      <br>
+                      <br />
                       <h2 class="content">三车间</h2>
                     </div>
                   </el-col>
                   <el-col :span="5">
                     <div class="item_3">
-                      <img src="../../assets/images/machine.png"
-                           alt="" />
+                      <img src="../../assets/images/machine.png" alt="" />
                     </div>
                     <div class="item_4">
                       <span class="title">设备数量</span>
-                      <br>
+                      <br />
                       <span class="content">5</span>
                     </div>
                   </el-col>
                   <el-col :span="5">
                     <div class="item_3">
-                      <img src="../../assets/images/run.png"
-                           alt="" />
+                      <img src="../../assets/images/run.png" alt="" />
                     </div>
                     <div class="item_4">
                       <span class="title">作业数量</span>
-                      <br>
+                      <br />
                       <span class="content">5</span>
                     </div>
                   </el-col>
                   <el-col :span="5">
                     <div class="item_3">
-                      <img src="../../assets/images/standby.png"
-                           alt="" />
+                      <img src="../../assets/images/standby.png" alt="" />
                     </div>
                     <div class="item_4">
                       <span class="title">待机数量</span>
-                      <br>
+                      <br />
                       <span class="content">5</span>
                     </div>
                   </el-col>
                   <el-col :span="5">
                     <div class="item_3">
-                      <img src="../../assets/images/alarm.png"
-                           alt="" />
+                      <img src="../../assets/images/alarm.png" alt="" />
                     </div>
                     <div class="item_4">
                       <span class="title">报警数量</span>
-                      <br>
+                      <br />
                       <span class="content">5</span>
                     </div>
                   </el-col>
@@ -160,8 +145,7 @@
       </div>
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navtwo"
-                   default-active="2">
+          <el-menu class="navtwo" default-active="2">
             <el-menu-item index="1">
               <span slot="title">生产设备</span>
             </el-menu-item>
@@ -201,57 +185,70 @@ export default {
     linePercent,
     lineOne,
   },
-  data () {
+  data() {
     return {
       productCharts: {},
     }
   },
-  mounted () {
+  mounted() {
     require('../../assets/js/common.js')
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.product()
       this.machine()
     })
   },
   methods: {
-    product () {
+    product() {
       const color = ['rgba(23, 255, 243', 'rgba(255,100,97']
-      const xData = ['21:43:02', '21:43:22', '21:43:42', '21:44:02', '21:44:22', '21:44:42', '21:45:02']
+      const xData = [
+        '21:43:02',
+        '21:43:22',
+        '21:43:42',
+        '21:44:02',
+        '21:44:22',
+        '21:44:42',
+        '21:45:02',
+      ]
       const pNum = [10, 10, 30, 12, 15, 3, 7]
       const bNum = [5, 12, 11, 14, 25, 16, 10]
 
-      var roseCharts = document.getElementsByClassName('item_1'); // 对应地使用ByClassName
-      for (var i = 0; i < roseCharts.length; i++) { // 通过for循环，在相同class的dom内绘制元素
+      var roseCharts = document.getElementsByClassName('item_1') // 对应地使用ByClassName
+      for (var i = 0; i < roseCharts.length; i++) {
+        // 通过for循环，在相同class的dom内绘制元素
         let myChart = echarts.init(roseCharts[i])
         const option = {
-          title: [{
-            text: '无报警',
-            textStyle: {
-              fontWeight: 'normal',
-              color: 'red',
-              fontSize: 10,
+          title: [
+            {
+              text: '无报警',
+              textStyle: {
+                fontWeight: 'normal',
+                color: 'red',
+                fontSize: 10,
+              },
+              top: '2%',
+              left: '1%',
             },
-            top: '2%',
-            left: '1%'
-          }, {
-            text: `2017082912`,
-            textStyle: {
-              fontWeight: 'normal',
-              color: 'blue',
-              fontSize: 10,
+            {
+              text: `2017082912`,
+              textStyle: {
+                fontWeight: 'normal',
+                color: 'blue',
+                fontSize: 10,
+              },
+              top: '2%',
+              left: 'center',
             },
-            top: '2%',
-            left: 'center',
-          }, {
-            text: `000-072`,
-            textStyle: {
-              fontWeight: 'normal',
-              color: 'blue',
-              fontSize: 10,
+            {
+              text: `000-072`,
+              textStyle: {
+                fontWeight: 'normal',
+                color: 'blue',
+                fontSize: 10,
+              },
+              top: '2%',
+              right: '2',
             },
-            top: '2%',
-            right: '2',
-          }],
+          ],
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -275,7 +272,7 @@ export default {
             left: '4%',
             right: '4%',
             bottom: '8%',
-            containLabel: true
+            containLabel: true,
           },
           xAxis: [
             {
@@ -287,7 +284,7 @@ export default {
                 textStyle: {
                   color: 'rgb(0,253,255,0.6)',
                   fontSize: 10,
-                }
+                },
               },
               boundaryGap: false,
               axisLine: {
@@ -339,19 +336,19 @@ export default {
                 formatter: '{value}',
                 textStyle: {
                   fontSize: 10,
-                  color: 'rgb(0,253,255,0.6)'
-                }
+                  color: 'rgb(0,253,255,0.6)',
+                },
               },
               splitLine: {
                 lineStyle: {
-                  color: 'rgb(23,255,243,0.3)'
-                }
+                  color: 'rgb(23,255,243,0.3)',
+                },
               },
               axisLine: {
                 lineStyle: {
-                  color: 'rgb(0,253,255,0.6)'
-                }
-              }
+                  color: 'rgb(0,253,255,0.6)',
+                },
+              },
             },
           ],
           series: [
@@ -368,16 +365,26 @@ export default {
               smooth: true,
               areaStyle: {
                 normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: color[0] + ', 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: color[0] + ', 0)'
-                  }], false),
+                  color: new echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
+                      {
+                        offset: 0,
+                        color: color[0] + ', 0.3)',
+                      },
+                      {
+                        offset: 0.8,
+                        color: color[0] + ', 0)',
+                      },
+                    ],
+                    false
+                  ),
                   shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
+                  shadowBlur: 10,
+                },
               },
             },
             {
@@ -393,90 +400,99 @@ export default {
               smooth: true,
               areaStyle: {
                 normal: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: color[1] + ', 0.3)'
-                  }, {
-                    offset: 0.8,
-                    color: color[1] + ', 0)'
-                  }], false),
+                  color: new echarts.graphic.LinearGradient(
+                    0,
+                    0,
+                    0,
+                    1,
+                    [
+                      {
+                        offset: 0,
+                        color: color[1] + ', 0.3)',
+                      },
+                      {
+                        offset: 0.8,
+                        color: color[1] + ', 0)',
+                      },
+                    ],
+                    false
+                  ),
                   shadowColor: 'rgba(0, 0, 0, 0.1)',
-                  shadowBlur: 10
-                }
+                  shadowBlur: 10,
+                },
               },
             },
           ],
-
         }
 
-
         myChart.setOption(option)
-        window.addEventListener('resize', function () {
+        window.addEventListener('resize', function() {
           myChart.resize()
         })
 
-        setInterval(function () {
+        setInterval(function() {
           xData.shift()
           xData.push((Math.random() * 100).toFixed(0))
           pNum.shift()
           pNum.push((Math.random() * 100).toFixed(0))
           myChart.setOption({
             xAxis: {
-              data: xData
+              data: xData,
             },
             series: {
               data: pNum,
-            }
-          });
-        }, 20000);
+            },
+          })
+        }, 20000)
 
-        function refresh () {
+        function refresh() {
           // liuru先shift(),再push()
-
         }
-
       }
     },
 
-    machine () {
+    machine() {
       let chart = document.getElementById('product')
       let myChart = echarts.init(chart)
       let data = [
         {
-          name: "图一",
+          name: '图一',
           value: 50,
-          icon: 'hyacinth'
+          icon: 'hyacinth',
         },
         {
-          name: "图二",
+          name: '图二',
           value: 50,
-          icon: 'algae'
+          icon: 'algae',
         },
         {
-          name: "图三",
+          name: '图三',
           value: 50,
-          icon: 'llegal'
-        }
-      ];
-      let pos;
-      let seriesArr = [];
-      let titleArr = [];
+          icon: 'llegal',
+        },
+      ]
+      let pos
+      let seriesArr = []
+      let titleArr = []
       data.map((item, index) => {
-        pos = data.length == 4 ? index * 33.3 + 12 : (data.length == 1 ? 30 : index * 26 + 25)
-        titleArr.push(
-          {
-            text: item.name,
-            left: pos + '%',
-            top: '75%',
+        pos =
+          data.length == 4
+            ? index * 33.3 + 12
+            : data.length == 1
+            ? 30
+            : index * 26 + 25
+        titleArr.push({
+          text: item.name,
+          left: pos + '%',
+          top: '75%',
+          textAlign: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fontSize: '14',
+            color: '#d0e3ee',
             textAlign: 'center',
-            textStyle: {
-              fontWeight: 'normal',
-              fontSize: '14',
-              color: "#d0e3ee",
-              textAlign: 'center',
-            },
-          }
-        );
+          },
+        })
         seriesArr.push({
           name: item.name,
           type: 'gauge',
@@ -485,98 +501,107 @@ export default {
           max: 200,
           splitNumber: 1,
           radius: '31',
-          axisLine: { // 坐标轴线
-            lineStyle: { // 属性lineStyle控制线条样式
+          axisLine: {
+            // 坐标轴线
+            lineStyle: {
+              // 属性lineStyle控制线条样式
               width: 2,
               color: [[1, '#3882C5']],
               shadowColor: '#3882C5',
               shadowBlur: 8,
-            }
+            },
           },
-          axisTick: { // 坐标轴小标记
+          axisTick: {
+            // 坐标轴小标记
             length: 5, // 属性length控制线长
-            lineStyle: { // 属性lineStyle控制线条样式
+            lineStyle: {
+              // 属性lineStyle控制线条样式
               color: 'auto',
-              width: 2
-            }
+              width: 2,
+            },
           },
           axisLabel: {
             color: '#3882C5',
-            fontSize: 12
+            fontSize: 12,
           },
-          splitLine: { // 分隔线
+          splitLine: {
+            // 分隔线
             length: 5, // 属性length控制线长
-            lineStyle: { // 属性lineStyle（详见lineStyle）控制线条样式
+            lineStyle: {
+              // 属性lineStyle（详见lineStyle）控制线条样式
               color: 'auto',
-              width: 2
-            }
+              width: 2,
+            },
           },
           title: {
-            textStyle: { // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+            textStyle: {
+              // 其余属性默认使用全局文本样式，详见TEXTSTYLE
               fontWeight: 'bolder',
               fontSize: 14,
-              color: '#000'
-            }
+              color: '#000',
+            },
           },
           // 指针
           pointer: {
             length: '70%',
-            width: '4%'
+            width: '4%',
           },
           detail: {
             formatter: '{value}',
             offsetCenter: [0, '80%'],
-            textStyle: { // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+            textStyle: {
+              // 其余属性默认使用全局文本样式，详见TEXTSTYLE
               fontWeight: 'bold',
               backgroundColor: '#3882C5',
               color: '#fff',
               fontSize: 12,
-            }
+            },
           },
           center: [pos + '%', '40%'],
-          data: [{
-            value: item.value,
-            name: '次数'
-          }]
+          data: [
+            {
+              value: item.value,
+              name: '次数',
+            },
+          ],
         })
       })
 
       var option = {
         title: titleArr,
-        series: seriesArr
-      };
-
+        series: seriesArr,
+      }
 
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    machine2 () {
-      var value = 10;
+    machine2() {
+      var value = 10
       var option = {
-        backgroundColor: "#000",
+        backgroundColor: '#000',
         xAxis: {
           splitLine: {
-            show: false
+            show: false,
           },
           axisLabel: {
-            show: false
+            show: false,
           },
           axisLine: {
-            show: false
-          }
+            show: false,
+          },
         },
         yAxis: {
           splitLine: {
-            show: false
+            show: false,
           },
           axisLabel: {
-            show: false
+            show: false,
           },
           axisLine: {
-            show: false
-          }
+            show: false,
+          },
         },
         series: [
           // 内圆
@@ -587,69 +612,79 @@ export default {
             z: 4,
             label: {
               normal: {
-                position: "center",
-
-              }
+                position: 'center',
+              },
             },
             hoverAnimation: false,
-            data: [{
-              name: '在线数量',
-              value: 11111,
-              itemStyle: {
-                normal: {
-                  color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                    offset: 0,
-                    color: '#0069D3'
-                  }, {
-                    offset: 0.5,
-                    color: '#00B8F8'
-                  }, {
-                    offset: 1,
-                    color: '#0068D3'
-                  }])
-                }
-
-              },
-              label: {
-                normal: {
-                  rich: {
-                    a: {
-                      color: '#fff',
-                      align: 'center',
-                      fontSize: 10,
-                      fontWeight: "normal"
-                    },
-                    b: {
-                      color: '#fff',
-                      align: 'center',
-                      fontSize: 8
-                    },
-                    c: {
-                      color: '#fff',
-                      align: 'center',
-                      fontSize: 10
-                    }
-
+            data: [
+              {
+                name: '在线数量',
+                value: 11111,
+                itemStyle: {
+                  normal: {
+                    color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                      {
+                        offset: 0,
+                        color: '#0069D3',
+                      },
+                      {
+                        offset: 0.5,
+                        color: '#00B8F8',
+                      },
+                      {
+                        offset: 1,
+                        color: '#0068D3',
+                      },
+                    ]),
                   },
-                  formatter: function (params) {
-                    return "{a|" + "在线数量" + "}\n\n" + "{b|" + params.value + "}" + "{c|个}";
+                },
+                label: {
+                  normal: {
+                    rich: {
+                      a: {
+                        color: '#fff',
+                        align: 'center',
+                        fontSize: 10,
+                        fontWeight: 'normal',
+                      },
+                      b: {
+                        color: '#fff',
+                        align: 'center',
+                        fontSize: 8,
+                      },
+                      c: {
+                        color: '#fff',
+                        align: 'center',
+                        fontSize: 10,
+                      },
+                    },
+                    formatter: function(params) {
+                      return (
+                        '{a|' +
+                        '在线数量' +
+                        '}\n\n' +
+                        '{b|' +
+                        params.value +
+                        '}' +
+                        '{c|个}'
+                      )
+                    },
+                    position: 'center',
+                    show: true,
+                    textStyle: {
+                      fontSize: '14',
+                      fontWeight: 'normal',
+                      color: '#fff',
+                    },
                   },
-                  position: 'center',
-                  show: true,
-                  textStyle: {
-                    fontSize: '14',
-                    fontWeight: 'normal',
-                    color: '#fff'
-                  }
-                }
+                },
+                labelLine: {
+                  normal: {
+                    show: false,
+                  },
+                },
               },
-              labelLine: {
-                normal: {
-                  show: false
-                }
-
-              }
-            }],
+            ],
           },
           //进度图
           {
@@ -668,64 +703,66 @@ export default {
                 width: 20,
                 color: [
                   [
-                    1, new echarts.graphic.LinearGradient(
-                      0, 0, 1, 0, [{
+                    1,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
                         offset: 0,
-                        color: '#0099FF'
+                        color: '#0099FF',
                       },
                       {
                         offset: 1,
-                        color: '#00FAFF'
-                      }
-                    ]
-                    )
-                  ]
-                ]
-              }
+                        color: '#00FAFF',
+                      },
+                    ]),
+                  ],
+                ],
+              },
             },
             //分隔线样式。
             splitLine: {
               show: false,
             },
             axisLabel: {
-              show: false
+              show: false,
             },
             axisTick: {
-              show: false
+              show: false,
             },
             pointer: {
-              show: false
+              show: false,
             },
             title: {
               show: false,
               offsetCenter: [0, '-20%'], // x, y，单位px
               textStyle: {
                 color: '#ddd',
-                fontSize: 11
-              }
+                fontSize: 11,
+              },
             },
             //仪表盘详情，用于显示数据。
             detail: {
               show: false,
               offsetCenter: [0, '10%'],
               color: '#ddd',
-              formatter: function (params) {
+              formatter: function(params) {
                 return params
               },
               textStyle: {
-                fontSize: 10
-              }
+                fontSize: 10,
+              },
             },
-            data: [{
-              name: "在线数量",
-              value: 11111111111111111
-            }]
+            data: [
+              {
+                name: '在线数量',
+                value: 11111111111111111,
+              },
+            ],
           },
           //刻度尺
           {
             // name: "白色圈刻度",
-            type: "gauge",
-            radius: "67%",
+            type: 'gauge',
+            radius: '67%',
             startAngle: 220,
             endAngle: -40,
             z: 2,
@@ -733,214 +770,234 @@ export default {
               show: true,
               lineStyle: {
                 color: '#00FAFF',
-                width: 1
+                width: 1,
               },
-              length: -8
+              length: -8,
             }, //刻度样式
             splitLine: {
               show: true,
               length: -20,
               lineStyle: {
-                color: '#00FAFF'
-              }
+                color: '#00FAFF',
+              },
             }, //分隔线样式
             axisLabel: {
               color: 'rgba(255,255,255,0)',
               fontSize: 12,
             }, //刻度节点文字颜色
             pointer: {
-              show: false
+              show: false,
             },
             axisLine: {
               lineStyle: {
-                opacity: 0
-              }
+                opacity: 0,
+              },
             },
             title: {
               show: true,
               offsetCenter: [-65, '84%'], // x, y，单位px
               textStyle: {
                 color: '#ddd',
-                fontSize: 11
-              }
+                fontSize: 11,
+              },
             },
             //仪表盘详情，用于显示数据。
             detail: {
               show: true,
               offsetCenter: [0, '84%'],
               color: '#ddd',
-              formatter: function (params) {
+              formatter: function(params) {
                 return params
               },
               textStyle: {
-                fontSize: 15
-              }
+                fontSize: 15,
+              },
             },
-            data: [{
-              value: 14444,
-              name: "总数:"
-            }]
+            data: [
+              {
+                value: 14444,
+                name: '总数:',
+              },
+            ],
           },
           // 刻度圈
           {
-            "type": "pie",
+            type: 'pie',
             z: 1,
-            "radius": ["0%", "73%"],
-            "center": ["50%", "50%"],
-            "avoidLabelOverlap": false,
-            "label": {
-              "normal": {
-                "show": false,
-                "position": "center"
+            radius: ['0%', '73%'],
+            center: ['50%', '50%'],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: 'center',
               },
-              "emphasis": {
-                "show": false,
-                "textStyle": {
-                  "fontWeight": "bold"
-                }
-              }
+              emphasis: {
+                show: false,
+                textStyle: {
+                  fontWeight: 'bold',
+                },
+              },
             },
-            "itemStyle": {
-              "normal": {
-                "color": {
-                  "type": "linear",
-                  "x": 0,
-                  "y": 0,
-                  "x2": 0,
-                  "y2": 1,
-                  "colorStops": [{
-                    "offset": 0.05,
-                    "color": "rgba(32,36,107, 0.2)"
-                  }, {
-                    "offset": 0.5,
-                    "color": "rgba(32,36,107,0.3)"
-                  }, {
-                    "offset": 0.95,
-                    "color": "rgba(32,36,107, 0.2)"
-                  }]
-                }
-              }
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0.05,
+                      color: 'rgba(32,36,107, 0.2)',
+                    },
+                    {
+                      offset: 0.5,
+                      color: 'rgba(32,36,107,0.3)',
+                    },
+                    {
+                      offset: 0.95,
+                      color: 'rgba(32,36,107, 0.2)',
+                    },
+                  ],
+                },
+              },
             },
-            "labelLine": {
-              "normal": {
-                "show": false
-              }
+            labelLine: {
+              normal: {
+                show: false,
+              },
             },
-            "data": [{
-              "value": 3235
-            }]
+            data: [
+              {
+                value: 3235,
+              },
+            ],
           },
           //最外层圈
           {
-            "type": "pie",
-            "radius": ["0%", "85%"],
-            "center": ["50%", "50%"],
-            "avoidLabelOverlap": false,
+            type: 'pie',
+            radius: ['0%', '85%'],
+            center: ['50%', '50%'],
+            avoidLabelOverlap: false,
             z: 0,
             hoverAnimation: false,
-            "label": {
-              "normal": {
-                "show": false,
-                "position": "center"
+            label: {
+              normal: {
+                show: false,
+                position: 'center',
               },
-              "emphasis": {
-                "show": false,
-                "textStyle": {
-                  "fontWeight": "bold"
-                }
-              }
+              emphasis: {
+                show: false,
+                textStyle: {
+                  fontWeight: 'bold',
+                },
+              },
             },
-            "itemStyle": {
-              "normal": {
-                "color": {
-                  "type": "linear",
-                  "x": 0,
-                  "y": 0,
-                  "x2": 0,
-                  "y2": 1,
-                  "colorStops": [{
-                    "offset": 0.05,
-                    "color": "rgba(21,24,65, 0.2)"
-                  }, {
-                    "offset": 0.5,
-                    "color": "rgba(21,24,65, 0.3)"
-                  }, {
-                    "offset": 0.95,
-                    "color": "rgba(21,24,65, 0.2)"
-                  }]
-                }
-              }
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0.05,
+                      color: 'rgba(21,24,65, 0.2)',
+                    },
+                    {
+                      offset: 0.5,
+                      color: 'rgba(21,24,65, 0.3)',
+                    },
+                    {
+                      offset: 0.95,
+                      color: 'rgba(21,24,65, 0.2)',
+                    },
+                  ],
+                },
+              },
             },
-            "labelLine": {
-              "normal": {
-                "show": false
-              }
+            labelLine: {
+              normal: {
+                show: false,
+              },
             },
-            "data": [{
-              "value": 3235
-            }]
+            data: [
+              {
+                value: 3235,
+              },
+            ],
           },
           //最外层圈
           {
-            "type": "pie",
-            "radius": ["0%", "100%"],
-            "center": ["50%", "50%"],
-            "avoidLabelOverlap": false,
+            type: 'pie',
+            radius: ['0%', '100%'],
+            center: ['50%', '50%'],
+            avoidLabelOverlap: false,
             z: 0,
             hoverAnimation: false,
-            "label": {
-              "normal": {
-                "show": false,
-                "position": "center"
+            label: {
+              normal: {
+                show: false,
+                position: 'center',
               },
-              "emphasis": {
-                "show": false,
-                "textStyle": {
-                  "fontWeight": "bold"
-                }
-              }
+              emphasis: {
+                show: false,
+                textStyle: {
+                  fontWeight: 'bold',
+                },
+              },
             },
-            "itemStyle": {
-              "normal": {
-                "color": {
-                  "type": "linear",
-                  "x": 0,
-                  "y": 0,
-                  "x2": 0,
-                  "y2": 1,
-                  "colorStops": [{
-                    "offset": 0.05,
-                    "color": "rgba(21,24,65, 0.2)"
-                  }, {
-                    "offset": 0.5,
-                    "color": "rgba(21,24,65, 0.3)"
-                  }, {
-                    "offset": 1,
-                    "color": "rgba(96,27,59, 0.2)"
-                  }]
-                }
-              }
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0.05,
+                      color: 'rgba(21,24,65, 0.2)',
+                    },
+                    {
+                      offset: 0.5,
+                      color: 'rgba(21,24,65, 0.3)',
+                    },
+                    {
+                      offset: 1,
+                      color: 'rgba(96,27,59, 0.2)',
+                    },
+                  ],
+                },
+              },
             },
-            "labelLine": {
-              "normal": {
-                "show": false
-              }
+            labelLine: {
+              normal: {
+                show: false,
+              },
             },
-            "data": [{
-              "value": 3235
-            }]
-          }
-        ]
+            data: [
+              {
+                value: 3235,
+              },
+            ],
+          },
+        ],
       }
 
       let chart = document.getElementById('product')
       let myChart = echarts.init(chart)
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
@@ -992,17 +1049,17 @@ export default {
   background-color: #cfe0ee !important;
   color: #38b2ff !important;
 }
-.el-carousel__item{
+.el-carousel__item {
   width: 30%;
   left: 10%;
   height: 240px;
 }
 
-.el-tooltip__popper.is-dark{
-    color: #fff;
-    font-size:	12px；
+.el-tooltip__popper.is-dark {
+  color: #fff;
+  font-size: 12px；;
 }
-.el-col-5{
+.el-col-5 {
   width: 20%;
 }
 </style>
@@ -1018,13 +1075,12 @@ border-top-color: blue;
 {
 border-top-color: blue ;
 } */
-.popperTooltip{
+.popperTooltip {
   line-height: 1.8 !important;
-  background:rgba(161, 176, 203, 0.2) !important;
+  background: rgba(161, 176, 203, 0.2) !important;
 }
 </style>
 <style lang="scss" scoped>
-
 /*引用字库*/
 @font-face {
   font-family: electronicFont;
@@ -1048,7 +1104,7 @@ border-top-color: blue ;
       // text-shadow: 2px 2px 2px #275bdb;
       text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
-  #company{
+    #company {
       position: absolute;
       top: 0.27rem;
       left: 0.375rem;
@@ -1085,14 +1141,13 @@ border-top-color: blue ;
       margin: 0.2rem;
       width: 18%;
       height: 90vh;
-      border: 1px solid #274774;
+      background: url('../../assets/images/nav_bg.png');
+      background-size: cover;
       display: flex;
       justify-content: right;
       align-items: center;
-      border-radius: 0 50% 50% 0;
       .navmenu {
         width: 100%;
-        // border: 1px solid #335533;
         height: 70%;
       }
     }
@@ -1108,7 +1163,7 @@ border-top-color: blue ;
       .clocen {
         width: 100%;
         height: 80%;
-        
+
         .items {
           // width: 32%;
           height: 100%;
@@ -1116,7 +1171,7 @@ border-top-color: blue ;
           border: 1px solid #274774;
           background: rgba(20, 35, 90, 0.4);
           border-radius: 10px;
-          
+
           .mask {
             border: 1px solid #5d74c2;
             border-radius: 50px;
@@ -1139,8 +1194,8 @@ border-top-color: blue ;
               height: 35%;
               padding: 5% 0 5% 28%;
             }
-            img:hover{
-                cursor: pointer;
+            img:hover {
+              cursor: pointer;
             }
             .imgdata {
               width: 92%;
@@ -1184,7 +1239,6 @@ border-top-color: blue ;
               clear: both;
             }
           }
-          
         }
         .items:nth-child(2) {
           margin: 0 0.27rem;
@@ -1200,26 +1254,26 @@ border-top-color: blue ;
         border: 1px solid #274774;
         background: rgba(20, 35, 90, 0.4);
         border-radius: 10px;
-        .item_3{
-           height: 94%;
-           float: left;
+        .item_3 {
+          height: 94%;
+          float: left;
         }
-        .item_4{
-          margin-left:7%;
-           height: 94%;
-           float: left;
+        .item_4 {
+          margin-left: 7%;
+          height: 94%;
+          float: left;
         }
-        .title{
-          font-size:.3rem;
-          color:#fff;
-          line-height:.5rem;
+        .title {
+          font-size: 0.3rem;
+          color: #fff;
+          line-height: 0.5rem;
         }
-        .content{
-          font-weight:700;
-          font-size:.3rem;
-          background-image:-webkit-linear-gradient(bottom,#3962d4,#9db5eb);
-          -webkit-background-clip:text;
-          -webkit-text-fill-color:transparent;
+        .content {
+          font-weight: 700;
+          font-size: 0.3rem;
+          background-image: -webkit-linear-gradient(bottom, #3962d4, #9db5eb);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
       }
     }

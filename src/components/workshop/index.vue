@@ -1,27 +1,31 @@
 <template>
   <div class="workshop">
     <section class="boxwrap">
-
       <div class="gc">
         <div class="machines-grid">
-          <div class="machines-col-1s"
-               v-for="(area, index) in machineData"
-               :key="index">
+          <div
+            class="machines-col-1s"
+            v-for="(area, index) in machineData"
+            :key="index"
+          >
             <ul>
-              <li class="machiewrp"
-                  v-for="(row, index) in area.children"
-                  :key="index"
-                  :style="{ transform: 'scale(' + (index + 6) / 10 + ')' }">
-                <div class="machie"
-                     @click="detail">
-                  <div class="point"
-                       :class="
+              <li
+                class="machiewrp"
+                v-for="(row, index) in area.children"
+                :key="index"
+                :style="{ transform: 'scale(' + (index + 6) / 10 + ')' }"
+              >
+                <div class="machie" @click="detail">
+                  <div
+                    class="point"
+                    :class="
                       row.type == 0
                         ? 'bon'
                         : row.type == 1
                         ? 'bstandby'
                         : 'balarm'
-                    "></div>
+                    "
+                  ></div>
                 </div>
               </li>
             </ul>
@@ -32,20 +36,13 @@
         </div>
         <div class="pannel">
           <div class="indicator">
-            <img class="sb"
-                 src="../../assets/images/sb.png"
-                 alt="" />
+            <img class="sb" src="../../assets/images/sb.png" alt="" />
           </div>
           <div class="indicator mid">
-            <div class="mid_items"
-                 v-for="(i, index) in 6"
-                 :key="index">
-              <img src="../../assets/images/line3.png"
-                   alt="" />
-              <div class="mid_con"
-                   id="ybp"></div>
-              <img src="../../assets/images/line3.png"
-                   alt="" />
+            <div class="mid_items" v-for="(i, index) in 6" :key="index">
+              <img src="../../assets/images/line3.png" alt="" />
+              <div class="mid_con" id="ybp"></div>
+              <img src="../../assets/images/line3.png" alt="" />
             </div>
           </div>
           <div class="indicator">
@@ -59,26 +56,53 @@
 </template>
 <script>
 import echarts from 'echarts'
+import API from '@/api/busin'
 export default {
   name: 'workShop',
-  data () {
+  data() {
     return {
       machineData: [],
       state: 'point bstandby',
+      workshopInfo: [],
+      workshopName: [],
+      children1: [],
+      children2: [],
+      children3: [],
+      children4: [],
     }
   },
-  mounted () {
+  mounted() {
     this.demo()
     this.chart9()
     this.chart10()
+    this.findMachineListByExample()
   },
   methods: {
-    detail (id) {
+    detail(id) {
       console.log(id)
       // this.$router.push("/detail/detail");
       this.$router.push('detail')
     },
-    demo () {
+    // 查询企业内设备（车间名、设备数量、各状态设备数量【作业、待机、报警】）
+    findMachineListByExample() {
+      const params = {
+        limit: 5,
+      }
+      API.findMachineListByExample(params).then((res) => {
+        console.log(res)
+        // for (var j = 0; j < res.info[0].List.length; j++) {
+        //   this.children1.push({
+        //     name: res.info[0].List[j].machineName,
+        //     type: res.info[0].List[j].status,
+        //   })
+        // }
+        for (var i = 0; i < res.info.length; i++) {
+          this.workshopName.push(res.info[i].workshopName)
+        }
+        // console.log(this.children1)
+      })
+    },
+    demo() {
       this.machineData = [
         {
           name: '一车间',
@@ -146,7 +170,7 @@ export default {
         },
       ]
     },
-    chart9 () {
+    chart9() {
       var myChart = echarts.init(document.getElementById('ybp'))
       var option = {
         series: [
@@ -173,7 +197,7 @@ export default {
               show: false,
               color: '#00FAFF', //仪表盘上的轴线颜色
               distance: 15, //图形与刻度的间距
-              formatter: function (v) {
+              formatter: function(v) {
                 //刻度轴上的数据相关显示
                 switch (v + '') {
                   case '0':
@@ -294,7 +318,7 @@ export default {
               show: true,
               offsetCenter: [0, '70%'],
               color: '#DFFFFF',
-              formatter: function (params) {
+              formatter: function(params) {
                 return params + '%'
               },
               textStyle: {
@@ -312,11 +336,11 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
-    chart10 () {
+    chart10() {
       var myChart = echarts.init(document.getElementById('devicenum'))
       var option = {
         grid: {
@@ -555,7 +579,7 @@ export default {
         ],
       }
       myChart.setOption(option)
-      window.addEventListener('resize', function () {
+      window.addEventListener('resize', function() {
         myChart.resize()
       })
     },

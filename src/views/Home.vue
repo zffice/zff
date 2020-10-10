@@ -3,7 +3,20 @@
     <header class="header">
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
-      <div id="company">测试工厂</div>
+      <div id="company">
+        <div class="warm">
+          <el-badge :value="7" :max="99" class="item">
+            <img src="../assets/images/warm.png" alt="" />
+          </el-badge>
+        </div>
+        <div class="loginUser">
+          <img src="../assets/images/loginUser.png" alt="" />
+          <span class="text">管理员</span>
+        </div>
+        <div class="logoutUser">
+          <img src="../assets/images/logoutUser.png" alt="" />
+        </div>
+      </div>
     </header>
     <section class="section">
       <div class="cloum">
@@ -32,7 +45,8 @@
             >
               <el-table-column prop="name" label="车间名"> </el-table-column>
               <el-table-column prop="result" label="报警设备"></el-table-column>
-              <el-table-column prop="info" label="报警内容" width="200"> </el-table-column>
+              <el-table-column prop="info" label="报警内容" width="200">
+              </el-table-column>
               <el-table-column prop="time" label="报警时间"> </el-table-column>
               <el-table-column prop="status" label="状态"></el-table-column>
             </el-table>
@@ -121,6 +135,10 @@ export default {
       //运行时长
       Xaxis8: [],
       runtime: [],
+      //
+      alarmOption: {},
+      //
+      chart: '',
     }
   },
   created() {
@@ -470,7 +488,7 @@ export default {
       })
     },
     chart2() {
-      var myChart = echarts.init(document.getElementById('box_02'))
+      this.chart = echarts.init(document.getElementById('box_02'))
       function contains(arr, dst) {
         var i = arr.length
         while ((i -= 1)) {
@@ -512,7 +530,7 @@ export default {
         return sss
       }
 
-      var option = {
+      this.alarmOption = {
         tooltip: {
           show: true,
           textStyle: {
@@ -714,10 +732,33 @@ export default {
           },
         ],
       }
-      myChart.setOption(option)
+      this.chart.setOption(this.alarmOption)
+      this.autoMave()
       window.addEventListener('resize', function() {
-        myChart.resize()
+        this.chart.resize()
       })
+    },
+    //自动滚动
+    autoMave() {
+      this.timeOut = setInterval(() => {
+        if (
+          Number(this.alarmOption.dataZoom[0].end) ===
+          this.data2.length - 1
+        ) {
+          this.alarmOption.dataZoom[0].end = 40
+          this.alarmOption.dataZoom[0].start = 0
+        } else {
+          this.alarmOption.dataZoom[0].end =
+            this.alarmOption.dataZoom[0].end + 10
+          this.alarmOption.dataZoom[0].start =
+            this.alarmOption.dataZoom[0].start + 10
+        }
+        if (this.alarmOption.dataZoom[0].end == 100) {
+          this.alarmOption.dataZoom[0].end = 40
+          this.alarmOption.dataZoom[0].start = 0
+        }
+        this.chart.setOption(this.alarmOption)
+      }, 2000)
     },
     chart3() {
       const colorList = ['#9E87FF', '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF']
@@ -928,8 +969,8 @@ export default {
         grid: {
           left: '6%',
           right: '2%',
-          bottom: '2%',
-          top: '10%',
+          bottom: 0,
+          top: '20%',
           containLabel: true,
         },
         xAxis: {
@@ -1393,7 +1434,13 @@ export default {
           trigger: 'item',
           formatter: function name(params) {
             console.log(params)
-            return params.seriesName+"<br>日期："+params.data[0]+"<br>产量："+params.data[1]
+            return (
+              params.seriesName +
+              '<br>日期：' +
+              params.data[0] +
+              '<br>产量：' +
+              params.data[1]
+            )
           },
         },
         calendar: [
@@ -1629,7 +1676,7 @@ element.style {
 }
 .home {
   width: 100%;
-  background: url('../assets/beijing.png') rgba(42, 49, 127, .1)  no-repeat;
+  background: url('../assets/beijing.png') rgba(42, 49, 127, 0.1) no-repeat;
   height: 100vh;
   background-size: 100% 100%;
   background-blend-mode: multiply;
@@ -1647,18 +1694,58 @@ element.style {
       text-shadow: -1px -1px 1px #fff, 1px 2px 2px #55ffff;
     }
     #company {
+      width: 15%;
+      height: 5%;
       position: absolute;
       top: 0.38rem;
-      left: 0.375rem;
+      right: 0.375rem;
       font-size: 0.45rem;
       font-family: 'electronicFont' !important;
       text-align: center;
       color: #15a0db;
+      .warm {
+        width: 20%;
+        height: 90%;
+        float: left;
+        .item {
+          margin-top: 5px;
+        }
+        img {
+          width: 60%;
+        }
+      }
+      .loginUser {
+        width: 38%;
+        height: 90%;
+        margin-left: 10%;
+        margin-top: 3px;
+        float: left;
+        img {
+          margin-top: 3px;
+          width: 25%;
+          float: left;
+        }
+        .text {
+          font-size: 0.3rem;
+          color: gainsboro;
+          font-family: '幼圆';
+        }
+      }
+      .logoutUser {
+        width: 20%;
+        height: 90%;
+        margin-top: 3px;
+        float: left;
+        img {
+          margin-top: 3px;
+          width: 50%;
+        }
+      }
     }
     #date {
       position: absolute;
       top: 0.38rem;
-      right: 0.375rem;
+      left: 0.375rem;
       font-size: 0.45rem;
       font-family: 'electronicFont' !important;
       text-align: center;

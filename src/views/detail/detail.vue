@@ -4,8 +4,8 @@
       <div class="title">智能工厂生产车间大屏</div>
       <div id="date"></div>
       <div id="company">
-        <!-- <dv-decoration-6 style="width:300px;height:30px;" /> -->
-        <dv-decoration-3 style="width:250px;height:30px;" />
+        <!-- <dv-decoration-3 style="width:250px;height:30px;" /> -->
+        <el-button class="btn" round @click="backCompany">返回公司</el-button>
       </div>
     </header>
     <section class="section">
@@ -82,7 +82,7 @@
           <div class="clear"></div>
         </div>
         <div class="bottom">
-        <bottom></bottom>
+          <bottom></bottom>
         </div>
       </div>
       <div class="cloum">
@@ -110,13 +110,22 @@
     </section>
 
     <!--弹框-->
-          <el-dialog title="实时报警" :visible.sync="dialogVisible" :close-on-click-modal="true" :modal="true" :show-close="true" :center="true">
-             {{content}}
-             <span slot="footer" class="dialog-footer">
-     <el-button @click="dialogVisible = false">取 消</el-button>
-     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-   </span>
-         </el-dialog>
+    <el-dialog
+      title="实时报警"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="true"
+      :modal="true"
+      :show-close="true"
+      :center="true"
+    >
+      {{ content }}
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -128,98 +137,100 @@ import echarts from 'echarts'
 export default {
   name: 'Detail',
   components: {
-    bottom
+    bottom,
   },
   data() {
     return {
       productCharts: {},
-      socket:[],
+      socket: [],
       queueReceiveSetting: {
         //消息队列配置
         websock: null,
         client: null,
-        wsuri: "ws://localhost:9531/ws/asset/300219050525"
+        wsuri: 'ws://localhost:9531/ws/asset/300219050525',
       },
-      productDate:{
-        xData : ['21:43:02', '21:43:22', '21:43:42', '21:44:02', '21:44:22', '21:44:42', '21:45:02'],
-        pNum : [10, 10, 30, 12, 15, 3, 7],
-        bNum :[5, 12, 11, 14, 25, 16, 10]
+      productDate: {
+        xData: [
+          '21:43:02',
+          '21:43:22',
+          '21:43:42',
+          '21:44:02',
+          '21:44:22',
+          '21:44:42',
+          '21:45:02',
+        ],
+        pNum: [10, 10, 30, 12, 15, 3, 7],
+        bNum: [5, 12, 11, 14, 25, 16, 10],
       },
       dialogVisible: false,
-      content:""
+      content: '',
     }
   },
   mounted() {
     require('../../assets/js/common.js')
     this.$nextTick(function() {
-      this.product()
+      // this.product()
       // this.machine()
     })
-    
   },
   methods: {
     //创建socket连接功能函数
- connect(wsobj,dpuCode) {
-//浏览器支持？
-if ("WebSocket" in window)
-{
-var host = "ws://localhost:9531/ws/asset/"+dpuCode
-this.socket[wsobj]= new WebSocket(host);
+    connect(wsobj, dpuCode) {
+      //浏览器支持？
+      if ('WebSocket' in window) {
+        var host = 'ws://localhost:9531/ws/asset/' + dpuCode
+        this.socket[wsobj] = new WebSocket(host)
 
-try {
-//连接事件
-this.socket[wsobj].onopen = function (msg) {
-// alert(wsobj+":连接已建立！");
-};
-//错误事件
-this.socket[wsobj].onerror =function (msg) {
-alert("错误："+msg.data);
+        try {
+          //连接事件
+          this.socket[wsobj].onopen = function(msg) {
+            // alert(wsobj+":连接已建立！");
+          }
+          //错误事件
+          this.socket[wsobj].onerror = function(msg) {
+            alert('错误：' + msg.data)
+          }
 
-}
-
-//消息事件
-var self = this;
-this.socket[wsobj].onmessage = function (msg) {
-  if(JSON.parse(msg.data).data.status == "3"){
-          self.content = JSON.parse(msg.data).data.alarming[0]+"-"+ JSON.parse(msg.data).machineInfo.machine_name+ ":"+JSON.parse(msg.data).machineInfo.workshop_name
-          self.dialogVisible = true
+          //消息事件
+          var self = this
+          this.socket[wsobj].onmessage = function(msg) {
+            if (JSON.parse(msg.data).data.status == '3') {
+              self.content =
+                JSON.parse(msg.data).data.alarming[0] +
+                '-' +
+                JSON.parse(msg.data).machineInfo.machine_name +
+                ':' +
+                JSON.parse(msg.data).machineInfo.workshop_name
+              self.dialogVisible = true
+            }
+          }
+          //关闭事件
+          this.socket[wsobj].onclose = function(msg) {
+            alert(wsobj + ':socket closed!')
+          }
+        } catch (ex) {
+          log(ex)
         }
-};
-//关闭事件
-this.socket[wsobj].onclose = function (msg)
-{
-
-alert(wsobj+":socket closed!")
-
-};
-}
-catch (ex) {
-log(ex);
-}
-
-
-}else
-{
-// 浏览器不支持 WebSocket
-alert("您的浏览器不支持 WebSocket!");
-}
-
-},
-    initWebSocket (dpuCode) {
-      var self = this;
+      } else {
+        // 浏览器不支持 WebSocket
+        alert('您的浏览器不支持 WebSocket!')
+      }
+    },
+    initWebSocket(dpuCode) {
+      var self = this
       //ws地址
       if (self.queueReceiveSetting.websock) {
-        self.queueReceiveSetting.websock.close();
+        self.queueReceiveSetting.websock.close()
       }
       self.queueReceiveSetting.websock = new WebSocket(
-        "ws://localhost:9531/ws/asset/"+dpuCode
-      );
-      self.queueReceiveSetting.websock.onopen = function (res) {
-        console.log("开启连接");
-      };
-      self.queueReceiveSetting.websock.onmessage = function (msg) {
-        console.log(JSON.parse(msg.data));
-        if(JSON.parse(msg.data).data.status == "1"){
+        'ws://localhost:9531/ws/asset/' + dpuCode
+      )
+      self.queueReceiveSetting.websock.onopen = function(res) {
+        console.log('开启连接')
+      }
+      self.queueReceiveSetting.websock.onmessage = function(msg) {
+        console.log(JSON.parse(msg.data))
+        if (JSON.parse(msg.data).data.status == '1') {
           self.productDate.xData.shift()
           self.productDate.xData.push(JSON.parse(msg.data).data.time)
           self.productDate.pNum.shift()
@@ -228,35 +239,43 @@ alert("您的浏览器不支持 WebSocket!");
           self.productDate.bNum.push(JSON.parse(msg.data).data.unqualified)
           self.productCharts.setOption({
             xAxis: {
-              data: self.productDate.xData
+              data: self.productDate.xData,
             },
-            series: [{
-              data: self.productDate.pNum,
-            },{
-              data: self.productDate.bNum,
-            }]
-          });
+            series: [
+              {
+                data: self.productDate.pNum,
+              },
+              {
+                data: self.productDate.bNum,
+              },
+            ],
+          })
         }
-        if(JSON.parse(msg.data).data.status == "3"){
+        if (JSON.parse(msg.data).data.status == '3') {
           self.content = JSON.parse(msg.data).data.alarming[0]
           self.dialogVisible = true
         }
-      };
-      self.queueReceiveSetting.websock.onclose = function (res) {
-        console.log("连接关闭");
-      };
-      self.queueReceiveSetting.websock.onerror = function (res) {
-        console.log("连接出错");
+      }
+      self.queueReceiveSetting.websock.onclose = function(res) {
+        console.log('连接关闭')
+      }
+      self.queueReceiveSetting.websock.onerror = function(res) {
+        console.log('连接出错')
         // this.initWebSocket();
-      };
+      }
     },
-    product () {
+    product() {
       const color = ['rgba(23, 255, 243', 'rgba(255,100,97']
-      
 
-      var roseCharts = document.getElementsByClassName('item_1'); // 对应地使用ByClassName
-      var dpuCode = ["300219050523","300219050524","300219050525","300219050526"]
-      for (var i = 0; i < roseCharts.length; i++) { // 通过for循环，在相同class的dom内绘制元素
+      var roseCharts = document.getElementsByClassName('item_1') // 对应地使用ByClassName
+      var dpuCode = [
+        '300219050523',
+        '300219050524',
+        '300219050525',
+        '300219050526',
+      ]
+      for (var i = 0; i < roseCharts.length; i++) {
+        // 通过for循环，在相同class的dom内绘制元素
         this.productCharts = echarts.init(roseCharts[i])
         const option = {
           title: [
@@ -467,23 +486,19 @@ alert("您的浏览器不支持 WebSocket!");
           ],
         }
 
-
-       this.productCharts.setOption(option)
-        window.addEventListener('resize', function () {
+        this.productCharts.setOption(option)
+        window.addEventListener('resize', function() {
           this.productCharts.resize()
         })
-        this.connect(i,dpuCode[i])
+        this.connect(i, dpuCode[i])
 
         // this.initWebSocket(dpuCode[i]);
 
         // setInterval(function () {
-         
+
         // }, 20000);
-
-
       }
     },
-
     machine() {
       let chart = document.getElementById('product')
       let myChart = echarts.init(chart)
@@ -1030,6 +1045,9 @@ alert("您的浏览器不支持 WebSocket!");
         myChart.resize()
       })
     },
+    backCompany() {
+      this.$router.push('/home')
+    },
   },
 }
 </script>
@@ -1137,17 +1155,25 @@ border-top-color: blue ;
     #company {
       position: absolute;
       top: 0.27rem;
-      left: 0.375rem;
+      right: 0.375rem;
       font-size: 0.3rem;
       font-weight: 700;
       font-family: 'electronicFont' !important;
       text-align: center;
+      height: 10%;
       color: #15a0db;
+      .btn {
+        font-size: 0.25rem;
+        background-color: royalblue;
+        color: seashell;
+        border: 0px;
+        // padding-top: 1%;
+      }
     }
     #date {
       position: absolute;
       top: 0.38rem;
-      right: 0.375rem;
+      left: 0.375rem;
       font-size: 0.45rem;
       font-family: 'electronicFont' !important;
       text-align: center;
@@ -1171,8 +1197,7 @@ border-top-color: blue ;
       margin: 0.2rem;
       width: 18%;
       height: 90vh;
-      background: url('../../assets/images/nav_bg.png');
-      background-size: cover;
+      background: url('../../assets/images/nav_left.png') center no-repeat;
       display: flex;
       justify-content: right;
       align-items: center;
@@ -1183,6 +1208,7 @@ border-top-color: blue ;
     }
     .cloum:nth-child(3) {
       border-radius: 50% 0 0 50%;
+      background: url('../../assets/images/nav_right.png') center no-repeat;
     }
     .cloum2 {
       float: left;

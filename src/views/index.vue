@@ -120,7 +120,6 @@
           </span>
           <div class="pandect-area-center">
             <div id="map"></div>
-            <div id="bar"></div>
           </div>
           <span class="pandect-area-right">
             <b></b>
@@ -331,8 +330,7 @@ export default {
     //苏州地图
     this.mapinit()
     //车间柱状图
-    this.comshop()
-    // this.comData()
+    // this.comshop()
     this.statistics()
   },
   methods: {
@@ -555,295 +553,268 @@ export default {
         myChart.setOption(option)
       })
     },
-    comshop() {
-      var myChart = echarts.init(document.getElementById('bar'))
-      var category = [
-        { name: '海尔', value: 20 },
-        { name: '海昌', value: 30 },
-        { name: 'ABB', value: 37 },
-        { name: '江控', value: 10 },
-        { name: '西门', value: 50 },
-        { name: '砺行', value: 40 },
-        { name: '三菱', value: 20 },
-        { name: '罗克', value: 25 },
-      ] // 类别
-      var total = 50 // 数据总数
-      var datas = []
-      category.forEach((value) => {
-        datas.push(value.value)
-      })
-      var option = {
-        // backgroundColor:'#071347',
-        title: {
-          top: 50,
-          text: '车间-机床数',
-          x: 'center',
-          textStyle: {
-            color: '#ccc',
-          },
-        },
-        xAxis: {
-          max: total,
-          splitLine: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-          axisLabel: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-        },
-        grid: {
-          left: 50,
-          top: 80, // 设置条形图的边距
-          right: 50,
-          bottom: 60,
-        },
-        // tooltip: {
-        //   trigger: "item"
-        // },
-        yAxis: [
-          {
-            type: 'category',
-            inverse: false,
-            data: category,
-            axisLine: {
-              show: false,
-            },
-            axisTick: {
-              show: false,
-            },
-            axisLabel: {
-              show: false,
-            },
-          },
-        ],
-        series: [
-          {
-            // 内
-            type: 'bar',
-            barWidth: 18,
-            legendHoverLink: false,
-            silent: true,
-            itemStyle: {
-              normal: {
-                color: function(params) {
-                  var color
-                  if (params.dataIndex == 19) {
-                    color = {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 1,
-                      y2: 0,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: '#EB5118', // 0% 处的颜色
-                        },
-                        {
-                          offset: 1,
-                          color: '#2AB8FF', // 100% 处的颜色
-                        },
-                      ],
-                    }
-                  } else if (params.dataIndex == 18) {
-                    color = {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 1,
-                      y2: 0,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: '#FFA048', // 0% 处的颜色
-                        },
-                        {
-                          offset: 1,
-                          color: '#2AB8FF', // 100% 处的颜色
-                        },
-                      ],
-                    }
-                  } else if (params.dataIndex == 17) {
-                    color = {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 1,
-                      y2: 0,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: '#F8E972', // 0% 处的颜色
-                        },
-                        {
-                          offset: 1,
-                          color: '#2AB8FF', // 100% 处的颜色
-                        },
-                      ],
-                    }
-                  } else {
-                    color = {
-                      type: 'linear',
-                      x: 0,
-                      y: 0,
-                      x2: 1,
-                      y2: 0,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: '#1588D1', // 0% 处的颜色
-                        },
-                        {
-                          offset: 1,
-                          color: '#0F4071', // 100% 处的颜色
-                        },
-                      ],
-                    }
-                  }
-                  return color
-                },
-              },
-            },
-            label: {
-              normal: {
-                show: true,
-                position: 'left',
-                formatter: '{b}',
-                textStyle: {
-                  color: '#fff',
-                  fontSize: 14,
-                },
-              },
-            },
-            data: category,
-            z: 1,
-            animationEasing: 'elasticOut',
-          },
-          {
-            // 分隔
-            type: 'pictorialBar',
-            itemStyle: {
-              normal: {
-                color: '#2AB8FF',
-              },
-            },
-            symbolRepeat: 'fixed',
-            symbolMargin: 6,
-            symbol: 'rect',
-            symbolClip: true,
-            symbolSize: [1, 21],
-            symbolPosition: 'start',
-            symbolOffset: [1, -1],
-            symbolBoundingData: this.total,
-            data: category,
-            z: 2,
-            animationEasing: 'elasticOut',
-          },
-          {
-            // 外边框
-            type: 'pictorialBar',
-            symbol: 'rect',
-            symbolBoundingData: total,
-            itemStyle: {
-              normal: {
-                color: 'none',
-              },
-            },
-            label: {
-              normal: {
-                formatter: '{c}',
-                textStyle: {
-                  color: '#409EFF',
-                  fontSize: 12,
-                },
-                position: 'right',
-                distance: 0, // 向右偏移位置
-                show: true,
-              },
-            },
-            data: datas,
-            z: 0,
-            animationEasing: 'elasticOut',
-          },
-          {
-            name: '外框',
-            type: 'bar',
-            barGap: '-120%', // 设置外框粗细
-            data: [
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-              total,
-            ],
-            barWidth: 25,
-            itemStyle: {
-              normal: {
-                color: 'transparent', // 填充色
-                barBorderColor: '#2AB8FF', // 边框色
-                barBorderWidth: 1, // 边框宽度
-                // barBorderRadius: 0, //圆角半径
-                label: {
-                  // 标签显示位置
-                  show: false,
-                  position: 'top', // insideTop 或者横向的 insideLeft
-                },
-              },
-            },
-            z: 0,
-          },
-        ],
-      }
-      myChart.setOption(option)
-    },
-    comData() {
-      var self = this
-      self.$http.get(this.baseUrl + '/company/lay').then(function(response) {
-        var res = response.data
-        // console.log(res)
-        //公司总数
-        self.companyscount = res.length
-
-        //车间总数
-        var a = 0
-        for (var i = 0; i < res.length; i++) {
-          res[i].comCount = parseInt(res[i].comCount)
-          a += res[i].comCount
-        }
-        self.shopcount = a
-
-        self.comlocation = []
-        for (var i = 0; i < res.length; i++) {
-          self.comlocation.push({
-            name: res[i].comName,
-            value: [res[i].comLongitude, res[i].comLatitude],
-          })
-        }
-        self.mapinit()
-        // console.log(self.comlocation);
-      })
-    },
+    // comshop() {
+    //   var myChart = echarts.init(document.getElementById('bar'))
+    //   var category = [
+    //     { name: '海尔', value: 20 },
+    //     { name: '海昌', value: 30 },
+    //     { name: 'ABB', value: 37 },
+    //     { name: '江控', value: 10 },
+    //     { name: '西门', value: 50 },
+    //     { name: '砺行', value: 40 },
+    //     { name: '三菱', value: 20 },
+    //     { name: '罗克', value: 25 },
+    //   ] // 类别
+    //   var total = 50 // 数据总数
+    //   var datas = []
+    //   category.forEach((value) => {
+    //     datas.push(value.value)
+    //   })
+    //   var option = {
+    //     // backgroundColor:'#071347',
+    //     title: {
+    //       top: 50,
+    //       text: '车间-机床数',
+    //       x: 'center',
+    //       textStyle: {
+    //         color: '#ccc',
+    //       },
+    //     },
+    //     xAxis: {
+    //       max: total,
+    //       splitLine: {
+    //         show: false,
+    //       },
+    //       axisLine: {
+    //         show: false,
+    //       },
+    //       axisLabel: {
+    //         show: false,
+    //       },
+    //       axisTick: {
+    //         show: false,
+    //       },
+    //     },
+    //     grid: {
+    //       left: 50,
+    //       top: 80, // 设置条形图的边距
+    //       right: 50,
+    //       bottom: 60,
+    //     },
+    //     // tooltip: {
+    //     //   trigger: "item"
+    //     // },
+    //     yAxis: [
+    //       {
+    //         type: 'category',
+    //         inverse: false,
+    //         data: category,
+    //         axisLine: {
+    //           show: false,
+    //         },
+    //         axisTick: {
+    //           show: false,
+    //         },
+    //         axisLabel: {
+    //           show: false,
+    //         },
+    //       },
+    //     ],
+    //     series: [
+    //       {
+    //         // 内
+    //         type: 'bar',
+    //         barWidth: 18,
+    //         legendHoverLink: false,
+    //         silent: true,
+    //         itemStyle: {
+    //           normal: {
+    //             color: function(params) {
+    //               var color
+    //               if (params.dataIndex == 19) {
+    //                 color = {
+    //                   type: 'linear',
+    //                   x: 0,
+    //                   y: 0,
+    //                   x2: 1,
+    //                   y2: 0,
+    //                   colorStops: [
+    //                     {
+    //                       offset: 0,
+    //                       color: '#EB5118', // 0% 处的颜色
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: '#2AB8FF', // 100% 处的颜色
+    //                     },
+    //                   ],
+    //                 }
+    //               } else if (params.dataIndex == 18) {
+    //                 color = {
+    //                   type: 'linear',
+    //                   x: 0,
+    //                   y: 0,
+    //                   x2: 1,
+    //                   y2: 0,
+    //                   colorStops: [
+    //                     {
+    //                       offset: 0,
+    //                       color: '#FFA048', // 0% 处的颜色
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: '#2AB8FF', // 100% 处的颜色
+    //                     },
+    //                   ],
+    //                 }
+    //               } else if (params.dataIndex == 17) {
+    //                 color = {
+    //                   type: 'linear',
+    //                   x: 0,
+    //                   y: 0,
+    //                   x2: 1,
+    //                   y2: 0,
+    //                   colorStops: [
+    //                     {
+    //                       offset: 0,
+    //                       color: '#F8E972', // 0% 处的颜色
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: '#2AB8FF', // 100% 处的颜色
+    //                     },
+    //                   ],
+    //                 }
+    //               } else {
+    //                 color = {
+    //                   type: 'linear',
+    //                   x: 0,
+    //                   y: 0,
+    //                   x2: 1,
+    //                   y2: 0,
+    //                   colorStops: [
+    //                     {
+    //                       offset: 0,
+    //                       color: '#1588D1', // 0% 处的颜色
+    //                     },
+    //                     {
+    //                       offset: 1,
+    //                       color: '#0F4071', // 100% 处的颜色
+    //                     },
+    //                   ],
+    //                 }
+    //               }
+    //               return color
+    //             },
+    //           },
+    //         },
+    //         label: {
+    //           normal: {
+    //             show: true,
+    //             position: 'left',
+    //             formatter: '{b}',
+    //             textStyle: {
+    //               color: '#fff',
+    //               fontSize: 14,
+    //             },
+    //           },
+    //         },
+    //         data: category,
+    //         z: 1,
+    //         animationEasing: 'elasticOut',
+    //       },
+    //       {
+    //         // 分隔
+    //         type: 'pictorialBar',
+    //         itemStyle: {
+    //           normal: {
+    //             color: '#2AB8FF',
+    //           },
+    //         },
+    //         symbolRepeat: 'fixed',
+    //         symbolMargin: 6,
+    //         symbol: 'rect',
+    //         symbolClip: true,
+    //         symbolSize: [1, 21],
+    //         symbolPosition: 'start',
+    //         symbolOffset: [1, -1],
+    //         symbolBoundingData: this.total,
+    //         data: category,
+    //         z: 2,
+    //         animationEasing: 'elasticOut',
+    //       },
+    //       {
+    //         // 外边框
+    //         type: 'pictorialBar',
+    //         symbol: 'rect',
+    //         symbolBoundingData: total,
+    //         itemStyle: {
+    //           normal: {
+    //             color: 'none',
+    //           },
+    //         },
+    //         label: {
+    //           normal: {
+    //             formatter: '{c}',
+    //             textStyle: {
+    //               color: '#409EFF',
+    //               fontSize: 12,
+    //             },
+    //             position: 'right',
+    //             distance: 0, // 向右偏移位置
+    //             show: true,
+    //           },
+    //         },
+    //         data: datas,
+    //         z: 0,
+    //         animationEasing: 'elasticOut',
+    //       },
+    //       {
+    //         name: '外框',
+    //         type: 'bar',
+    //         barGap: '-120%', // 设置外框粗细
+    //         data: [
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //           total,
+    //         ],
+    //         barWidth: 25,
+    //         itemStyle: {
+    //           normal: {
+    //             color: 'transparent', // 填充色
+    //             barBorderColor: '#2AB8FF', // 边框色
+    //             barBorderWidth: 1, // 边框宽度
+    //             // barBorderRadius: 0, //圆角半径
+    //             label: {
+    //               // 标签显示位置
+    //               show: false,
+    //               position: 'top', // insideTop 或者横向的 insideLeft
+    //             },
+    //           },
+    //         },
+    //         z: 0,
+    //       },
+    //     ],
+    //   }
+    //   myChart.setOption(option)
+    // },
     home() {
       this.$router.push('/home')
     },

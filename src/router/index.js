@@ -19,15 +19,16 @@ const routes = [
     component: login,
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home,
-  },
-  {
     path: '/index',
     name: 'index',
     component: Index,
   },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+  },
+  
   {
     path: '/detail',
     name: 'detail',

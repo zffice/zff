@@ -90,12 +90,12 @@ export default {
       }
       API.findMachineListByExample(params).then((res) => {
         console.log(res)
-        // for (var j = 0; j < res.info[0].List.length; j++) {
-        //   this.children1.push({
-        //     name: res.info[0].List[j].machineName,
-        //     type: res.info[0].List[j].status,
-        //   })
-        // }
+        for (var j = 0; j < res.info[0].List.length; j++) {
+          this.children1.push({
+            name: res.info[0].List[j].machineName,
+            type: res.info[0].List[j].status,
+          })
+        }
         for (var i = 0; i < res.info.length; i++) {
           this.workshopName.push(res.info[i].workshopName)
         }

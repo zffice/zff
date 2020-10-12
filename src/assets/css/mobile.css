@@ -17,6 +17,7 @@ a:focus {
 html,
 body {
   background: #000;
+  width: 100%;
   height: 100%;
   color: #fff;
   font-family: 'microsoft yahei', simhei;
@@ -150,12 +151,14 @@ h2 strong {
 
 /* 顶部大指标 */
 .big-index-1 {
+  width: 73%;
   position: absolute;
-  left: 267px;
-  top: 70px;
+  left: 18%;
+  top: 10%;
   line-height: 1;
-  min-width: 818px;
-  height: 55px;
+  /* min-width: 818px; */
+  height: 12%;
+  /* border: 1px solid red; */
   overflow: hidden;
 }
 .big-index-1 li {
@@ -164,50 +167,51 @@ h2 strong {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  width: 90px;
-  height: 44px;
-  padding: 10px 0 0 30px;
+  width: 8%;
+  height: 100%;
+  padding: 1% 0 0.5% 2.5%;
+  /* border: 1px solid red; */
   background: url(../images/bg01bigindex.png) 0 0 no-repeat;
-  margin-right: 16px;
+  margin-right: 1.5%;
 }
 .big-index-1 li strong {
   display: block;
   color: #fff;
   font-family: 'electronicFont';
-  font-size: 22px;
+  font-size: 0.4rem;
   font-weight: normal;
 }
 .big-index-1 li p {
   display: block;
   color: #b8b9bb;
-  font-size: 12px;
-  padding-bottom: 4px;
+  font-size: 0.22rem;
+  padding-bottom: 1.5%;
 }
 .big-index-1 li .animation-1 {
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: bounceInLeft1;
   -webkit-animation-duration: 9000ms;
   position: absolute;
-  left: 12px;
-  bottom: 1px;
-  height: 3px;
-  width: 345px;
+  left: 2%;
+  bottom: 2%;
+  height: 6%;
+  width: 200%;
   background: url(../images/bg04bigindex.png) 0 0 repeat-x;
 }
 .big-index-1 li .animation-2 {
   position: absolute;
-  right: -3px;
-  top: 1px;
-  height: 16px;
-  width: 12px;
+  right: -5%;
+  top: 1%;
+  height: 25%;
+  width: 15%;
   background: url(../images/bg02bigindex.png) 0 0 no-repeat;
 }
 .big-index-1 li .animation-3 {
   position: absolute;
-  right: -1px;
-  bottom: -1px;
-  height: 4px;
-  width: 4px;
+  right: -1%;
+  bottom: -0.5%;
+  height: 4%;
+  width: 4%;
   background: url(../images/bg03bigindex.png) 50% 50% no-repeat;
 }
 .big-index-1 li:hover .animation-2 {
@@ -227,14 +231,14 @@ h2 strong {
   -moz-animation: flash 0.2s 0.2s ease both;
 }
 
-@media screen and (max-width: 1366px) {
+/* @media screen and (max-width: 1366px) {
   .big-index-1 li:nth-child(6) {
     display: none;
   }
   .big-index-1 li {
     margin-right: 6px;
   }
-}
+} */
 
 /* */
 @-webkit-keyframes flash {
@@ -629,7 +633,7 @@ h2 {
     opacity: 0.8;
   }
 }
-.time-base-outer {
+/* .time-base-outer {
   position: relative;
   bottom: -360px;
 }
@@ -649,9 +653,9 @@ h2 {
   bottom: 60px;
   width: 1200px;
   background: url(../images/bg01slider2.png) 50% 50% no-repeat;
-}
+} */
 /* ui slider pips */
-.ui-slider-horizontal.ui-slider-pips {
+.ui-slider-horizontal .ui-slider-pips {
   width: 1140px;
   margin-left: 18px;
 }
@@ -762,27 +766,31 @@ h2 {
 }
 
 .right-area {
+  width: 19%;
+  height: 90%;
   position: absolute;
   right: 0;
-  top: 50px;
+  top: 8%;
   -webkit-animation: bounceInRight2 0.8s 0.3s ease both;
 }
 .right-area h3 {
   position: relative;
-  top: 20px;
-  background: url(../images/bg04rightarea.png) 6px bottom no-repeat;
-  padding-bottom: 6px;
-  padding-left: 6px;
-  font-size: 14px;
+  top: 3%;
+  background: url(../images/bg04rightarea.png) 2% bottom no-repeat;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  font-size: 0.25rem;
   font-weight: normal;
+  width: 100%;
+  height: 2.5%;
 }
 .right-area h3 b {
   position: absolute;
   left: 0;
   top: 0;
   display: block;
-  width: 7px;
-  height: 7px;
+  width: 3%;
+  height: 40%;
   background: url(../images/bg03rightarea.png) right 0 no-repeat;
 }
 .right-area h3 b {
@@ -792,56 +800,56 @@ h2 {
 }
 
 .area-inbox-1 {
-  width: 293px;
-  height: 270px;
+  width: 100%;
+  height: 38%;
   background: url(../images/bg01rightarea.png) right bottom no-repeat;
 }
 .area-inbox-2 {
   position: absolute;
   right: 0;
-  width: 208px;
-  height: 320px;
+  width: 75%;
+  height: 45%;
   background: url(../images/bg02rightarea.png) right bottom no-repeat;
 }
 .area-inbox-3 {
   position: absolute;
   left: 0;
   top: 46%;
-  width: 208px;
-  height: 320px;
+  width: 75%;
+  height: 45%;
   background: url(../images/bg02leftarea.png) left bottom no-repeat;
 }
 .area-text p {
-  width: 115px;
+  width: 100%;
 }
 
 .area-inbox-1 dl {
-  padding: 90px 0 0 130px;
+  padding: 32% 0 0 45%;
 }
 .area-inbox-1 dl dt {
   color: rgba(206, 192, 192, 0.632);
-  margin-top: 4px;
+  margin-top: 3%;
 }
 .area-inbox-1 dl dd {
   position: relative;
 }
 .area-inbox-1 dl dd.font12 {
-  font-size: 12px;
+  font-size: 0.25rem;
 }
 .area-inbox-1 dl dd.font-red {
   color: #ff3114;
 }
 .area-inbox-1 dl dd.ml-20,
 .area-inbox-1 dl dt.ml-20 {
-  margin-left: -18px;
+  margin-left: -10%;
 }
 .area-inbox-1 dl dd span {
   font-family: 'electronicFont';
   position: relative;
   z-index: 1;
-  font-size: 22px;
-  margin-top: 6px;
-  letter-spacing: 1px;
+  font-size: 0.45rem;
+  margin-top: 6%;
+  letter-spacing: 1%;
   opacity: 1;
 }
 .area-inbox-1 dl dd b {
@@ -869,10 +877,10 @@ h2 {
 
 .round-1 {
   position: absolute;
-  left: 94px;
-  top: 98px;
-  width: 168px;
-  height: 168px;
+  left: 33%;
+  top: 13.5%;
+  width: 59%;
+  height: 24%;
   border-radius: 100%;
   border: 1px dashed #fff;
   -webkit-animation-iteration-count: infinite;
@@ -881,10 +889,10 @@ h2 {
 }
 .round-2 {
   position: absolute;
-  left: 79px;
-  top: 84px;
-  width: 198px;
-  height: 198px;
+  left: 27.2%;
+  top: 11.5%;
+  width: 70%;
+  height: 28%;
   border-radius: 100%;
   border: 1px dashed rgba(255, 255, 255, 0.5);
   -webkit-animation-iteration-count: infinite;
@@ -893,15 +901,15 @@ h2 {
 }
 .round-3 {
   position: absolute;
-  left: 50px;
-  top: 68px;
-  width: 40px;
-  height: 40px;
+  left: 18%;
+  top: 9.5%;
+  width: 15%;
+  height: 6%;
   border: 1px solid rgba(255, 255, 255, 0.8);
   text-align: center;
-  line-height: 40px;
+  line-height: 0.8rem;
   font-family: 'electronicFont';
-  font-size: 14px;
+  font-size: 0.25rem;
   border-radius: 100%;
   background: url(../images/bg05rightarea.png) right bottom no-repeat;
   -webkit-animation-iteration-count: infinite;
@@ -910,19 +918,19 @@ h2 {
 }
 .round-4 {
   position: absolute;
-  left: 40px;
-  top: 102px;
-  width: 23px;
-  height: 23px;
+  left: 13%;
+  top: 14%;
+  width: 8.5%;
+  height: 3.3%;
   border-radius: 100%;
   background: url(../images/bg06rightarea.png) right bottom no-repeat;
-  box-shadow: 0 0 12px #fff;
+  box-shadow: 0 0 0.2rem #fff;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-name: forotate;
   -webkit-animation-duration: 4000ms;
 }
 
-.area-inbox-2 ul {
+/* .area-inbox-2 ul {
   margin-left: 50px;
   margin-top: 15px;
 }
@@ -969,7 +977,7 @@ h2 {
   position: absolute;
   left: -4px;
   top: -4px;
-}
+} */
 
 .area-inbox-3 ul {
   margin-left: 50px;
@@ -1020,10 +1028,10 @@ h2 {
   top: -4px;
 }
 .area-text {
-  margin-top: 150px;
+  margin-top: 50%;
   position: relative;
-  width: 116px;
-  padding: 14px;
+  width: 55%;
+  padding: 5%;
 }
 .area-text h4 {
 }
@@ -1034,8 +1042,8 @@ h2 {
   position: absolute;
   top: 0;
   display: block;
-  width: 8px;
-  height: 140px;
+  width: 6%;
+  height: 110%;
 }
 .animation-line1 {
   left: 0;
@@ -1047,31 +1055,31 @@ h2 {
 }
 
 .center-area {
-  margin: 110px 350px 0 280px;
+  margin: 8% 20% 0 18%;
   position: relative;
 }
 .pandect-area {
   background: url(../images/bg02pandect.png) center top no-repeat;
-  height: 450px;
-  margin: 0 68px;
+  height: 8rem;
+  margin: 0 8%;
   position: relative;
 }
 .pandect-area .pandect-area-left {
   position: absolute;
-  left: -68px;
+  left: -8%;
   top: 0;
   display: block;
-  width: 68px;
-  height: 292px;
+  width: 9%;
+  height: 100%;
   background: url(../images/bg01pandect.png) center top no-repeat;
 }
 .pandect-area .pandect-area-right {
   position: absolute;
-  right: -68px;
+  right: -8.8%;
   top: 0;
   display: block;
-  width: 68px;
-  height: 292px;
+  width: 9%;
+  height: 100%;
   background: url(../images/bg03pandect.png) center top no-repeat;
 }
 
@@ -1080,11 +1088,11 @@ h2 {
   -webkit-animation-name: flash1;
   -webkit-animation-duration: 0.2ms;
   position: absolute;
-  left: -5px;
-  top: -5px;
+  left: -6%;
+  top: -1%;
   display: block;
-  width: 16px;
-  height: 22px;
+  width: 22%;
+  height: 8%;
   background: url(../images/bg04pandect.png) center top no-repeat;
 }
 .pandect-area .pandect-area-right b {
@@ -1092,11 +1100,11 @@ h2 {
   -webkit-animation-name: flash1;
   -webkit-animation-duration: 0.2ms;
   position: absolute;
-  right: -7px;
-  top: -5px;
+  right: -8%;
+  top: -1%;
   display: block;
-  width: 16px;
-  height: 22px;
+  width: 22%;
+  height: 8%;
   background: url(../images/bg05pandect.png) center top no-repeat;
 }
 
@@ -1104,10 +1112,10 @@ h2 {
   font-weight: normal;
   text-align: center;
   position: relative;
-  top: 10px;
+  top: 3%;
   z-index: 1;
   border-bottom: 1px solid #666;
-  margin: 0 -55px;
+  margin: 0 -6%;
 }
 .pandect-area h3 p {
   position: absolute;
@@ -1123,10 +1131,10 @@ h2 {
 }
 .pandect-area h3 strong {
   border: 1px solid #ababab;
-  padding: 1px 14px;
+  padding: 0.3% 3%;
   line-height: 1;
   position: relative;
-  bottom: -8px;
+  bottom: -0.2rem;
   z-index: 1;
   background: #000;
 }
@@ -1135,13 +1143,13 @@ h2 {
   right: 0;
   top: 0;
   font-family: 'electronicFont';
-  font-size: 14px;
+  font-size: 0.25rem;
   color: #ff3114;
 }
 .pandect-area-center {
   width: 100%;
   height: 100%;
-  margin-top: 20px;
+  margin-top: 4%;
   overflow: hidden;
   display: block;
 }
@@ -1160,76 +1168,77 @@ h2 {
   right: 0;
 }
 .details1-area {
+  /* width: 50%; */
   position: absolute;
-  left: 10px;
-  margin-top: 15px;
+  left: 3%;
+  margin-top: 2%;
   text-align: center;
-  height: 207px;
+  height: 40%;
 }
 .detailsl-area-left {
   display: block;
-  width: 122px;
-  height: 207px;
+  width: 31.5%;
+  height: 95%;
   position: absolute;
-  left: -122px;
+  left: -31.4%;
   top: 0;
   background: url(../images/bg01details03.png) center bottom no-repeat;
 }
 .detailsl-area-right {
   display: block;
-  width: 121px;
-  height: 207px;
+  width: 31.5%;
+  height: 95%;
   position: absolute;
-  right: -121px;
+  right: -31.4%;
   top: 0;
   background: url(../images/bg01details05.png) center bottom no-repeat;
 }
 .detailsl-area-right2 {
   display: block;
-  width: 200px;
-  height: 207px;
+  width: 31.5%;
+  height: 95%;
   position: absolute;
-  right: -161px;
+  right: -31.4%;
   top: 0;
   background: url(../images/bg01details05.png) center bottom no-repeat;
 }
 .details1-area-center {
-  height: 207px;
+  height: 95.5%;
   float: left;
   background: url(../images/bg01details04.png) center bottom repeat-x;
 }
 
 .details2-area {
   position: absolute;
-  right: 10px;
-  margin-top: 15px;
-  height: 207px;
+  right: 3%;
+  margin-top: 2%;
+  height: 38%;
   text-align: center;
 }
 .details2-area h3,
 .details2-area dl {
-  margin-left: 40px !important;
+  margin-left: 10% !important;
 }
 .details2-area-left {
   display: block;
-  width: 122px;
-  height: 207px;
+  width: 31%;
+  height: 101%;
   position: absolute;
-  left: -122px;
+  left: -31%;
   top: 0;
   background: url(../images/bg01details01.png) center bottom no-repeat;
 }
 .details2-area-right {
   display: block;
-  width: 121px;
-  height: 207px;
+  width: 31%;
+  height: 101%;
   position: absolute;
-  right: -121px;
+  right: -31%;
   top: 0;
   background: url(../images/bg01details02.png) center bottom no-repeat;
 }
 .details2-area-center {
-  height: 207px;
+  height: 101%;
   float: left;
   background: url(../images/bg01details06.png) center bottom repeat-x;
 }
@@ -1258,18 +1267,18 @@ h2 {
 .details2-area b {
   position: absolute;
   left: 0;
-  bottom: 12px;
+  bottom: 1%;
   display: block;
   width: 100%;
-  height: 55px;
+  height: 25%;
   background: url(../images/bg03details.png) center top no-repeat;
   background-size: 100%;
 }
 .details1-area h3,
 .details2-area h3 {
   text-align: left;
-  margin-top: 15px;
-  font-size: 14px;
+  margin-top: 3%;
+  font-size: 0.25rem;
 }
 .details1-area b,
 .details2-area b {
@@ -1278,25 +1287,25 @@ h2 {
 }
 .details1-area dl,
 .details2-area dl {
-  margin: 40px 0 0 40px;
+  margin: 10% 0 0 10%;
 }
 .details2-area dl {
-  margin-left: 0px;
+  margin-left: 0;
 }
 .details1-area dl dt,
 .details2-area dl dt {
   float: left;
   clear: left;
-  width: 110px;
+  width: 30%;
   text-align: right;
-  margin: 6px 0;
+  margin: 2% 0;
 }
 .details1-area dl dd,
 .details2-area dl dd {
   float: left;
-  margin: 6px 0;
+  margin: 2% 0;
   font-family: 'electronicFont';
-  font-size: 14px;
+  font-size: 0.25rem;
   width: 40%;
 }
 
@@ -1309,7 +1318,7 @@ h2 {
 .details1-area dl dd .minfo,
 .details2-area dl dd .minfo {
   width: 15%;
-  height: 5px;
+  height: 5%;
   float: left;
   margin-left: 5%;
 }

@@ -116,26 +116,43 @@
                 </div>
               </div>
             </el-carousel-item>
+            <!-- 其他设备 -->
+            <el-carousel-item class="items">
+              <div class="mask">环境</div>
+              <div class="item">
+                <img src="../../assets/images/sb.png" alt="" />
+                <div class="imgdata2">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <div class="item_2"></div>
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                </div>
+                <div class="imgdata2">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <div class="item_2"></div>
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                </div>
+                <div class="clear"></div>
+              </div>
+            </el-carousel-item>
+            <el-carousel-item class="items">
+              <div class="mask">学校设备</div>
+              <div class="item">
+                <img src="../../assets/images/sb.png" alt="" />
+                <div class="imgdata2">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <div class="item_2"></div>
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                </div>
+                <div class="imgdata2">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <div class="item_2"></div>
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                </div>
+                <div class="clear"></div>
+              </div>
+            </el-carousel-item>
           </el-carousel>
 
-          <!-- 其他设备 -->
-          <!-- <div class="items">
-            <div class="mask">设备三</div>
-            <div class="item">
-              <img src="../../assets/images/sb.png" alt="" />
-              <div class="imgdata2">
-                <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                <div class="item_1"></div>
-                <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-              </div>
-              <div class="imgdata2">
-                <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                <div class="item_1"></div>
-                <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-              </div>
-              <div class="clear"></div>
-            </div>
-          </div> -->
           <div class="clear"></div>
         </div>
         <div class="bottom">
@@ -1388,6 +1405,10 @@ border-top-color: blue ;
               float: left;
               background: rgba(21, 49, 122, 0.5);
               .item_1 {
+                width: 100%;
+                height: 97%;
+              }
+              .item_2 {
                 width: 100%;
                 height: 97%;
               }

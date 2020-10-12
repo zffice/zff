@@ -12,7 +12,7 @@
           <el-form-item
             prop="name"
             :rules="[
-              { required: true, message: '请输入账户名称', trigger: 'blur' }
+              { required: true, message: '请输入账户名称', trigger: 'blur' },
             ]"
           >
             <el-input
@@ -28,7 +28,7 @@
             class="mima"
             prop="pwd"
             :rules="[
-              { required: true, message: '请输入密码', trigger: 'blur' }
+              { required: true, message: '请输入密码', trigger: 'blur' },
             ]"
           >
             <el-input
@@ -58,17 +58,17 @@
 </template>
 
 <script>
-import API from "@/api/user";
-import { mapMutations } from "vuex";
-import axios from "axios";
+import API from '@/api/user'
+import { mapMutations } from 'vuex'
+import axios from 'axios'
 export default {
   data() {
     return {
       user: {
-        name: "",
-        pwd: ""
+        name: '',
+        pwd: '',
       },
-      userToken: "",
+      userToken: '',
       mapChart: {},
       //立体球形纹路
       option: {
@@ -76,37 +76,37 @@ export default {
           globeRadius: 83,
           // baseTexture: '',//贴图 球形和平面的吻合
           silent: true,
-          baseTexture: require("../assets/earth_atmos_4096.jpg"), //背景
-          heightTexture: require("../assets/earth_atmos_4096.jpg"), //地球的整个纹路
-          shading: "realistic",
+          baseTexture: require('../assets/earth_atmos_4096.jpg'), //背景
+          heightTexture: require('../assets/earth_atmos_4096.jpg'), //地球的整个纹路
+          shading: 'realistic',
           light: {
             main: {
-              color: "#fff",
+              color: '#fff',
               intensity: 0,
               shadow: false,
-              shadowQuality: "high",
+              shadowQuality: 'high',
               alpha: 55,
-              beta: 10
+              beta: 10,
             },
             ambient: {
-              color: "#fff",
-              intensity: 1
-            }
+              color: '#fff',
+              intensity: 1,
+            },
           },
           postEffect: {
             enable: false,
             SSAO: {
               enable: true,
-              radius: 10
-            }
+              radius: 10,
+            },
           },
 
           //地球是否自己转动 autoRotate为true时自己转动
           viewControl: {
             autoRotate: true,
             animationDurationUpdate: 2000,
-            targetCoord: ""
-          }
+            targetCoord: '',
+          },
         },
         series: [
           /* {
@@ -143,56 +143,56 @@ export default {
                }
            }*/
           {
-            name: "lines3D",
-            type: "lines3D",
-            coordinateSystem: "globe",
+            name: 'lines3D',
+            type: 'lines3D',
+            coordinateSystem: 'globe',
             effect: {
               show: true,
               period: 6,
               trailWidth: 3,
               trailLength: 0.5,
               trailOpacity: 1,
-              trailColor: "#0087f4"
+              trailColor: '#0087f4',
             },
-            blendMode: "lighter",
+            blendMode: 'lighter',
             lineStyle: {
               width: 1,
-              color: "#0087f4",
-              opacity: 0
+              color: '#0087f4',
+              opacity: 0,
             },
             data: [],
-            silent: false
-          }
-        ]
+            silent: false,
+          },
+        ],
       },
 
       //平面地球 主要是设置地球的样式
       mapOption: {
-        backgroundColor: "rgba(20,104,121,0.71)", //当和立体球形贴图是海洋的颜色
+        backgroundColor: 'rgba(20,104,121,0.71)', //当和立体球形贴图是海洋的颜色
         visualMap: {
           show: false,
           min: 0,
-          max: 100000
+          max: 100000,
         },
         series: [
           {
-            type: "map",
-            map: "world",
+            type: 'map',
+            map: 'world',
             left: 0,
             top: 0,
             right: 0,
             bottom: 0,
-            environment: "rgba(0,0,0,0)",
+            environment: 'rgba(0,0,0,0)',
             boundingCoords: [
               [-180, 90],
-              [180, -90]
+              [180, -90],
             ],
             itemStyle: {
               normal: {
                 borderWidth: 2,
-                borderColor: "rgb(0,232,232)", //地球纹路的颜色
+                borderColor: 'rgb(0,232,232)', //地球纹路的颜色
                 areaColor: {
-                  type: "linear",
+                  type: 'linear',
                   x: 0,
                   y: 0,
                   x2: 0,
@@ -201,50 +201,50 @@ export default {
                   colorStops: [
                     {
                       offset: 0.2,
-                      color: "rgb(0,48,62)" // 0% 处的颜色
+                      color: 'rgb(0,48,62)', // 0% 处的颜色
                     },
                     {
                       offset: 0.8,
-                      color: "rgba(0,179,188,0.8)" // 100% 处的颜色
-                    }
+                      color: 'rgba(0,179,188,0.8)', // 100% 处的颜色
+                    },
                   ],
-                  global: false // 缺省为 false
-                }
-              }
-            }
-          }
-        ]
-      }
-    };
+                  global: false, // 缺省为 false
+                },
+              },
+            },
+          },
+        ],
+      },
+    }
   },
   mounted() {
-    this.earth();
+    this.earth()
   },
   methods: {
     earth() {
       this.mapChart = this.$echarts.init(
-        document.createElement("canvas"),
+        document.createElement('canvas'),
         null,
         {
           width: 3086,
-          height: 3048
+          height: 3048,
         }
-      );
+      )
       //获取容器并对其初始化
-      this.myChart = this.$echarts.init(document.getElementById("earth"));
+      this.myChart = this.$echarts.init(document.getElementById('earth'))
 
       //将平面地球和立体球形的纹路重叠
-      this.mapChart.setOption(this.mapOption);
+      this.mapChart.setOption(this.mapOption)
       // this.option.globe.baseTexture = this.mapChart
 
       //随机划多条线
       for (let i = 0; i < 10; i++) {
         this.option.series[0].data = this.option.series[0].data.concat(
           this.rodamData()
-        );
+        )
       }
 
-      this.myChart.setOption(this.option);
+      this.myChart.setOption(this.option)
       // this.myChart.setOption(this.mapOption);// 平面展开图
     },
 
@@ -252,58 +252,64 @@ export default {
     rodamData() {
       //let name = '随机点' + Math.random().toFixed(5) * 100000
       // let longitude = Math.random() * 62 + 73
-      let longitude = 105.18;
-      let longitude2 = Math.random() * 360 - 180;
+      let longitude = 105.18
+      let longitude2 = Math.random() * 360 - 180
       // let latitude = Math.random() * 50 + 3.52
-      let latitude = 37.51;
-      let latitude2 = Math.random() * 180 - 90;
+      let latitude = 37.51
+      let latitude2 = Math.random() * 180 - 90
       return {
         coords: [
           [longitude2, latitude2],
-          [longitude, latitude]
+          [longitude, latitude],
         ],
-        value: (Math.random() * 3000).toFixed(2)
-      };
+        value: (Math.random() * 3000).toFixed(2),
+      }
     },
     // ...mapMutations(['login']),
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           const params = {
             userName: this.user.name,
-            pwd: this.user.pwd
-          };
-          API.login(params).then(res => {
-            console.log(res);
+            pwd: this.user.pwd,
+          }
+          API.login(params).then((res) => {
+            console.log(res)
             if (res.code == 200) {
-              const token = res.info;
-              localStorage.setItem("token", token);
-              API.getUserInfo().then(res => {
-                console.log("用户信息", res);
+              const token = res.info
+              localStorage.setItem('token', token)
+              API.getUserInfo().then((res) => {
+                console.log('用户信息', res)
+                const loginName = res.info.nickName
+                console.log('用户登录名', loginName)
+                localStorage.setItem('loginName', loginName)
+                //用户登录Id
+                const comId = res.info.id
+                localStorage.setItem('comId', comId)
                 if (res.info.type == 1) {
-                  this.$router.push("/index");
+                  this.$router.push('/index')
                 } else {
-                  this.$router.push("/home");
+                  this.$router.push('/home')
                 }
-              });
+              })
             } else {
               this.$message({
                 message: res.msg,
-                type: "warning"
-              });
+                type: 'warning',
+              })
             }
-          });
+          })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
-  }
-};
+      this.$refs[formName].resetFields()
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
 .earth1 {
@@ -407,7 +413,7 @@ export default {
 }
 .login {
   // background: url("../assets/log_b.png") no-repeat;
-  background: url("../assets/beijing.png") no-repeat;
+  background: url('../assets/beijing.png') no-repeat;
   width: 100%;
   height: 100vh;
   display: flex;

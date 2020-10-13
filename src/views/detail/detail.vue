@@ -7,7 +7,7 @@
             <el-menu-item
               :index="index"
               v-for="(item, index) in workshopList"
-              :key="index"
+              :key="item.ws_id"
               @click="changeWs(item.ws_id)"
             >
               <span slot="title">{{ item.workshop_name }}</span>
@@ -25,7 +25,7 @@
             >
               <div class="mask">{{ item.machine_name }}</div>
               <div class="item">
-                <el-tooltip placement="right" popper-class="popperTooltip">
+                <!-- <el-tooltip placement="right" popper-class="popperTooltip">
                   <div slot="content">
                     品牌：{{ item.machine_brand }}<br />
                     型号：{{ item.machine_model }}<br />
@@ -34,7 +34,22 @@
                     用途：{{ item.use }}<br />
                   </div>
                   <img src="../../assets/images/sb.png" alt="" />
-                </el-tooltip>
+                </el-tooltip> -->
+                <div class="port-6 effect-2">
+                  <div class="image-box">
+                    <img src="../../assets/images/sb.png" alt="" />
+                  </div>
+                  <div class="text-desc">
+                    <h3>{{ item.machine_name }}</h3>
+                    <p>
+                      品牌：{{ item.machine_brand }}<br />
+                      型号：{{ item.machine_model }}<br />
+                      出厂日期：{{ item.manufacture_date }}<br />
+                      外形尺寸：{{ item.boundary_dimension }}<br />
+                      用途：{{ item.use }}<br />
+                    </p>
+                  </div>
+                </div>
                 <div class="imgdata" v-if="item.status == 1">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                   <div>
@@ -253,7 +268,6 @@ export default {
         var acount = 0;
         var alarmInfoList = [];
         alarmInfoList.length = 0;
-        console.log(alarmInfoList);
         this.machineList.forEach(item => {
           if (item.acount !== undefined) {
             count = item.acount + count;
@@ -268,7 +282,6 @@ export default {
               });
             });
           }
-          console.log(alarmInfoList);
           if (item.status == 1) {
             rcount++;
           }
@@ -363,6 +376,7 @@ export default {
                 if (JSON.parse(msg.data).data.status == "0") {
                   item.today_rtime = 0;
                   item.today_production = 0;
+                  item.count = 0;
                 }
               }
             });
@@ -1281,7 +1295,7 @@ export default {
 <style>
 /* 注意
 placement的属性值有top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end
-[x-placement^=??] border-??-color 的上下左右 要与placement一致 
+[x-placement^=??] border-??-color 的上下左右 要与placement一致
 不能放到scoped中*/
 /* .el-tooltip_ popper[x-placement^=right] .popper_arrow:after {
 border-top-color: blue;
@@ -1292,8 +1306,19 @@ border-top-color: blue ;
 } */
 .popperTooltip {
   line-height: 1.8 !important;
-  background: rgba(161, 176, 203, 0.2) !important;
+  background: #060c21 !important;
 }
+.el-tooltip__popper {
+  position: relative;
+  display: flex;
+  border: 1.5px solid #00d3e7;
+  border-image: -webkit-linear-gradient(rgb(85, 87, 231), rgb(149, 228, 241)) 20
+    20 !important;
+  border-image: -moz-linear-gradient(rgb(85, 87, 231), rgb(149, 228, 241)) 20 20 !important;
+  border-image: -o-linear-gradient(rgb(85, 87, 231), rgb(149, 228, 241)) 20 20 !important;
+  border-image: linear-gradient(rgb(85, 87, 231), rgb(149, 228, 241)) 20 20 !important;
+}
+
 .el-carousel__container .el-carousel__arrow {
   font-size: 0.5rem !important;
 }
@@ -1367,18 +1392,53 @@ border-top-color: blue ;
             width: 100%;
             height: 90%;
             // background: rgba(21, 49, 122, 0.5);
-            img {
-              width: 45%;
-              height: 35%;
-              padding: 5% 0 5% 28%;
+            // img {
+            //   width: 45%;
+            //   height: 35%;
+            //   padding: 5% 0 5% 28%;
+            // }
+            // img:hover {
+            //   cursor: pointer;
+            // }
+            .port-6 {
+              width: 100%;
+              height: 49%;
+              img {
+                width: 50%;
+                padding: 5% 0% 5% 30%;
+              }
             }
-            img:hover {
-              cursor: pointer;
+            .port-6.effect-2 {
+              z-index: 7;
             }
+            .port-6.effect-2 img {
+              transition: 0.6s;
+              z-index: 1;
+            }
+            .port-6.effect-2:hover img {
+              transform: scale(0.5) translateX(-60%);
+              position: relative;
+              z-index: 9;
+            }
+            .port-6.effect-2 .text-desc {
+              width: 50%;
+              // transform: translateX(-100%);
+              opacity: 0;
+              transition: 0.6s;
+            }
+            .port-6.effect-2:hover .text-desc {
+              transform: translate(90%, -120%);
+              opacity: 1;
+              color: #00ffff;
+              font-size: 0.25rem;
+              line-height: 1.8 !important;
+            }
+
             .imgdata {
               width: 92%;
-              height: 18%;
+              height: 13%;
               margin: 0 0.2rem;
+              text-align: center;
               background: rgba(21, 49, 122, 0.5);
               .item_1 {
                 width: 100%;

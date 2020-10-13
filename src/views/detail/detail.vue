@@ -3,28 +3,21 @@
     <section class="section">
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navone" default-active="1">
-            <el-menu-item index="1">
-              <span slot="title">一车间</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <span slot="title">二车间</span>
-            </el-menu-item>
-            <el-menu-item index="3">
-              <span slot="title">三车间</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <span slot="title">四车间</span>
-            </el-menu-item>
-            <el-menu-item index="5">
-              <span slot="title">五车间</span>
+          <el-menu class="navone" default-active="1" style="left: -100px;">
+            <el-menu-item
+              :index="index"
+              v-for="(item, index) in workshopList"
+              :key="index"
+              @click="changeWs(item.ws_id)"
+            >
+              <span slot="title">{{ item.workshop_name }}</span>
             </el-menu-item>
           </el-menu>
         </div>
       </div>
       <div class="cloum2">
         <div class="clocen">
-          <el-carousel :interval="0" type="card" height="70vh">
+          <el-carousel :interval="0" type="card" height="70vh" trigger="click">
             <el-carousel-item
               v-for="item in machineList"
               :key="item.id"
@@ -118,7 +111,7 @@
             </el-carousel-item>
             <!-- 其他设备 -->
             <el-carousel-item class="items">
-              <div class="mask">环境</div>
+              <div class="mask">学校设备</div>
               <div class="item">
                 <img src="../../assets/images/sb.png" alt="" />
                 <div class="imgdata2" style="margin-left:5%">
@@ -137,7 +130,7 @@
               </div>
             </el-carousel-item>
             <el-carousel-item class="items">
-              <div class="mask">学校设备</div>
+              <div class="mask">环境</div>
               <div class="item">
                 <img src="../../assets/images/sb.png" alt="" />
                 <div class="imgdata4">
@@ -167,7 +160,7 @@
       </div>
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navtwo" default-active="1">
+          <el-menu class="navtwo" default-active="1" style="right: -100px;">
             <el-menu-item index="1">
               <span slot="title">生产设备</span>
             </el-menu-item>
@@ -231,14 +224,16 @@ export default {
       },
 
       dialogVisible: false,
-      content: '',
       machineList: [],
+      workshopList: [],
       id: 1,
     }
   },
   created() {
     //根据车间编号查询车间信息（车间名、dpuCode、状态）
-    this.findMachineByWsId()
+    var id = this.$route.query.id
+    this.findMachineByWsId(id)
+    this.findMachineListByCompany()
     this.getWsId()
   },
   mounted() {
@@ -250,6 +245,7 @@ export default {
     this.schoolOutData()
     //环境
     this.cirTem()
+    this.product()
   },
   watch: {
     machineList: {
@@ -268,6 +264,8 @@ export default {
         var standbycount = 0
         var acount = 0
         var alarmInfoList = []
+        alarmInfoList.length = 0
+        console.log(alarmInfoList)
         this.machineList.forEach((item) => {
           if (item.acount !== undefined) {
             count = item.acount + count
@@ -282,6 +280,7 @@ export default {
               })
             })
           }
+          console.log(alarmInfoList)
           if (item.status == 1) {
             rcount++
           }
@@ -303,6 +302,17 @@ export default {
     },
   },
   methods: {
+    changeWs(id) {
+      this.findMachineByWsId(id)
+    },
+    findMachineListByCompany() {
+      const params = {
+        cId: localStorage.getItem('comId'),
+      }
+      API.findMachineListByCompany(params).then((res) => {
+        this.workshopList = res.info
+      })
+    },
     getWsId() {},
     showAlarm() {
       this.dialogVisible = true
@@ -312,9 +322,9 @@ export default {
       // this.router.push("/");
     },
 
-    findMachineByWsId() {
+    findMachineByWsId(id) {
       const params = {
-        wsId: this.$route.query.id,
+        wsId: id,
       }
       API.findMachineByWsId(params)
         .then((res) => {
@@ -361,6 +371,10 @@ export default {
                     JSON.parse(msg.data).data.alarming.length
                   item.content = JSON.parse(msg.data).data.alarming
                   this.dialogVisible = true
+                }
+                if (JSON.parse(msg.data).data.status == '0') {
+                  item.today_rtime = 0
+                  item.today_production = 0
                 }
               }
             })
@@ -1201,7 +1215,6 @@ export default {
           },
         ],
       }
-
       let chart = document.getElementById('product')
       let myChart = echarts.init(chart)
       myChart.setOption(option)
@@ -1659,55 +1672,65 @@ export default {
     },
   },
 }
+let chart = document.getElementById('product')
+let myChart = echarts.init(chart)
+myChart.setOption(option)
+window.addEventListener('resize', function() {
+  myChart.resize()
+})
 </script>
-<style scoped>
-.detail .section .cloum .navmenu .el-menu {
-  border-right: solid 0px #e6e6e6;
-  background-color: transparent;
-}
-.detail .section .cloum .navmenu .el-menu-item {
-  border: #5483ed solid 1px;
-  border-left: 0px;
-  border-radius: 50px;
-  background: rgba(56, 77, 154, 0.4);
-  text-align: right;
-  font-size: 0.3rem;
-  font-weight: 600;
-  color: #ffff;
-  margin: 0.5rem 1rem;
-}
-.detail .section .cloum .navmenu .navtwo .el-menu-item {
-  text-align: left;
-  margin: 0.5rem 1rem;
-}
-.detail .section .cloum .navmenu .el-menu-item,
-.el-submenu__title {
-  height: 1rem;
-  line-height: 1rem;
-}
-/* //设置鼠标悬停时el-menu-item的样式 */
-.detail .section .cloum .navmenu .navone .el-menu-item:hover {
-  border-right: #33a2ef solid 6px !important;
-  background-color: rgba(161, 176, 203, 0.4) !important;
-  color: #38b2ff !important;
-}
-/* //设置选中el-menu-item时的样式 */
-.detail .section .cloum .navmenu .navone .el-menu-item.is-active {
-  border-right: #33a2ef solid 6px !important;
-  background-color: #cfe0ee !important;
-  color: #38b2ff !important;
-}
-/* //设置鼠标悬停时el-menu-item的样式 */
-.detail .section .cloum .navmenu .navtwo .el-menu-item:hover {
-  border-left: #33a2ef solid 6px !important;
-  background-color: rgba(161, 176, 203, 0.4) !important;
-  color: #38b2ff !important;
-}
-/* //设置选中el-menu-item时的样式 */
-.detail .section .cloum .navmenu .navtwo .el-menu-item.is-active {
-  border-left: #33a2ef solid 6px !important;
-  background-color: #cfe0ee !important;
-  color: #38b2ff !important;
+<style scoped lang="scss">
+.detail .section .cloum .navmenu {
+  .el-menu {
+    /* border-right: solid 0px #e6e6e6; */
+    background-color: transparent;
+    // position: absolute;
+    // top: 32%;
+    // width: 20%;
+    padding-top: 25%;
+    border-radius: 50%;
+    border: solid rgba(0, 0, 0, 0);
+  }
+  .el-menu-item {
+    border-right: #4177e1 solid 1px !important;
+    border-left: 0px;
+    border-radius: 50px;
+    text-align: right;
+    font-size: 0.3rem;
+    color: #ffff;
+    margin: 0.5rem 1rem;
+    box-shadow: rgb(0, 36, 255, 50) 0px 0px 20px inset;
+    .el-submenu__title {
+      height: 1rem;
+      line-height: 1rem;
+    }
+  }
+  .el-menu-item:hover {
+    box-shadow: rgb(18, 87, 201) 0px 0px 38px inset;
+    color: #fff !important;
+    font-weight: 700;
+  }
+  .el-menu-item.is-active {
+    //* background-color: #cfe0ee !important; */
+    color: #fff !important;
+    font-weight: 900;
+    box-shadow: rgb(85, 107, 238) 0px 0px 0.9rem inset;
+  }
+  .el-menu-item:nth-of-type(2) {
+    margin: 0.5rem 0.5rem;
+  }
+  .el-menu-item:nth-of-type(3) {
+    margin: 0.5rem 0rem;
+  }
+  .el-menu-item:nth-of-type(4) {
+    margin: 0.5rem 0.5rem;
+  }
+  .el-menu-item:nth-of-type(5) {
+    margin: 0.5rem 1rem;
+  }
+  .navtwo .el-menu-item {
+    text-align: left;
+  }
 }
 .el-carousel__item {
   width: 30%;
@@ -1736,6 +1759,9 @@ border-top-color: blue ;
   line-height: 1.8 !important;
   background: rgba(161, 176, 203, 0.2) !important;
 }
+.el-carousel__container .el-carousel__arrow {
+  font-size: 0.5rem !important;
+}
 </style>
 <style lang="scss" scoped>
 /*引用字库*/
@@ -1752,12 +1778,14 @@ border-top-color: blue ;
     // border: 1px solid red;
     border-radius: 5px;
     height: 100%;
+    overflow: hidden;
     .cloum {
       float: left;
       margin: 0.2rem;
       width: 18%;
       height: 90vh;
-      background: url('../../assets/images/nav_left.png') center no-repeat;
+      background: url('../../assets/images/椭圆 1.png') center no-repeat;
+      background-size: 100% 100%;
       display: flex;
       justify-content: right;
       align-items: center;
@@ -1767,18 +1795,17 @@ border-top-color: blue ;
       }
     }
     .cloum:nth-child(3) {
-      border-radius: 50% 0 0 50%;
-      background: url('../../assets/images/nav_right.png') center no-repeat;
+      background: url('../../assets/images/椭圆 2.png') center no-repeat;
+      background-size: 100% 100%;
     }
     .cloum2 {
       float: left;
       margin: 0.2rem;
       width: 59.3%;
       height: 90vh;
-      // border: 1px solid #274774;
       .clocen {
         width: 100%;
-        height: 80%;
+        height: 83%;
 
         .items {
           // width: 32%;

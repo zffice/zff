@@ -4,20 +4,13 @@
       <div class="cloum">
         <div class="navmenu">
           <el-menu class="navone" default-active="1" style="left: -100px;">
-            <el-menu-item index="1">
-              <span slot="title">一车间</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <span slot="title">二车间</span>
-            </el-menu-item>
-            <el-menu-item index="3">
-              <span slot="title">三车间</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <span slot="title">四车间</span>
-            </el-menu-item>
-            <el-menu-item index="5">
-              <span slot="title">五车间</span>
+            <el-menu-item
+              :index="index"
+              v-for="(item, index) in workshopList"
+              :key="index"
+              @click="changeWs(item.ws_id)"
+            >
+              <span slot="title">{{ item.workshop_name }}</span>
             </el-menu-item>
           </el-menu>
         </div>
@@ -225,14 +218,16 @@ export default {
       },
 
       dialogVisible: false,
-      content: "",
       machineList: [],
+      workshopList: [],
       id: 1
     };
   },
   created() {
     //根据车间编号查询车间信息（车间名、dpuCode、状态）
-    this.findMachineByWsId();
+    var id = this.$route.query.id;
+    this.findMachineByWsId(id);
+    this.findMachineListByCompany();
     this.getWsId();
   },
   mounted() {
@@ -257,6 +252,8 @@ export default {
         var standbycount = 0;
         var acount = 0;
         var alarmInfoList = [];
+        alarmInfoList.length = 0;
+        console.log(alarmInfoList);
         this.machineList.forEach(item => {
           if (item.acount !== undefined) {
             count = item.acount + count;
@@ -271,6 +268,7 @@ export default {
               });
             });
           }
+          console.log(alarmInfoList);
           if (item.status == 1) {
             rcount++;
           }
@@ -292,6 +290,17 @@ export default {
     }
   },
   methods: {
+    changeWs(id) {
+      this.findMachineByWsId(id);
+    },
+    findMachineListByCompany() {
+      const params = {
+        cId: localStorage.getItem("comId")
+      };
+      API.findMachineListByCompany(params).then(res => {
+        this.workshopList = res.info;
+      });
+    },
     getWsId() {},
     showAlarm() {
       this.dialogVisible = true;
@@ -301,9 +310,9 @@ export default {
       // this.router.push("/");
     },
 
-    findMachineByWsId() {
+    findMachineByWsId(id) {
       const params = {
-        wsId: this.$route.query.id
+        wsId: id
       };
       API.findMachineByWsId(params)
         .then(res => {
@@ -350,6 +359,10 @@ export default {
                     JSON.parse(msg.data).data.alarming.length;
                   item.content = JSON.parse(msg.data).data.alarming;
                   this.dialogVisible = true;
+                }
+                if (JSON.parse(msg.data).data.status == "0") {
+                  item.today_rtime = 0;
+                  item.today_production = 0;
                 }
               }
             });
@@ -1323,7 +1336,7 @@ border-top-color: blue ;
     .cloum2 {
       float: left;
       margin: 0.2rem;
-      width: 60%;
+      width: 59.3%;
       height: 90vh;
       .clocen {
         width: 100%;

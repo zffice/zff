@@ -201,7 +201,33 @@
       :show-close="true"
       :center="true"
     >
-      {{ alarmCount.content }}
+      <div v-for="(item, i) in alarmCount.content" :key="i" class="dia">
+        <div class="coninfo" style="margin-right:2%">
+          车间名：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].wsname }}</span
+          >
+        </div>
+        <div class="coninfo" style="margin-right:2%">
+          设备名：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].mname }}</span
+          >
+        </div>
+        <div class="coninfo" style="margin-right:2%">
+          报警信息：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].info }}</span
+          >
+        </div>
+        <div class="coninfo">
+          时间：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].time }}</span
+          >
+        </div>
+      </div>
+      <br />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
@@ -481,7 +507,6 @@ export default {
     },
     product() {
       const color = ['rgba(23, 255, 243', 'rgba(255,100,97']
-
       var roseCharts = document.getElementsByClassName('item_1') // 对应地使用ByClassName
       var dpuCode = []
       this.machineList.forEach((item) => {
@@ -1247,8 +1272,8 @@ export default {
         grid: {
           left: '30%',
           right: '20%',
-          bottom: '0',
-          top: '10%',
+          bottom: '5%',
+          top: '5%',
         },
         tooltip: {
           trigger: 'axis',
@@ -1372,8 +1397,8 @@ export default {
         grid: {
           left: '30%',
           right: '20%',
-          bottom: '0',
-          top: '10%',
+          bottom: '5%',
+          top: '5%',
         },
         tooltip: {
           trigger: 'axis',
@@ -2162,6 +2187,18 @@ border-top-color: blue ;
     }
     .clear {
       clear: both;
+    }
+  }
+  .dia {
+    width: 100%;
+    height: 0.5rem;
+    // border: 1px solid red;
+    font-family: 'electronicFont';
+    text-align: center;
+    // padding: 0.05rem 0;
+    margin: 0.1rem 0;
+    .coninfo {
+      float: left;
     }
   }
 }

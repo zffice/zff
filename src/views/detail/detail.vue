@@ -118,12 +118,22 @@
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                   <div class="item_2">
                     <div id="cirInfo"></div>
+                    <div class="cirinfo_text">
+                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
+                      >42<span style="font-size:0.2rem">℃</span>
+                    </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="imgdata2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="cirSetInfo"></div>
+                    <div class="cirinfo_text">
+                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
+                      >30<span style="font-size:0.2rem">℃</span>
+                    </div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="clear"></div>
@@ -240,11 +250,15 @@ export default {
     require('../../assets/js/common.js')
     // 获取url上的车间号
     this.product()
-    //学校设备静态数据
-    this.schoolInData()
-    this.schoolOutData()
-    //环境
-    this.cirTem()
+
+    this.$nextTick(() => {
+      //学校设备静态数据
+      this.schoolInData()
+      this.schoolOutData()
+      //环境
+      this.cirTem()
+      this.cirSetTem()
+    })
     this.product()
   },
   watch: {
@@ -1223,7 +1237,6 @@ export default {
       })
     },
     schoolInData() {
-      var myChart = echarts.init(document.getElementById('glinfo'))
       var getmydmc = ['输入功率：', '有功功率：', '无功功率：', '总功率：'] //数据点名称
       var getmyd = [50, 12, 23, 65] //学生满意度
       var getmydzd = [] //学生满意度100%
@@ -1233,7 +1246,7 @@ export default {
       var option = {
         grid: {
           left: '30%',
-          right: '15%',
+          right: '20%',
           bottom: '0',
           top: '10%',
         },
@@ -1340,13 +1353,15 @@ export default {
           },
         ],
       }
+      let chart = document.getElementById('glinfo')
+      var myChart = echarts.init(chart)
       myChart.setOption(option)
       window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
     schoolOutData() {
-      var myChart = echarts.init(document.getElementById('glinfo2'))
+      // var myChart = echarts.init(document.getElementById('glinfo2'))
       var getmydmc = ['输出功率：', '有功功率：', '无功功率：', '总功率：'] //数据点名称
       var getmyd = [50, 12, 23, 65] //学生满意度
       var getmydzd = [] //学生满意度100%
@@ -1356,7 +1371,7 @@ export default {
       var option = {
         grid: {
           left: '30%',
-          right: '15%',
+          right: '20%',
           bottom: '0',
           top: '10%',
         },
@@ -1463,34 +1478,35 @@ export default {
           },
         ],
       }
+      let chart = document.getElementById('glinfo2')
+      var myChart = echarts.init(chart)
       myChart.setOption(option)
       window.addEventListener('resize', function() {
         myChart.resize()
       })
     },
     cirTem() {
-      var myChart = echarts.init(document.getElementById('cirInfo'))
       var xdata = ['a', 'b']
-      var dataArr = [40, 70]
+      var dataArr = [30, 42]
       var framData = [129, 129] //白框
       var outData = [130, 130] //外框
       var outRadiusData = [0, 0] //外圆
       var option = {
         title: {
-          top: '10%',
+          top: '5%',
           text: '环境温湿度',
           subtext: '',
           x: 'center',
           textStyle: {
             color: '#ccc',
-            fontSize: 10,
+            fontSize: 13,
           },
         },
         grid: {
           left: '15%',
-          top: '20%',
+          top: '15%',
           right: '10%',
-          bottom: '0',
+          bottom: '5%',
           // containLabel: true,
         },
         xAxis: [
@@ -1593,24 +1609,14 @@ export default {
                 },
               },
             },
-            barWidth: 10,
+            barWidth: 13,
             itemStyle: {
               normal: {
-                barBorderRadius: 10,
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: 'rgb(54, 168, 244)',
-                  },
-                  {
-                    offset: 0.8,
-                    color: 'rgb(99, 90, 241)',
-                  },
-                  {
-                    offset: 1,
-                    color: 'rgb(106, 78, 240)',
-                  },
-                ]),
+                barBorderRadius: 13,
+                color: (params) => {
+                  let colors = ['#D6DE50', '#36A0F7']
+                  return colors[params.dataIndex]
+                },
               },
             },
             z: 2,
@@ -1657,7 +1663,10 @@ export default {
 
             itemStyle: {
               normal: {
-                color: 'rgb(106, 78, 240)',
+                color: (params) => {
+                  let colors = ['#D6DE50', '#36A0F7']
+                  return colors[params.dataIndex]
+                },
                 opacity: 1,
               },
             },
@@ -1665,19 +1674,211 @@ export default {
           },
         ],
       }
+      let chart = document.getElementById('cirInfo')
+      var myChart = echarts.init(chart)
       myChart.setOption(option)
       window.addEventListener('resize', function() {
-        productCharts.resize()
+        myChart.resize()
+      })
+    },
+    cirSetTem() {
+      var xdata = ['a', 'b']
+      var dataArr = [30, 30]
+      var framData = [129, 129] //白框
+      var outData = [130, 130] //外框
+      var outRadiusData = [0, 0] //外圆
+      var option = {
+        title: {
+          top: '5%',
+          text: '设定温湿度',
+          subtext: '',
+          x: 'center',
+          textStyle: {
+            color: '#ccc',
+            fontSize: 13,
+          },
+        },
+        grid: {
+          left: '15%',
+          top: '15%',
+          right: '10%',
+          bottom: '5%',
+          // containLabel: true,
+        },
+        xAxis: [
+          {
+            type: 'category',
+            show: false,
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'transparent', //x轴底部横线
+              },
+            },
+            axisLabel: {
+              margin: 25, //标签距离x轴轴线的距离
+              inside: false,
+              textStyle: {
+                color: '#fff',
+                fontWeight: 'normal',
+                fontSize: '14',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            data: xdata,
+          },
+        ],
+        yAxis: [
+          {
+            axisTick: 'none',
+            axisLine: 'none',
+            offset: '27',
+            axisLabel: {
+              textStyle: {
+                show: false,
+                fontSize: '16',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            min: 0,
+            max: 150,
+          },
+          {
+            axisTick: 'none',
+            axisLabel: {
+              textStyle: {
+                show: false,
+                // color: '#ffffff',
+                fontSize: '16',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'transparent', //x轴底部横线
+              },
+            },
+            min: 0,
+            max: 150,
+          },
+          {
+            name: '',
+            nameGap: '50',
+            nameTextStyle: {
+              color: '#ffffff',
+              fontSize: '16',
+            },
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(0,0,0,0)',
+              },
+            },
+            data: [],
+          },
+        ],
+        series: [
+          {
+            name: '条',
+            type: 'bar',
+            yAxisIndex: 0,
+            data: dataArr,
+            label: {
+              normal: {
+                show: true,
+                position: 'top',
+                formatter: function(param) {
+                  return param.value + '°C'
+                },
+                textStyle: {
+                  color: '#ffffff',
+                  fontSize: '10',
+                },
+              },
+            },
+            barWidth: 13,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 13,
+                color: (params) => {
+                  let colors = ['#D6DE50', '#36A0F7']
+                  return colors[params.dataIndex]
+                },
+              },
+            },
+            z: 2,
+          },
+          {
+            name: '白框',
+            type: 'bar',
+            yAxisIndex: 1,
+            barGap: '-100%',
+            data: framData,
+            barWidth: 18,
+            itemStyle: {
+              normal: {
+                borderColor: 'rgb(0, 136, 231)',
+                color: 'transparent',
+                barBorderRadius: 10,
+              },
+            },
+            z: 1,
+          },
+          {
+            name: '外框',
+            type: 'bar',
+            yAxisIndex: 2,
+            barGap: '-120%',
+            data: outData,
+            barWidth: 30,
+            itemStyle: {
+              normal: {
+                color: 'transparent',
+                barBorderRadius: 5,
+              },
+            },
+            z: 0,
+          },
+          {
+            name: '外圆',
+            type: 'scatter',
+            hoverAnimation: false,
+            data: outRadiusData,
+            yAxisIndex: 2,
+            symbolSize: 22,
+            symbolOffset: [-5, 0], //相对于原本位置的偏移量
+
+            itemStyle: {
+              normal: {
+                color: (params) => {
+                  let colors = ['#D6DE50', '#36A0F7']
+                  return colors[params.dataIndex]
+                },
+                opacity: 1,
+              },
+            },
+            z: 2,
+          },
+        ],
+      }
+      let chart = document.getElementById('cirSetInfo')
+      var myChart = echarts.init(chart)
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
       })
     },
   },
 }
-let chart = document.getElementById('product')
-let myChart = echarts.init(chart)
-myChart.setOption(option)
-window.addEventListener('resize', function() {
-  myChart.resize()
-})
 </script>
 <style scoped lang="scss">
 .detail .section .cloum .navmenu {
@@ -1849,11 +2050,12 @@ border-top-color: blue ;
                 width: 100%;
                 height: 94%;
                 #glinfo {
-                  width: 230%;
+                  // border: 1px solid red;
+                  width: 100%;
                   height: 100%;
                 }
                 #glinfo2 {
-                  width: 230%;
+                  width: 100%;
                   height: 100%;
                 }
               }
@@ -1918,7 +2120,19 @@ border-top-color: blue ;
                 #cirInfo {
                   width: 100%;
                   height: 80%;
-                  border: 1px solid red;
+                  // border: 1px solid red;
+                }
+                #cirSetInfo {
+                  width: 100%;
+                  height: 80%;
+                }
+                .cirinfo_text {
+                  font-family: 'electronicFont';
+                  font-size: 0.5rem;
+                  text-align: center;
+                  padding: 0.1rem;
+                  margin: 0.1rem 0;
+                  color: #00ffff;
                 }
               }
             }

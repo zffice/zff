@@ -63,6 +63,7 @@ export default {
   methods: {
     handleClick() {
       this.$refs.child.showAlarm()
+      console.log(this.$refs.child.showAlarm())
     },
     getShopCode(value) {
       this.alarmCount = value.count

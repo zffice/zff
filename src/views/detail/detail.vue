@@ -44,7 +44,7 @@
                     <p>
                       品牌：{{ item.machine_brand }}<br />
                       型号：{{ item.machine_model }}<br />
-                      出厂日期：{{ item.manufacture_date }}<br />
+                      出厂日期：{{ item.manufacture_date.slice(0, 10) }}<br />
                       外形尺寸：{{ item.boundary_dimension }}<br />
                       用途：{{ item.use }}<br />
                     </p>
@@ -126,34 +126,78 @@
             </el-carousel-item>
             <!-- 其他设备 -->
             <el-carousel-item class="items">
-              <div class="mask">学校设备</div>
+              <div class="mask">环境</div>
               <div class="item">
-                <img src="../../assets/images/sb.png" alt="" />
-                <div class="imgdata2">
+                <div class="port-6 effect-2">
+                  <div class="image-box">
+                    <img src="../../assets/images/sb.png" alt="" />
+                  </div>
+                  <div class="text-desc">
+                    <h3>环境</h3>
+                    <p>
+                      品牌：三星<br />
+                      型号：XXX<br />
+                      出厂日期：2020-10-10<br />
+                      外形尺寸：20 X 20<br />
+                      用途：温度检测<br />
+                    </p>
+                  </div>
+                </div>
+                <div class="imgdata2" style="margin-left:5%">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="cirInfo"></div>
+                    <div class="cirinfo_text">
+                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
+                      >42<span style="font-size:0.25rem">%</span>
+                    </div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="imgdata2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="cirSetInfo"></div>
+                    <div class="cirinfo_text">
+                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
+                      >30<span style="font-size:0.25rem">%</span>
+                    </div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="clear"></div>
               </div>
             </el-carousel-item>
             <el-carousel-item class="items">
-              <div class="mask">环境</div>
+              <div class="mask">学校设备</div>
               <div class="item">
-                <img src="../../assets/images/sb.png" alt="" />
-                <div class="imgdata2">
+                <div class="port-6 effect-2">
+                  <div class="image-box">
+                    <img src="../../assets/images/sb.png" alt="" />
+                  </div>
+                  <div class="text-desc">
+                    <h3>学校设备</h3>
+                    <p>
+                      品牌：西门子<br />
+                      型号：XXX<br />
+                      出厂日期：2020-10-10<br />
+                      外形尺寸：20 X 20<br />
+                      用途：<br />
+                    </p>
+                  </div>
+                </div>
+                <div class="imgdata4">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="glinfo"></div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
-                <div class="imgdata2">
+                <div class="imgdata4">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="glinfo2"></div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="clear"></div>
@@ -200,7 +244,33 @@
       :show-close="true"
       :center="true"
     >
-      {{ alarmCount.content }}
+      <div v-for="(item, i) in alarmCount.content" :key="i" class="dia">
+        <div class="coninfo" style="margin-right:2%">
+          车间名：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].wsname }}</span
+          >
+        </div>
+        <div class="coninfo" style="margin-right:2%">
+          设备名：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].mname }}</span
+          >
+        </div>
+        <div class="coninfo" style="margin-right:2%">
+          报警信息：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].info }}</span
+          >
+        </div>
+        <div class="coninfo">
+          时间：<span
+            style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
+            >{{ alarmCount.content[i].time }}</span
+          >
+        </div>
+      </div>
+      <br />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
@@ -248,6 +318,16 @@ export default {
   mounted() {
     require("../../assets/js/common.js");
     // 获取url上的车间号
+    this.product();
+
+    this.$nextTick(() => {
+      //学校设备静态数据
+      this.schoolInData();
+      this.schoolOutData();
+      //环境
+      this.cirTem();
+      this.cirSetTem();
+    });
     this.product();
   },
   watch: {
@@ -469,7 +549,6 @@ export default {
     },
     product() {
       const color = ["rgba(23, 255, 243", "rgba(255,100,97"];
-
       var roseCharts = document.getElementsByClassName("item_1"); // 对应地使用ByClassName
       var dpuCode = [];
       this.machineList.forEach(item => {
@@ -1217,9 +1296,651 @@ export default {
           }
         ]
       };
-
       let chart = document.getElementById("product");
       let myChart = echarts.init(chart);
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    schoolInData() {
+      var getmydmc = ["输入功率：", "有功功率：", "无功功率：", "总功率："]; //数据点名称
+      var getmyd = [50, 12, 23, 65]; //学生满意度
+      var getmydzd = []; //学生满意度100%
+      for (let i = 0; i < getmyd.length; i++) {
+        getmydzd.push(100);
+      }
+      var option = {
+        grid: {
+          left: "30%",
+          right: "20%",
+          bottom: "5%",
+          top: "5%"
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "none"
+          },
+          formatter: function(params) {
+            return params[0].name + ": " + params[0].value + "%";
+          }
+        },
+        xAxis: {
+          show: false,
+          type: "value"
+        },
+        yAxis: [
+          {
+            type: "category",
+            inverse: true,
+            axisLabel: {
+              formatter: function(value) {
+                var ret = ""; //拼接加\n返回的类目项
+                var maxLength = 5; //每项显示文字个数
+                var valLength = value.length; //X轴类目项的文字个数
+                var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+                if (rowN > 1) {
+                  //如果类目项的文字大于5,
+                  var temp = ""; //每次截取的字符串
+                  var start = 0; //开始截取的位置
+                  var end = maxLength; //结束截取的位置
+                  temp =
+                    value.substring(start, end) +
+                    "\n" +
+                    value.substring(end, valLength);
+                  ret += temp; //凭借最终的字符串
+                  return ret;
+                } else {
+                  return value;
+                }
+              },
+              textStyle: {
+                color: "#fff",
+                fontSize: "12",
+                lineHeight: 10
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+            data: getmydmc
+          },
+          {
+            type: "category",
+            inverse: true,
+            axisTick: "none",
+            axisLine: "none",
+            show: true,
+            axisLabel: {
+              textStyle: {
+                color: "#00FFFF",
+                fontSize: "12"
+              },
+              formatter: "{value}%"
+            },
+            data: getmyd
+          }
+        ],
+        series: [
+          {
+            name: "值",
+            type: "bar",
+            zlevel: 1,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 5,
+                color: params => {
+                  let colors = ["#5E43CD", "#A2A94C", "#259670", "#108CCA"];
+                  return colors[params.dataIndex];
+                }
+              }
+            },
+            barWidth: 10,
+            data: getmyd
+          },
+          {
+            name: "背景",
+            type: "bar",
+            barWidth: 10,
+            barGap: "-100%",
+            data: getmydzd,
+            itemStyle: {
+              normal: {
+                color: "rgba(103,150,253,0.3)",
+                barBorderRadius: 5
+              }
+            }
+          }
+        ]
+      };
+      let chart = document.getElementById("glinfo");
+      var myChart = echarts.init(chart);
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    schoolOutData() {
+      // var myChart = echarts.init(document.getElementById('glinfo2'))
+      var getmydmc = ["输出功率：", "有功功率：", "无功功率：", "总功率："]; //数据点名称
+      var getmyd = [50, 12, 23, 65]; //学生满意度
+      var getmydzd = []; //学生满意度100%
+      for (let i = 0; i < getmyd.length; i++) {
+        getmydzd.push(100);
+      }
+      var option = {
+        grid: {
+          left: "30%",
+          right: "20%",
+          bottom: "5%",
+          top: "5%"
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "none"
+          },
+          formatter: function(params) {
+            return params[0].name + ": " + params[0].value + "%";
+          }
+        },
+        xAxis: {
+          show: false,
+          type: "value"
+        },
+        yAxis: [
+          {
+            type: "category",
+            inverse: true,
+            axisLabel: {
+              formatter: function(value) {
+                var ret = ""; //拼接加\n返回的类目项
+                var maxLength = 5; //每项显示文字个数
+                var valLength = value.length; //X轴类目项的文字个数
+                var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+                if (rowN > 1) {
+                  //如果类目项的文字大于5,
+                  var temp = ""; //每次截取的字符串
+                  var start = 0; //开始截取的位置
+                  var end = maxLength; //结束截取的位置
+                  temp =
+                    value.substring(start, end) +
+                    "\n" +
+                    value.substring(end, valLength);
+                  ret += temp; //凭借最终的字符串
+                  return ret;
+                } else {
+                  return value;
+                }
+              },
+              textStyle: {
+                color: "#fff",
+                fontSize: "10",
+                lineHeight: 12
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+            data: getmydmc
+          },
+          {
+            type: "category",
+            inverse: true,
+            axisTick: "none",
+            axisLine: "none",
+            show: true,
+            axisLabel: {
+              textStyle: {
+                color: "#00FFFF",
+                fontSize: "12"
+              },
+              formatter: "{value}%"
+            },
+            data: getmyd
+          }
+        ],
+        series: [
+          {
+            name: "值",
+            type: "bar",
+            zlevel: 1,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 5,
+                color: params => {
+                  let colors = ["#5E43CD", "#A2A94C", "#259670", "#108CCA"];
+                  return colors[params.dataIndex];
+                }
+              }
+            },
+            barWidth: 10,
+            data: getmyd
+          },
+          {
+            name: "背景",
+            type: "bar",
+            barWidth: 10,
+            barGap: "-100%",
+            data: getmydzd,
+            itemStyle: {
+              normal: {
+                color: "rgba(103,150,253,0.3)",
+                barBorderRadius: 5
+              }
+            }
+          }
+        ]
+      };
+      let chart = document.getElementById("glinfo2");
+      var myChart = echarts.init(chart);
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    cirTem() {
+      var xdata = ["a", "b"];
+      var dataArr = [30, 42];
+      var framData = [129, 129]; //白框
+      var outData = [130, 130]; //外框
+      var outRadiusData = [0, 0]; //外圆
+      var option = {
+        title: {
+          top: "5%",
+          text: "环境温湿度",
+          subtext: "",
+          x: "center",
+          textStyle: {
+            color: "#ccc",
+            fontSize: 13
+          }
+        },
+        grid: {
+          left: "15%",
+          top: "15%",
+          right: "10%",
+          bottom: "5%"
+          // containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "category",
+            show: false,
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: "transparent" //x轴底部横线
+              }
+            },
+            axisLabel: {
+              margin: 25, //标签距离x轴轴线的距离
+              inside: false,
+              textStyle: {
+                color: "#fff",
+                fontWeight: "normal",
+                fontSize: "14"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            data: xdata
+          }
+        ],
+        yAxis: [
+          {
+            axisTick: "none",
+            axisLine: "none",
+            offset: "27",
+            axisLabel: {
+              textStyle: {
+                show: false,
+                fontSize: "16"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            min: 0,
+            max: 150
+          },
+          {
+            axisTick: "none",
+            axisLabel: {
+              textStyle: {
+                show: false,
+                // color: '#ffffff',
+                fontSize: "16"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: "transparent" //x轴底部横线
+              }
+            },
+            min: 0,
+            max: 150
+          },
+          {
+            name: "",
+            nameGap: "50",
+            nameTextStyle: {
+              color: "#ffffff",
+              fontSize: "16"
+            },
+            axisLine: {
+              lineStyle: {
+                color: "rgba(0,0,0,0)"
+              }
+            },
+            data: []
+          }
+        ],
+        series: [
+          {
+            name: "条",
+            type: "bar",
+            yAxisIndex: 0,
+            data: dataArr,
+            label: {
+              normal: {
+                show: true,
+                position: "top",
+                formatter: function(param) {
+                  let dw = ["℃", "%"];
+                  return param.value + dw[param.dataIndex];
+                },
+                textStyle: {
+                  color: "#ffffff",
+                  fontSize: "10"
+                }
+              }
+            },
+            barWidth: 13,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 13,
+                color: params => {
+                  let colors = ["#D6DE50", "#36A0F7"];
+                  return colors[params.dataIndex];
+                }
+              }
+            },
+            z: 2
+          },
+          {
+            name: "白框",
+            type: "bar",
+            yAxisIndex: 1,
+            barGap: "-100%",
+            data: framData,
+            barWidth: 18,
+            itemStyle: {
+              normal: {
+                borderColor: "rgb(0, 136, 231)",
+                color: "transparent",
+                barBorderRadius: 10
+              }
+            },
+            z: 1
+          },
+          {
+            name: "外框",
+            type: "bar",
+            yAxisIndex: 2,
+            barGap: "-120%",
+            data: outData,
+            barWidth: 30,
+            itemStyle: {
+              normal: {
+                color: "transparent",
+                barBorderRadius: 5
+              }
+            },
+            z: 0
+          },
+          {
+            name: "外圆",
+            type: "scatter",
+            hoverAnimation: false,
+            data: outRadiusData,
+            yAxisIndex: 2,
+            symbolSize: 22,
+            symbolOffset: [-5, 0], //相对于原本位置的偏移量
+
+            itemStyle: {
+              normal: {
+                color: params => {
+                  let colors = ["#D6DE50", "#36A0F7"];
+                  return colors[params.dataIndex];
+                },
+                opacity: 1
+              }
+            },
+            z: 2
+          }
+        ]
+      };
+      let chart = document.getElementById("cirInfo");
+      var myChart = echarts.init(chart);
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+    },
+    cirSetTem() {
+      var xdata = ["a", "b"];
+      var dataArr = [30, 30];
+      var framData = [129, 129]; //白框
+      var outData = [130, 130]; //外框
+      var outRadiusData = [0, 0]; //外圆
+      var option = {
+        title: {
+          top: "5%",
+          text: "设定温湿度",
+          subtext: "",
+          x: "center",
+          textStyle: {
+            color: "#ccc",
+            fontSize: 13
+          }
+        },
+        grid: {
+          left: "15%",
+          top: "15%",
+          right: "10%",
+          bottom: "5%"
+          // containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "category",
+            show: false,
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: "transparent" //x轴底部横线
+              }
+            },
+            axisLabel: {
+              margin: 25, //标签距离x轴轴线的距离
+              inside: false,
+              textStyle: {
+                color: "#fff",
+                fontWeight: "normal",
+                fontSize: "14"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            data: xdata
+          }
+        ],
+        yAxis: [
+          {
+            axisTick: "none",
+            axisLine: "none",
+            offset: "27",
+            axisLabel: {
+              textStyle: {
+                show: false,
+                fontSize: "16"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            min: 0,
+            max: 150
+          },
+          {
+            axisTick: "none",
+            axisLabel: {
+              textStyle: {
+                show: false,
+                // color: '#ffffff',
+                fontSize: "16"
+              }
+            },
+            splitLine: {
+              show: false //背景格线
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: "transparent" //x轴底部横线
+              }
+            },
+            min: 0,
+            max: 150
+          },
+          {
+            name: "",
+            nameGap: "50",
+            nameTextStyle: {
+              color: "#ffffff",
+              fontSize: "16"
+            },
+            axisLine: {
+              lineStyle: {
+                color: "rgba(0,0,0,0)"
+              }
+            },
+            data: []
+          }
+        ],
+        series: [
+          {
+            name: "条",
+            type: "bar",
+            yAxisIndex: 0,
+            data: dataArr,
+            label: {
+              normal: {
+                show: true,
+                position: "top",
+                formatter: function(param) {
+                  let dw = ["℃", "%"];
+                  return param.value + dw[param.dataIndex];
+                },
+                textStyle: {
+                  color: "#ffffff",
+                  fontSize: "10"
+                }
+              }
+            },
+            barWidth: 13,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 13,
+                color: params => {
+                  let colors = ["#D6DE50", "#36A0F7"];
+                  return colors[params.dataIndex];
+                }
+              }
+            },
+            z: 2
+          },
+          {
+            name: "白框",
+            type: "bar",
+            yAxisIndex: 1,
+            barGap: "-100%",
+            data: framData,
+            barWidth: 18,
+            itemStyle: {
+              normal: {
+                borderColor: "rgb(0, 136, 231)",
+                color: "transparent",
+                barBorderRadius: 10
+              }
+            },
+            z: 1
+          },
+          {
+            name: "外框",
+            type: "bar",
+            yAxisIndex: 2,
+            barGap: "-120%",
+            data: outData,
+            barWidth: 30,
+            itemStyle: {
+              normal: {
+                color: "transparent",
+                barBorderRadius: 5
+              }
+            },
+            z: 0
+          },
+          {
+            name: "外圆",
+            type: "scatter",
+            hoverAnimation: false,
+            data: outRadiusData,
+            yAxisIndex: 2,
+            symbolSize: 22,
+            symbolOffset: [-5, 0], //相对于原本位置的偏移量
+
+            itemStyle: {
+              normal: {
+                color: params => {
+                  let colors = ["#D6DE50", "#36A0F7"];
+                  return colors[params.dataIndex];
+                },
+                opacity: 1
+              }
+            },
+            z: 2
+          }
+        ]
+      };
+      let chart = document.getElementById("cirSetInfo");
+      var myChart = echarts.init(chart);
       myChart.setOption(option);
       window.addEventListener("resize", function() {
         myChart.resize();
@@ -1427,13 +2148,54 @@ border-top-color: blue ;
               transition: 0.6s;
             }
             .port-6.effect-2:hover .text-desc {
-              transform: translate(90%, -120%);
+              transform: translate(70%, -140%);
               opacity: 1;
               color: #00ffff;
-              font-size: 0.25rem;
+              border: 1.5px solid #00d3e7;
+              padding: 2%;
+              border-image: -webkit-linear-gradient(
+                  rgb(85, 87, 231),
+                  rgb(149, 228, 241)
+                )
+                20 20;
+              border-image: -moz-linear-gradient(
+                  rgb(85, 87, 231),
+                  rgb(149, 228, 241)
+                )
+                20 20;
+              border-image: -o-linear-gradient(
+                  rgb(85, 87, 231),
+                  rgb(149, 228, 241)
+                )
+                20 20;
+              border-image: linear-gradient(
+                  rgb(85, 87, 231),
+                  rgb(149, 228, 241)
+                )
+                20 20;
+              // font-size: 0.25rem;
               line-height: 1.8 !important;
             }
 
+            .imgdata4 {
+              width: 92%;
+              height: 24.5%;
+              margin: 0.3rem 0.2rem;
+              background: rgba(21, 49, 122, 0.5);
+              .item_2 {
+                width: 100%;
+                height: 94%;
+                #glinfo {
+                  // border: 1px solid red;
+                  width: 100%;
+                  height: 100%;
+                }
+                #glinfo2 {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+            }
             .imgdata {
               width: 92%;
               height: 13%;
@@ -1461,7 +2223,7 @@ border-top-color: blue ;
               .dev_info {
                 width: 100%;
                 font-size: 0.35rem;
-                font-weight: 800;
+                font-weight: 600;
                 margin-top: 3%;
                 img {
                   width: 15%;
@@ -1481,8 +2243,8 @@ border-top-color: blue ;
             }
             .imgdata2 {
               width: 42%;
-              height: 60%;
-              margin: 0 0.2rem;
+              height: 55%;
+              margin: 0 0.15rem;
               float: left;
               background: rgba(21, 49, 122, 0.5);
               .item_1 {
@@ -1492,6 +2254,23 @@ border-top-color: blue ;
               .item_2 {
                 width: 100%;
                 height: 97%;
+                #cirInfo {
+                  width: 100%;
+                  height: 80%;
+                  // border: 1px solid red;
+                }
+                #cirSetInfo {
+                  width: 100%;
+                  height: 80%;
+                }
+                .cirinfo_text {
+                  font-family: "electronicFont";
+                  font-size: 0.5rem;
+                  text-align: center;
+                  padding: 0.1rem;
+                  margin: 0.1rem 0;
+                  color: #00ffff;
+                }
               }
             }
             .imgdata:nth-child(3) {
@@ -1520,6 +2299,18 @@ border-top-color: blue ;
     }
     .clear {
       clear: both;
+    }
+  }
+  .dia {
+    width: 100%;
+    height: 0.5rem;
+    // border: 1px solid red;
+    font-family: "electronicFont";
+    text-align: center;
+    // padding: 0.05rem 0;
+    margin: 0.1rem 0;
+    .coninfo {
+      float: left;
     }
   }
 }

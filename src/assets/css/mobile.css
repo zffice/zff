@@ -9,8 +9,8 @@ a:focus {
 
 /*引用字库*/
 @font-face {
-  font-family: "electronicFont";
-  src: url("../font/DS-DIGIT.TTF");
+  font-family: 'electronicFont';
+  src: url('../font/DS-DIGIT.TTF');
 }
 
 /*主体 - 禁选 - 进场 */
@@ -20,7 +20,7 @@ body {
   width: 100%;
   height: 100%;
   color: #fff;
-  font-family: "microsoft yahei", simhei;
+  font-family: 'microsoft yahei', simhei;
   moz-user-select: -moz-none;
   moz-user-select: none;
   -o-user-select: none;
@@ -46,7 +46,7 @@ body {
   float: left;
   width: 100%;
   height: 100%;
-  background: url("../images/bg01warp.png") 50% 50% no-repeat;
+  background: url('../images/bg01warp.png') 50% 50% no-repeat;
   background-size: 100%;
 }
 
@@ -59,7 +59,7 @@ body {
 }
 .date-timer strong {
   display: inline-block;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.65rem;
   padding-bottom: 10%;
   margin-top: -1%;
@@ -68,7 +68,7 @@ body {
   display: block;
 }
 .date-timer ul {
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.25rem;
   margin-top: 1%;
 }
@@ -78,12 +78,12 @@ body {
 
 /* 系统LOGO - 主LOGO - 副LOGO - 动画 */
 h1 {
-  font-family: "microsoft yahei";
+  font-family: 'microsoft yahei';
   font-size: 0.4rem;
   text-align: center;
   padding: 1% 0 1% 0;
   display: block;
-  background: url("../images/bg01top.png") center bottom no-repeat;
+  background: url('../images/bg01top.png') center bottom no-repeat;
 }
 h2 {
   font-size: 0.45rem;
@@ -100,7 +100,7 @@ h2 sub {
   display: block;
   width: 100%;
   height: 15%;
-  background: url("../images/logofont.png") 50% 50% no-repeat;
+  background: url('../images/logofont.png') 50% 50% no-repeat;
   text-indent: -500px;
 }
 .logoline {
@@ -109,7 +109,7 @@ h2 sub {
   top: 70%;
   width: 220%;
   height: 5%;
-  background: url("../images/logoline.png") 50% 50% no-repeat;
+  background: url('../images/logoline.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline1 {
@@ -119,7 +119,7 @@ h2 sub {
   top: -70%;
   width: 40%;
   height: 80%;
-  background: url("../images/logoline1.png") 50% 50% no-repeat;
+  background: url('../images/logoline1.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline2 {
@@ -129,7 +129,7 @@ h2 sub {
   top: 120%;
   width: 160%;
   height: 60%;
-  background: url("../images/logoline2.png") 50% 50% no-repeat;
+  background: url('../images/logoline2.png') 50% 50% no-repeat;
   display: block;
 }
 .logoline3 {
@@ -139,7 +139,7 @@ h2 sub {
   top: -10%;
   width: 120%;
   height: 120%;
-  background: url("../images/logoline3.png") 50% 50% no-repeat;
+  background: url('../images/logoline3.png') 50% 50% no-repeat;
   display: block;
 }
 h2 strong {
@@ -177,7 +177,7 @@ h2 strong {
 .big-index-1 li strong {
   display: block;
   color: #fff;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.4rem;
   font-weight: normal;
 }
@@ -424,7 +424,7 @@ h2 {
 
 .submenu {
   -webkit-animation: bounceInLeft 0.1s 1s ease both;
-  background: url("../images/bg01submenu.png") 0 50% no-repeat;
+  background: url('../images/bg01submenu.png') 0 50% no-repeat;
   height: 564px;
   position: absolute;
   left: 0;
@@ -443,7 +443,7 @@ h2 {
   display: block;
 }
 .submenu ul li a {
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   transition: width ease 0.3s;
   display: block;
   border-top: 1px solid transparent;
@@ -456,7 +456,7 @@ h2 {
   float: left;
   height: 26px;
   line-height: 26px;
-  background: url("../images/bg03submenu.png") 1px 50% no-repeat #0050b3;
+  background: url('../images/bg03submenu.png') 1px 50% no-repeat #0050b3;
   min-width: 14px;
   padding: 0 8px;
 }
@@ -466,7 +466,7 @@ h2 {
   padding-right: 10px;
   float: left;
   white-space: nowrap;
-  font-family: "microsoft yahei", simhei;
+  font-family: 'microsoft yahei', simhei;
   height: 26px;
   line-height: 26px;
   background: #0050b3;
@@ -478,11 +478,11 @@ h2 {
   top: 0;
   height: 26px;
   width: 10px;
-  background: url("../images/bg04submenu.png") right center no-repeat;
+  background: url('../images/bg04submenu.png') right center no-repeat;
 }
 .submenu ul li a:hover b,
 .submenu ul li a.active b {
-  background: url("../images/bg03submenu.png") 1px 50% no-repeat #0067e6;
+  background: url('../images/bg03submenu.png') 1px 50% no-repeat #0067e6;
 }
 .submenu ul li a:hover span,
 .submenu ul li a.active span {
@@ -498,7 +498,7 @@ h2 {
   top: 0;
   height: 26px;
   width: 10px;
-  background: url("../images/bg02submenu.png") 0 0 no-repeat;
+  background: url('../images/bg02submenu.png') 0 0 no-repeat;
 }
 
 .submenu ul li a span {
@@ -667,7 +667,7 @@ h2 {
   display: block;
 }
 .ui-slider-pips .ui-slider-pip {
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   text-align: center;
   height: 64px;
   line-height: 1em;
@@ -744,7 +744,7 @@ h2 {
 }
 .ui-slider-float .ui-slider-tip:after,
 .ui-slider-float .ui-slider-pip .ui-slider-tip-number:after {
-  content: " ";
+  content: ' ';
   width: 0;
   height: 0;
   border: 5px solid rgba(255, 255, 255, 0);
@@ -844,7 +844,7 @@ h2 {
   margin-left: -10%;
 }
 .area-inbox-1 dl dd span {
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   position: relative;
   z-index: 1;
   font-size: 0.45rem;
@@ -908,7 +908,7 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.8);
   text-align: center;
   line-height: 0.8rem;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.25rem;
   border-radius: 100%;
   background: url(../images/bg05rightarea.png) right bottom no-repeat;
@@ -993,7 +993,7 @@ h2 {
   padding-top: 15px;
   text-align: right;
   background: url(../images/bg01big2index.png) right bottom no-repeat;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 20px;
   color: #fff;
 }
@@ -1122,7 +1122,7 @@ h2 {
   left: 0;
   top: 0;
   background: #000;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   color: rgba(255, 255, 255, 0.8);
 }
 .pandect-area h3 p sub {
@@ -1142,7 +1142,7 @@ h2 {
   position: absolute;
   right: 0;
   top: 0;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.25rem;
   color: #ff3114;
 }
@@ -1168,32 +1168,33 @@ h2 {
   right: 0;
 }
 .details1-area {
-  /* width: 50%; */
+  width: 38%;
   position: absolute;
   left: 3%;
   margin-top: 2%;
   text-align: center;
-  height: 40%;
+  height: 50%;
+  /* border: 1px solid red; */
 }
 .detailsl-area-left {
   display: block;
-  width: 31.5%;
+  width: 31%;
   height: 95%;
   position: absolute;
-  left: -31.4%;
+  left: -31%;
   top: 0;
   background: url(../images/bg01details03.png) center bottom no-repeat;
 }
 .detailsl-area-right {
   display: block;
-  width: 31.5%;
+  width: 31%;
   height: 95%;
   position: absolute;
-  right: -31.4%;
+  right: -31%;
   top: 0;
   background: url(../images/bg01details05.png) center bottom no-repeat;
 }
-.detailsl-area-right2 {
+/* .detailsl-area-right2 {
   display: block;
   width: 31.5%;
   height: 95%;
@@ -1201,18 +1202,24 @@ h2 {
   right: -31.4%;
   top: 0;
   background: url(../images/bg01details05.png) center bottom no-repeat;
-}
+} */
 .details1-area-center {
+  width: 100%;
   height: 95.5%;
   float: left;
   background: url(../images/bg01details04.png) center bottom repeat-x;
 }
-
+.details1-area-center #eleInfo {
+  width: 100%;
+  height: 80%;
+  /* border: 1px solid #00ccff; */
+}
 .details2-area {
+  width: 38%;
   position: absolute;
   right: 3%;
   margin-top: 2%;
-  height: 38%;
+  height: 48%;
   text-align: center;
 }
 .details2-area h3,
@@ -1221,31 +1228,34 @@ h2 {
 }
 .details2-area-left {
   display: block;
-  width: 31%;
+  width: 28%;
   height: 101%;
   position: absolute;
-  left: -31%;
+  left: -32%;
   top: 0;
   background: url(../images/bg01details01.png) center bottom no-repeat;
 }
 .details2-area-right {
   display: block;
-  width: 31%;
+  width: 28%;
   height: 101%;
   position: absolute;
-  right: -31%;
+  right: -24%;
   top: 0;
   background: url(../images/bg01details02.png) center bottom no-repeat;
 }
 .details2-area-center {
+  width: 100%;
   height: 101%;
   float: left;
+  /* border: 1px solid #00ccff; */
+  margin-left: -4%;
   background: url(../images/bg01details06.png) center bottom repeat-x;
 }
 /* .details2-area-center .mavg{width:80%;float: left;display: block;} */
 /* .details2-area-center .mavg{float: left;display: block;} */
 
-@media screen and (max-width: 1600px) {
+/* @media screen and (max-width: 1600px) {
   .details1-area-center {
     width: 390px;
   }
@@ -1261,15 +1271,16 @@ h2 {
   .details2-area-center {
     width: auto;
   }
-}
+} */
 
 .details1-area b,
 .details2-area b {
   position: absolute;
-  left: 0;
+  left: 10%;
+  right: 10%;
   bottom: 1%;
   display: block;
-  width: 100%;
+  width: 80%;
   height: 25%;
   background: url(../images/bg03details.png) center top no-repeat;
   background-size: 100%;
@@ -1278,6 +1289,7 @@ h2 {
 .details2-area h3 {
   text-align: left;
   margin-top: 3%;
+  margin-left: 10%;
   font-size: 0.25rem;
 }
 .details1-area b,
@@ -1304,7 +1316,7 @@ h2 {
 .details2-area dl dd {
   float: left;
   margin: 2% 0;
-  font-family: "electronicFont";
+  font-family: 'electronicFont';
   font-size: 0.25rem;
   width: 40%;
 }

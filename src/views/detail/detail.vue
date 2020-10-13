@@ -121,9 +121,11 @@
               <div class="mask">环境</div>
               <div class="item">
                 <img src="../../assets/images/sb.png" alt="" />
-                <div class="imgdata2">
+                <div class="imgdata2" style="margin-left:5%">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="cirInfo"></div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="imgdata2">
@@ -138,14 +140,18 @@
               <div class="mask">学校设备</div>
               <div class="item">
                 <img src="../../assets/images/sb.png" alt="" />
-                <div class="imgdata2">
+                <div class="imgdata4">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="glinfo"></div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
-                <div class="imgdata2">
+                <div class="imgdata4">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2"></div>
+                  <div class="item_2">
+                    <div id="glinfo2"></div>
+                  </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
                 <div class="clear"></div>
@@ -239,6 +245,11 @@ export default {
     require('../../assets/js/common.js')
     // 获取url上的车间号
     this.product()
+    //学校设备静态数据
+    this.schoolInData()
+    this.schoolOutData()
+    //环境
+    this.cirTem()
   },
   watch: {
     machineList: {
@@ -1198,6 +1209,454 @@ export default {
         myChart.resize()
       })
     },
+    schoolInData() {
+      var myChart = echarts.init(document.getElementById('glinfo'))
+      var getmydmc = ['输入功率：', '有功功率：', '无功功率：', '总功率：'] //数据点名称
+      var getmyd = [50, 12, 23, 65] //学生满意度
+      var getmydzd = [] //学生满意度100%
+      for (let i = 0; i < getmyd.length; i++) {
+        getmydzd.push(100)
+      }
+      var option = {
+        grid: {
+          left: '30%',
+          right: '15%',
+          bottom: '0',
+          top: '10%',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'none',
+          },
+          formatter: function(params) {
+            return params[0].name + ': ' + params[0].value + '%'
+          },
+        },
+        xAxis: {
+          show: false,
+          type: 'value',
+        },
+        yAxis: [
+          {
+            type: 'category',
+            inverse: true,
+            axisLabel: {
+              formatter: function(value) {
+                var ret = '' //拼接加\n返回的类目项
+                var maxLength = 5 //每项显示文字个数
+                var valLength = value.length //X轴类目项的文字个数
+                var rowN = Math.ceil(valLength / maxLength) //类目项需要换行的行数
+                if (rowN > 1) {
+                  //如果类目项的文字大于5,
+                  var temp = '' //每次截取的字符串
+                  var start = 0 //开始截取的位置
+                  var end = maxLength //结束截取的位置
+                  temp =
+                    value.substring(start, end) +
+                    '\n' +
+                    value.substring(end, valLength)
+                  ret += temp //凭借最终的字符串
+                  return ret
+                } else {
+                  return value
+                }
+              },
+              textStyle: {
+                color: '#fff',
+                fontSize: '10',
+                lineHeight: 10,
+              },
+            },
+            splitLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+            },
+            data: getmydmc,
+          },
+          {
+            type: 'category',
+            inverse: true,
+            axisTick: 'none',
+            axisLine: 'none',
+            show: true,
+            axisLabel: {
+              textStyle: {
+                color: '#fff',
+                fontSize: '10',
+              },
+              formatter: '{value}%',
+            },
+            data: getmyd,
+          },
+        ],
+        series: [
+          {
+            name: '值',
+            type: 'bar',
+            zlevel: 1,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 5,
+                color: (params) => {
+                  let colors = ['#5E43CD', '#A2A94C', '#259670', '#108CCA']
+                  return colors[params.dataIndex]
+                },
+              },
+            },
+            barWidth: 10,
+            data: getmyd,
+          },
+          {
+            name: '背景',
+            type: 'bar',
+            barWidth: 10,
+            barGap: '-100%',
+            data: getmydzd,
+            itemStyle: {
+              normal: {
+                color: 'rgba(103,150,253,0.3)',
+                barBorderRadius: 5,
+              },
+            },
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
+    schoolOutData() {
+      var myChart = echarts.init(document.getElementById('glinfo2'))
+      var getmydmc = ['输出功率：', '有功功率：', '无功功率：', '总功率：'] //数据点名称
+      var getmyd = [50, 12, 23, 65] //学生满意度
+      var getmydzd = [] //学生满意度100%
+      for (let i = 0; i < getmyd.length; i++) {
+        getmydzd.push(100)
+      }
+      var option = {
+        grid: {
+          left: '30%',
+          right: '15%',
+          bottom: '0',
+          top: '10%',
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'none',
+          },
+          formatter: function(params) {
+            return params[0].name + ': ' + params[0].value + '%'
+          },
+        },
+        xAxis: {
+          show: false,
+          type: 'value',
+        },
+        yAxis: [
+          {
+            type: 'category',
+            inverse: true,
+            axisLabel: {
+              formatter: function(value) {
+                var ret = '' //拼接加\n返回的类目项
+                var maxLength = 5 //每项显示文字个数
+                var valLength = value.length //X轴类目项的文字个数
+                var rowN = Math.ceil(valLength / maxLength) //类目项需要换行的行数
+                if (rowN > 1) {
+                  //如果类目项的文字大于5,
+                  var temp = '' //每次截取的字符串
+                  var start = 0 //开始截取的位置
+                  var end = maxLength //结束截取的位置
+                  temp =
+                    value.substring(start, end) +
+                    '\n' +
+                    value.substring(end, valLength)
+                  ret += temp //凭借最终的字符串
+                  return ret
+                } else {
+                  return value
+                }
+              },
+              textStyle: {
+                color: '#fff',
+                fontSize: '10',
+                lineHeight: 10,
+              },
+            },
+            splitLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+            },
+            data: getmydmc,
+          },
+          {
+            type: 'category',
+            inverse: true,
+            axisTick: 'none',
+            axisLine: 'none',
+            show: true,
+            axisLabel: {
+              textStyle: {
+                color: '#fff',
+                fontSize: '10',
+              },
+              formatter: '{value}%',
+            },
+            data: getmyd,
+          },
+        ],
+        series: [
+          {
+            name: '值',
+            type: 'bar',
+            zlevel: 1,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 5,
+                color: (params) => {
+                  let colors = ['#5E43CD', '#A2A94C', '#259670', '#108CCA']
+                  return colors[params.dataIndex]
+                },
+              },
+            },
+            barWidth: 10,
+            data: getmyd,
+          },
+          {
+            name: '背景',
+            type: 'bar',
+            barWidth: 10,
+            barGap: '-100%',
+            data: getmydzd,
+            itemStyle: {
+              normal: {
+                color: 'rgba(103,150,253,0.3)',
+                barBorderRadius: 5,
+              },
+            },
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
+      })
+    },
+    cirTem() {
+      var myChart = echarts.init(document.getElementById('cirInfo'))
+      var xdata = ['a', 'b']
+      var dataArr = [40, 70]
+      var framData = [129, 129] //白框
+      var outData = [130, 130] //外框
+      var outRadiusData = [0, 0] //外圆
+      var option = {
+        title: {
+          top: '10%',
+          text: '环境温湿度',
+          subtext: '',
+          x: 'center',
+          textStyle: {
+            color: '#ccc',
+            fontSize: 10,
+          },
+        },
+        grid: {
+          left: '15%',
+          top: '20%',
+          right: '10%',
+          bottom: '0',
+          // containLabel: true,
+        },
+        xAxis: [
+          {
+            type: 'category',
+            show: false,
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'transparent', //x轴底部横线
+              },
+            },
+            axisLabel: {
+              margin: 25, //标签距离x轴轴线的距离
+              inside: false,
+              textStyle: {
+                color: '#fff',
+                fontWeight: 'normal',
+                fontSize: '14',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            data: xdata,
+          },
+        ],
+        yAxis: [
+          {
+            axisTick: 'none',
+            axisLine: 'none',
+            offset: '27',
+            axisLabel: {
+              textStyle: {
+                show: false,
+                fontSize: '16',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            min: 0,
+            max: 150,
+          },
+          {
+            axisTick: 'none',
+            axisLabel: {
+              textStyle: {
+                show: false,
+                // color: '#ffffff',
+                fontSize: '16',
+              },
+            },
+            splitLine: {
+              show: false, //背景格线
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'transparent', //x轴底部横线
+              },
+            },
+            min: 0,
+            max: 150,
+          },
+          {
+            name: '',
+            nameGap: '50',
+            nameTextStyle: {
+              color: '#ffffff',
+              fontSize: '16',
+            },
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(0,0,0,0)',
+              },
+            },
+            data: [],
+          },
+        ],
+        series: [
+          {
+            name: '条',
+            type: 'bar',
+            yAxisIndex: 0,
+            data: dataArr,
+            label: {
+              normal: {
+                show: true,
+                position: 'top',
+                formatter: function(param) {
+                  return param.value + '°C'
+                },
+                textStyle: {
+                  color: '#ffffff',
+                  fontSize: '10',
+                },
+              },
+            },
+            barWidth: 10,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 10,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: 'rgb(54, 168, 244)',
+                  },
+                  {
+                    offset: 0.8,
+                    color: 'rgb(99, 90, 241)',
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(106, 78, 240)',
+                  },
+                ]),
+              },
+            },
+            z: 2,
+          },
+          {
+            name: '白框',
+            type: 'bar',
+            yAxisIndex: 1,
+            barGap: '-100%',
+            data: framData,
+            barWidth: 18,
+            itemStyle: {
+              normal: {
+                borderColor: 'rgb(0, 136, 231)',
+                color: 'transparent',
+                barBorderRadius: 10,
+              },
+            },
+            z: 1,
+          },
+          {
+            name: '外框',
+            type: 'bar',
+            yAxisIndex: 2,
+            barGap: '-120%',
+            data: outData,
+            barWidth: 30,
+            itemStyle: {
+              normal: {
+                color: 'transparent',
+                barBorderRadius: 5,
+              },
+            },
+            z: 0,
+          },
+          {
+            name: '外圆',
+            type: 'scatter',
+            hoverAnimation: false,
+            data: outRadiusData,
+            yAxisIndex: 2,
+            symbolSize: 22,
+            symbolOffset: [-5, 0], //相对于原本位置的偏移量
+
+            itemStyle: {
+              normal: {
+                color: 'rgb(106, 78, 240)',
+                opacity: 1,
+              },
+            },
+            z: 2,
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        productCharts.resize()
+      })
+    },
   },
 }
 </script>
@@ -1354,6 +1813,24 @@ border-top-color: blue ;
             img:hover {
               cursor: pointer;
             }
+            .imgdata4 {
+              width: 92%;
+              height: 26%;
+              margin: 0.3rem 0.2rem;
+              background: rgba(21, 49, 122, 0.5);
+              .item_2 {
+                width: 100%;
+                height: 94%;
+                #glinfo {
+                  width: 230%;
+                  height: 100%;
+                }
+                #glinfo2 {
+                  width: 230%;
+                  height: 100%;
+                }
+              }
+            }
             .imgdata {
               width: 92%;
               height: 18%;
@@ -1380,7 +1857,7 @@ border-top-color: blue ;
               .dev_info {
                 width: 100%;
                 font-size: 0.35rem;
-                font-weight: 800;
+                font-weight: 600;
                 margin-top: 3%;
                 img {
                   width: 15%;
@@ -1401,7 +1878,7 @@ border-top-color: blue ;
             .imgdata2 {
               width: 42%;
               height: 60%;
-              margin: 0 0.2rem;
+              margin: 0 0.15rem;
               float: left;
               background: rgba(21, 49, 122, 0.5);
               .item_1 {
@@ -1411,6 +1888,11 @@ border-top-color: blue ;
               .item_2 {
                 width: 100%;
                 height: 97%;
+                #cirInfo {
+                  width: 100%;
+                  height: 80%;
+                  border: 1px solid red;
+                }
               }
             }
             .imgdata:nth-child(3) {

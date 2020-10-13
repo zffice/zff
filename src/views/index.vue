@@ -306,8 +306,6 @@ export default {
     //车间柱状图
     this.comshop()
     this.statistics()
-    //消耗
-    // this.eleConsume()
   },
   methods: {
     fontstyle() {
@@ -677,77 +675,6 @@ export default {
         this.down = res.info.down
         this.sp = res.info.sp
         this.userate = res.info.userate
-      })
-    },
-    eleConsume() {
-      var myChart = echarts.init(document.getElementById('eleInfo'))
-      var option = {
-        yAxis: {
-          type: 'category',
-          axisLine: {
-            show: false, //坐标线
-          },
-          axisTick: {
-            show: false, //小横线
-          },
-          axisLabel: {
-            color: '#fff', //坐标轴字颜色
-          },
-          data: ['今日耗电量', '昨日耗电量', '上个月平均值'],
-        },
-
-        xAxis: {
-          show: false,
-        },
-        grid: {
-          top: '4%',
-          right: '30%',
-          left: '30%',
-          bottom: '4%', //图表尺寸大小
-        },
-        series: [
-          {
-            type: 'bar',
-            barWidth: '15',
-            showBackground: true,
-            backgroundStyle: {
-              color: '#E7F2EC',
-              barBorderRadius: [30, 30, 30, 30], //圆角大小
-            },
-            label: {
-              show: true,
-              position: [-10, 0], //每一条的数据位置
-            },
-            itemStyle: {
-              normal: {
-                color: (params) => {
-                  let colors = ['#60B239', '#E6A23C', '#409EFF']
-                  return colors[params.dataIndex]
-                }, //每个数据的颜色
-                barBorderRadius: [30, 30, 30, 30], //圆角大小
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 103, 255, 0.2)',
-                shadowOffsetX: -5,
-                shadowOffsetY: 5,
-              },
-            },
-            data: [
-              {
-                value: 12,
-              },
-              {
-                value: 20,
-              },
-              {
-                value: 15,
-              },
-            ],
-          },
-        ],
-      }
-      myChart.setOption(option)
-      window.addEventListener('resize', function() {
-        myChart.resize()
       })
     },
   },

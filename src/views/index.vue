@@ -123,43 +123,45 @@
           <span class="detailsl-area-left"></span>
           <div class="details1-area-center">
             <h3>总体电耗情况</h3>
-            <dl>
-              <dt>上月平均值</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="50"
-                  ></el-progress>
-                </div>
-                <div class="minfo">182305A</div>
-              </dd>
-              <dt>昨日耗电率</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="20"
-                    status="warning"
-                  ></el-progress>
-                </div>
-                <div class="minfo">1580A</div>
-              </dd>
-              <dt>今日耗电率</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="10"
-                    status="success"
-                  ></el-progress>
-                </div>
-                <div class="minfo">1056A</div>
-              </dd>
-            </dl>
+            <div id="eleInfo">
+              <dl>
+                <dt>上月平均值</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="50"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">182305A</div>
+                </dd>
+                <dt>昨日耗电率</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="20"
+                      status="warning"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">1580A</div>
+                </dd>
+                <dt>今日耗电率</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="10"
+                      status="success"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">1056A</div>
+                </dd>
+              </dl>
+            </div>
             <b></b>
           </div>
           <span class="detailsl-area-right"></span>
@@ -168,43 +170,45 @@
           <span class="details2-area-left"></span>
           <div class="details2-area-center">
             <h3>总体水耗情况</h3>
-            <dl>
-              <dt>上月平均值</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="70"
-                  ></el-progress>
-                </div>
-                <div class="minfo">1178t</div>
-              </dd>
-              <dt>昨日耗水量</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="50"
-                    status="exception"
-                  ></el-progress>
-                </div>
-                <div class="minfo">10t</div>
-              </dd>
-              <dt>今日耗电率</dt>
-              <dd>
-                <div class="mavg">
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="15"
-                    :percentage="30"
-                    status="success"
-                  ></el-progress>
-                </div>
-                <div class="minfo">5.6t</div>
-              </dd>
-            </dl>
+            <div id="eleInfo">
+              <dl>
+                <dt>上月平均值</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="70"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">1178t</div>
+                </dd>
+                <dt>昨日耗水量</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="50"
+                      status="exception"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">10t</div>
+                </dd>
+                <dt>今日耗电率</dt>
+                <dd>
+                  <div class="mavg">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="15"
+                      :percentage="30"
+                      status="success"
+                    ></el-progress>
+                  </div>
+                  <div class="minfo">5.6t</div>
+                </dd>
+              </dl>
+            </div>
             <b></b>
           </div>
           <span class="details2-area-right"></span>
@@ -239,23 +243,6 @@
           <div class="round-4"></div>
         </div>
         <div class="area-inbox-2">
-          <!-- <ul>
-            <li>
-              <strong>12</strong>74.23%
-              <b></b>
-              <em></em>
-            </li>
-            <li>
-              <strong>16</strong>71.19%
-              <b></b>
-              <em></em>
-            </li>
-            <li>
-              <strong>18</strong>68.02%
-              <b></b>
-              <em></em>
-            </li>
-          </ul> -->
           <div class="area-text">
             <b class="animation-line1"></b>
             <h4>系统说明：</h4>
@@ -264,13 +251,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="time-base-outer">
-        <b class="line1"></b>
-        <div class="time-base">
-          <div class="slider2"></div>
-        </div>
-        <b class="line2"></b>
-      </div> -->
     </div>
   </div>
 </template>
@@ -326,6 +306,8 @@ export default {
     //车间柱状图
     this.comshop()
     this.statistics()
+    //消耗
+    // this.eleConsume()
   },
   methods: {
     fontstyle() {
@@ -695,6 +677,77 @@ export default {
         this.down = res.info.down
         this.sp = res.info.sp
         this.userate = res.info.userate
+      })
+    },
+    eleConsume() {
+      var myChart = echarts.init(document.getElementById('eleInfo'))
+      var option = {
+        yAxis: {
+          type: 'category',
+          axisLine: {
+            show: false, //坐标线
+          },
+          axisTick: {
+            show: false, //小横线
+          },
+          axisLabel: {
+            color: '#fff', //坐标轴字颜色
+          },
+          data: ['今日耗电量', '昨日耗电量', '上个月平均值'],
+        },
+
+        xAxis: {
+          show: false,
+        },
+        grid: {
+          top: '4%',
+          right: '30%',
+          left: '30%',
+          bottom: '4%', //图表尺寸大小
+        },
+        series: [
+          {
+            type: 'bar',
+            barWidth: '15',
+            showBackground: true,
+            backgroundStyle: {
+              color: '#E7F2EC',
+              barBorderRadius: [30, 30, 30, 30], //圆角大小
+            },
+            label: {
+              show: true,
+              position: [-10, 0], //每一条的数据位置
+            },
+            itemStyle: {
+              normal: {
+                color: (params) => {
+                  let colors = ['#60B239', '#E6A23C', '#409EFF']
+                  return colors[params.dataIndex]
+                }, //每个数据的颜色
+                barBorderRadius: [30, 30, 30, 30], //圆角大小
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 103, 255, 0.2)',
+                shadowOffsetX: -5,
+                shadowOffsetY: 5,
+              },
+            },
+            data: [
+              {
+                value: 12,
+              },
+              {
+                value: 20,
+              },
+              {
+                value: 15,
+              },
+            ],
+          },
+        ],
+      }
+      myChart.setOption(option)
+      window.addEventListener('resize', function() {
+        myChart.resize()
       })
     },
   },

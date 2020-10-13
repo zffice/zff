@@ -119,8 +119,8 @@
                   <div class="item_2">
                     <div id="cirInfo"></div>
                     <div class="cirinfo_text">
-                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
-                      >42<span style="font-size:0.2rem">℃</span>
+                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
+                      >42<span style="font-size:0.25rem">%</span>
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
@@ -130,8 +130,8 @@
                   <div class="item_2">
                     <div id="cirSetInfo"></div>
                     <div class="cirinfo_text">
-                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
-                      >30<span style="font-size:0.2rem">℃</span>
+                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
+                      >30<span style="font-size:0.25rem">%</span>
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
@@ -1315,7 +1315,7 @@ export default {
               },
               textStyle: {
                 color: '#fff',
-                fontSize: '10',
+                fontSize: '12',
                 lineHeight: 10,
               },
             },
@@ -1338,8 +1338,8 @@ export default {
             show: true,
             axisLabel: {
               textStyle: {
-                color: '#fff',
-                fontSize: '10',
+                color: '#00FFFF',
+                fontSize: '12',
               },
               formatter: '{value}%',
             },
@@ -1441,7 +1441,7 @@ export default {
               textStyle: {
                 color: '#fff',
                 fontSize: '10',
-                lineHeight: 10,
+                lineHeight: 12,
               },
             },
             splitLine: {
@@ -1463,8 +1463,8 @@ export default {
             show: true,
             axisLabel: {
               textStyle: {
-                color: '#fff',
-                fontSize: '10',
+                color: '#00FFFF',
+                fontSize: '12',
               },
               formatter: '{value}%',
             },
@@ -1626,7 +1626,8 @@ export default {
                 show: true,
                 position: 'top',
                 formatter: function(param) {
-                  return param.value + '°C'
+                  let dw = ['℃', '%']
+                  return param.value + dw[param.dataIndex]
                 },
                 textStyle: {
                   color: '#ffffff',
@@ -1822,7 +1823,8 @@ export default {
                 show: true,
                 position: 'top',
                 formatter: function(param) {
-                  return param.value + '°C'
+                  let dw = ['℃', '%']
+                  return param.value + dw[param.dataIndex]
                 },
                 textStyle: {
                   color: '#ffffff',

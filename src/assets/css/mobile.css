@@ -1187,10 +1187,10 @@ h2 {
 }
 .detailsl-area-right {
   display: block;
-  width: 31.5%;
+  width: 31%;
   height: 95%;
   position: absolute;
-  right: -31.4%;
+  right: -31%;
   top: 0;
   background: url(../images/bg01details05.png) center bottom no-repeat;
 }

@@ -168,7 +168,7 @@ export default {
     },
     findMachineListByCompany() {
       const params = {
-        cId: this.comId
+        cId: localStorage.getItem("comId")
       };
       API.findMachineListByCompany(params).then(res => {
         this.workshopList = res.info;

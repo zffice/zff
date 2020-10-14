@@ -16,6 +16,7 @@ export default new Vuex.Store({
   actions: {
     LogOut() {
       localStorage.removeItem("token");
+      localStorage.removeItem("comId");
     }
   },
   modules: {}

@@ -256,34 +256,34 @@
 </template>
 
 <script>
-import API from '@/api/busin'
-import echarts from 'echarts'
+import API from "@/api/busin";
+import echarts from "echarts";
 export default {
-  name: 'index',
+  name: "index",
   data() {
     return {
       //本次开机报警率
-      talarmrate: '',
+      talarmrate: "",
       //待机数
-      standby: '',
+      standby: "",
       //设备数
-      mcount: '',
+      mcount: "",
       //车间数
-      wscount: '',
+      wscount: "",
       //报警数
-      alarm: '',
+      alarm: "",
       //总报警率
-      salarmrate: '',
+      salarmrate: "",
       //本次开机产量
-      tp: '',
+      tp: "",
       //停机数
-      down: '',
+      down: "",
       //总产量
-      sp: '',
+      sp: "",
       //使用率/利用率
-      userate: '',
+      userate: "",
       //作业数
-      run: '',
+      run: "",
       //公司经纬度
       comlocation: [],
       //车间机床数
@@ -295,337 +295,390 @@ export default {
       // 公司名
       com_name: [],
       // 产量
-      sum_pro: [],
-    }
+      sum_pro: []
+    };
   },
   mounted() {
-    require('../assets/css/mobile.css')
-    require('../assets/js/common.js')
+    require("../assets/css/mobile.css");
+    require("../assets/js/common.js");
     // require("../assets/js/index");
-    require('../assets/js/jquery_and_jqueryui.js')
+    require("../assets/js/jquery_and_jqueryui.js");
     // require('../assets/css/default.css')
-    require('../assets/css/jquery-ui.css')
+    require("../assets/css/jquery-ui.css");
     //字体间隔逐字显示
-    this.fontstyle()
+    this.fontstyle();
     //苏州地图
     // this.mapinit()
     //车间柱状图
-    this.comshop()
-    this.statistics()
-    this.outputOfCompanyTop()
+    this.comshop();
+    this.statistics();
+    this.outputOfCompanyTop();
   },
   methods: {
     fontstyle() {
       var s =
-        '（该系统模拟智能车间，通过各种传感器数据对相应环境信息或设备信息进行可视化分析处理，便于用户直观了解）'
-      var con = $('.text_container')
-      var index = 0
-      var length = s.length
-      var tId = null
+        "（该系统模拟智能车间，通过各种传感器数据对相应环境信息或设备信息进行可视化分析处理，便于用户直观了解）";
+      var con = $(".text_container");
+      var index = 0;
+      var length = s.length;
+      var tId = null;
       function start() {
-        con.text('')
+        con.text("");
         tId = setInterval(function() {
-          con.append(s.charAt(index))
+          con.append(s.charAt(index));
           if (index++ === length) {
-            clearInterval(tId)
-            index = 0
-            start()
+            clearInterval(tId);
+            index = 0;
+            start();
           }
-        }, 100)
+        }, 100);
       }
-      start()
+      start();
     },
     mapinit() {
-      var self = this
+      var self = this;
       //网页中获取苏州市的geojson制作苏州市地图
       //   var dataurl = '../public/china.json'
-      var geoCoordMap = {}
-      var myChart = echarts.init(document.getElementById('map'))
+      var geoCoordMap = {};
+      var myChart = echarts.init(document.getElementById("map"));
       //   myChart.showLoading()
-      let index = -1
+      let index = -1;
       var timer = setInterval(function() {
         //隐藏提示框
         myChart.dispatchAction({
-          type: 'hideTip',
+          type: "hideTip",
           seriesIndex: 0,
-          dataIndex: index,
-        })
+          dataIndex: index
+        });
         // 显示提示框
         myChart.dispatchAction({
-          type: 'showTip',
+          type: "showTip",
           seriesIndex: 0,
-          dataIndex: index + 1,
-        })
+          dataIndex: index + 1
+        });
         // 取消高亮指定的数据图形
         myChart.dispatchAction({
-          type: 'downplay',
+          type: "downplay",
           seriesIndex: 0,
-          dataIndex: index,
-        })
+          dataIndex: index
+        });
         // 高亮指定的数据图形
         myChart.dispatchAction({
-          type: 'highlight',
+          type: "highlight",
           seriesIndex: 0,
-          dataIndex: index + 1,
-        })
-        index++
+          dataIndex: index + 1
+        });
+        index++;
         if (index > 13) {
-          index = -1
+          index = -1;
         }
-      }, 2000)
+      }, 2000);
       // console.log(this.comlocation)
-      myChart.on('mousemove', function(e) {
-        clearInterval(timer)
+      myChart.on("mousemove", function(e) {
+        clearInterval(timer);
         myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-        })
+          type: "downplay",
+          seriesIndex: 0
+        });
         myChart.dispatchAction({
-          type: 'highlight',
+          type: "highlight",
           seriesIndex: 0,
-          dataIndex: e.dataIndex,
-        })
+          dataIndex: e.dataIndex
+        });
         myChart.dispatchAction({
-          type: 'showTip',
+          type: "showTip",
           seriesIndex: 0,
-          dataIndex: e.dataIndex,
-        })
-      }) //---------------------------------------------鼠标移入静止播放
-      myChart.on('mouseout', function(e) {
-        clearInterval(timer)
+          dataIndex: e.dataIndex
+        });
+      }); //---------------------------------------------鼠标移入静止播放
+      myChart.on("mouseout", function(e) {
+        clearInterval(timer);
         myChart.dispatchAction({
-          type: 'downplay',
+          type: "downplay",
           seriesIndex: 0,
-          dataIndex: e.dataIndex,
-        }) //鼠标移出后先把上次的高亮取消
+          dataIndex: e.dataIndex
+        }); //鼠标移出后先把上次的高亮取消
         timer = setInterval(function() {
           // 隐藏提示框
           myChart.dispatchAction({
-            type: 'hideTip',
+            type: "hideTip",
             seriesIndex: 0,
-            dataIndex: index,
-          })
+            dataIndex: index
+          });
           // 显示提示框
           myChart.dispatchAction({
-            type: 'showTip',
+            type: "showTip",
             seriesIndex: 0,
-            dataIndex: index + 1,
-          })
+            dataIndex: index + 1
+          });
           // 取消高亮指定的数据图形
           myChart.dispatchAction({
-            type: 'downplay',
+            type: "downplay",
             seriesIndex: 0,
-            dataIndex: index,
-          })
+            dataIndex: index
+          });
           // 高亮指定的数据图形
           myChart.dispatchAction({
-            type: 'highlight',
+            type: "highlight",
             seriesIndex: 0,
-            dataIndex: index + 1,
-          })
-          index++
+            dataIndex: index + 1
+          });
+          index++;
           if (index > 13) {
-            index = -1
+            index = -1;
           }
-        }, 2000)
-      })
-      var self = this
-      $.getJSON('json/china.json', function(geoJson) {
-        echarts.registerMap('china', geoJson)
-        var mapDate = self.mapDataList
+        }, 2000);
+      });
+      var self = this;
+      $.getJSON("json/china.json", function(geoJson) {
+        echarts.registerMap("china", geoJson);
+        var mapDate = self.mapDataList;
         var option = {
           title: {
             top: 5,
-            text: '公司分布',
-            subtext: '',
-            x: 'center',
+            text: "公司分布",
+            subtext: "",
+            x: "center",
             textStyle: {
-              color: '#ccc',
-            },
+              color: "#ccc"
+            }
           },
-          // tooltip: {
-          //     trigger: 'item',
-          //     formatter: function(params) {
-          //        // console.log(params)
-          //             return params.name;
-          //     }
-          // },
+          tooltip: {
+            trigger: "item",
+            formatter: function(params) {
+              if (params.seriesType != "map") {
+                if (typeof params.value[2] == "undefined") {
+                  return "";
+                } else {
+                  return params.name + " : " + params.value[3];
+                }
+              } else {
+                return null;
+              }
+            }
+          },
           geo: {
-            map: 'china',
+            map: "china",
             aspectScale: 0.75, //长宽比
             zoom: 1.1,
             roam: false,
             itemStyle: {
               normal: {
-                areaColor: '#013C62',
-                shadowColor: '#182f68',
-                shadowOffsetX: 0,
-                shadowOffsetY: 25,
+                areaColor: {
+                  type: "radial",
+                  x: 0.5,
+                  y: 0.5,
+                  r: 0.8,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "#09132c" // 0% 处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: "#274d68" // 100% 处的颜色
+                    }
+                  ],
+                  globalCoord: true // 缺省为 false
+                },
+                shadowColor: "rgb(58,115,192)",
+                shadowOffsetX: 10,
+                shadowOffsetY: 11
               },
               emphasis: {
-                areaColor: '#2AB8FF',
+                areaColor: "#2AB8FF",
                 borderWidth: 0,
-                color: 'green',
+                color: "green",
                 label: {
-                  show: false,
-                },
-              },
+                  show: false
+                }
+              }
             },
+            regions: [
+              {
+                name: "南海诸岛",
+                itemStyle: {
+                  areaColor: "rgba(0, 10, 52, 1)",
+
+                  borderColor: "rgba(0, 10, 52, 1)",
+                  normal: {
+                    opacity: 0,
+                    label: {
+                      show: false,
+                      color: "#009cc9"
+                    }
+                  }
+                }
+              }
+            ]
           },
           series: [
             {
-              type: 'map',
-              roam: true,
+              type: "map",
               label: {
                 normal: {
                   show: false,
                   textStyle: {
-                    color: '#fff',
-                  },
+                    color: "#fff"
+                  }
                 },
                 emphasis: {
                   textStyle: {
-                    color: '#fff',
-                  },
-                },
+                    color: "#fff"
+                  }
+                }
               },
               itemStyle: {
                 normal: {
-                  borderColor: '#2ab8ff',
+                  borderColor: "#2ab8ff",
                   borderWidth: 1.5,
-                  areaColor: '#12235c',
+                  areaColor: "#12235c"
                 },
                 emphasis: {
-                  areaColor: '#2AB8FF',
+                  areaColor: "#2AB8FF",
                   borderWidth: 0,
-                  color: 'green',
-                },
+                  color: "green"
+                }
               },
               zoom: 1.1,
               roam: false,
-              map: 'china', //使用
+              map: "china" //使用
               // data: this.difficultData //热力图数据   不同区域 不同的底色
             },
             {
-              type: 'effectScatter',
-              coordinateSystem: 'geo',
-              showEffectOn: 'render',
+              name: "Top 5",
+              type: "effectScatter",
+              coordinateSystem: "geo",
+              data: mapDate,
+              symbolSize: 20,
+              showEffectOn: "render",
               rippleEffect: {
-                period: 15,
-                scale: 4,
-                brushType: 'fill',
+                brushType: "stroke"
               },
               hoverAnimation: true,
+              label: {
+                normal: {
+                  formatter: "{b}",
+                  position: "left",
+                  show: false
+                }
+              },
               itemStyle: {
                 normal: {
-                  color: '#ffff',
+                  color: "yellow",
                   shadowBlur: 10,
-                  shadowColor: '#333',
-                },
+                  shadowColor: "yellow"
+                }
               },
-              data: mapDate,
-            },
-          ],
-        }
-        myChart.on('click', function(cid) {
-          console.log(cid)
+              zlevel: 1
+            }
+          ]
+        };
+        myChart.on("click", params => {
           // window.location.href = '@/views/Home'
-          self.home()
-        })
-        myChart.setOption(option)
-        window.addEventListener('resize', function() {
-          myChart.resize()
-        })
-      })
+          if (params.value[2] == 1) {
+            self.home(params.value[2]);
+          } else {
+            self.$message({
+              message: "暂未接入该公司数据",
+              type: "warning"
+            });
+          }
+        });
+        myChart.setOption(option);
+        window.addEventListener("resize", function() {
+          myChart.resize();
+        });
+      });
     },
     comshop() {
-      var self = this
-      var myChart = echarts.init(document.getElementById('rank'))
+      var self = this;
+      var myChart = echarts.init(document.getElementById("rank"));
       var option = {
         title: {
           top: 5,
-          text: '公司产量排名',
-          subtext: '',
-          x: 'center',
+          text: "公司产量排名",
+          subtext: "",
+          x: "center",
           textStyle: {
-            color: '#ccc',
-          },
+            color: "#ccc"
+          }
         },
         grid: {
-          left: '5%',
-          right: '5%',
-          bottom: '5%',
-          top: '10%',
-          containLabel: true,
+          left: "5%",
+          right: "5%",
+          bottom: "5%",
+          top: "10%",
+          containLabel: true
         },
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'none',
+            type: "none"
           },
           formatter: function(params) {
             return (
               params[0].name +
-              '<br/>' +
+              "<br/>" +
               "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:rgba(36,207,233,0.9)'></span>" +
               params[0].seriesName +
-              ' : ' +
+              " : " +
               Number((params[0].value / 10000).toFixed(2)).toLocaleString() +
-              ' 万<br/>'
-            )
-          },
+              " 万<br/>"
+            );
+          }
         },
         xAxis: {
           show: false,
-          type: 'value',
+          type: "value"
         },
         yAxis: [
           {
-            type: 'category',
+            type: "category",
             inverse: true,
             axisLabel: {
               show: true,
               textStyle: {
-                color: '#fff',
-              },
+                color: "#fff"
+              }
             },
             splitLine: {
-              show: false,
+              show: false
             },
             axisTick: {
-              show: false,
+              show: false
             },
             axisLine: {
-              show: false,
+              show: false
             },
-            data: self.com_name,
+            data: self.com_name
           },
           {
-            type: 'category',
+            type: "category",
             inverse: true,
-            axisTick: 'none',
-            axisLine: 'none',
+            axisTick: "none",
+            axisLine: "none",
             show: true,
             axisLabel: {
               textStyle: {
-                color: '#ffffff',
-                fontSize: '12',
+                color: "#ffffff",
+                fontSize: "12"
               },
               formatter: function(value) {
                 if (value >= 10000) {
-                  return (value / 10000).toFixed(2) + '万'
+                  return (value / 10000).toFixed(2) + "万";
                 } else {
-                  return value.toLocaleString()
+                  return value.toLocaleString();
                 }
-              },
+              }
             },
-            data: self.sum_pro,
-          },
+            data: self.sum_pro
+          }
         ],
         series: [
           {
-            name: '金额',
-            type: 'bar',
+            name: "金额",
+            type: "bar",
             zlevel: 1,
             itemStyle: {
               normal: {
@@ -633,80 +686,85 @@ export default {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                   {
                     offset: 0,
-                    color: 'rgb(57,89,255,1)',
+                    color: "rgb(57,89,255,1)"
                   },
                   {
                     offset: 1,
-                    color: 'rgb(46,200,207,1)',
-                  },
-                ]),
-              },
+                    color: "rgb(46,200,207,1)"
+                  }
+                ])
+              }
             },
             barWidth: 10,
-            data: self.sum_pro,
+            data: self.sum_pro
           },
           {
-            name: '背景',
-            type: 'bar',
+            name: "背景",
+            type: "bar",
             barWidth: 10,
-            barGap: '-100%',
+            barGap: "-100%",
             data: [5000000, 5000000, 5000000, 5000000, 5000000],
             itemStyle: {
               normal: {
-                color: 'rgba(24,31,68,1)',
-                barBorderRadius: 30,
-              },
-            },
-          },
-        ],
-      }
-      myChart.setOption(option)
-      window.addEventListener('resize', function() {
-        myChart.resize()
-      })
+                color: "rgba(24,31,68,1)",
+                barBorderRadius: 30
+              }
+            }
+          }
+        ]
+      };
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
     },
-    home() {
-      this.$router.push('/home')
+    home(cid) {
+      localStorage.setItem("comId", cid);
+      this.$router.push("/home");
     },
     statistics() {
-      API.statistics().then((res) => {
-        console.log(res)
-        this.mcount = res.info.mcount
-        this.wscount = res.info.wscount
-        this.alarm = res.info.alarm
-        this.run = res.info.run
-        this.standby = res.info.standby
-        this.talarmrate = res.info.talarmrate
-        this.salarmrate = res.info.salarmrate
-        this.tp = res.info.tp
-        this.down = res.info.down
-        this.sp = res.info.sp
-        this.userate = res.info.userate
-      })
+      API.statistics().then(res => {
+        this.mcount = res.info.mcount;
+        this.wscount = res.info.wscount;
+        this.alarm = res.info.alarm;
+        this.run = res.info.run;
+        this.standby = res.info.standby;
+        this.talarmrate = res.info.talarmrate;
+        this.salarmrate = res.info.salarmrate;
+        this.tp = res.info.tp;
+        this.down = res.info.down;
+        this.sp = res.info.sp;
+        this.userate = res.info.userate;
+      });
     },
     outputOfCompanyTop() {
       const params = {
-        limit: 5,
-      }
-      API.outputOfCompanyTop(params).then((res) => {
-        this.mapDataList = []
-        this.com_name = []
-        this.sum_pro = []
+        limit: 5
+      };
+      API.outputOfCompanyTop(params).then(res => {
+        this.mapDataList = [];
+        this.com_name = [];
+        this.sum_pro = [];
         for (var i = 0; i < res.info.length; i++) {
           this.mapDataList.push({
             name: res.info[i].company_name,
-            value: [res.info[i].com_lon, res.info[i].com_lat],
-          })
-          this.com_name.push(res.info[i].company_name)
-          this.sum_pro.push(res.info[i].sum_production)
+            value: [
+              res.info[i].com_lon,
+              res.info[i].com_lat,
+              res.info[i].id,
+              res.info[i].sum_production
+            ]
+          });
+          this.com_name.push(res.info[i].company_name);
+          this.sum_pro.push(res.info[i].sum_production);
         }
-        console.log(this.mapDataList)
-        this.mapinit()
-        this.comshop()
-      })
-    },
-  },
-}
+        console.log(this.mapDataList);
+        this.mapinit();
+        this.comshop();
+      });
+    }
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

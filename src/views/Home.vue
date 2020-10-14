@@ -128,16 +128,18 @@ export default {
   },
   mounted() {
     require("../assets/js/common.js");
-    this.alarmGroupMonth();
-    this.alarmOfMachineTop();
-    this.alarmTypeTop();
-    // this.findMachineListByExample()
-    this.outputOfMachineTop();
-    this.groupByMonth();
-    this.groupByDate();
-    this.ThisTimeAlarmInfo();
-    this.sumRtimeOfMachineTop();
-    this.getComId();
+    // this.getComId();
+    this.$nextTick(() => {
+      this.alarmGroupMonth();
+      this.alarmOfMachineTop();
+      this.alarmTypeTop();
+      // this.findMachineListByExample()
+      this.outputOfMachineTop();
+      this.groupByMonth();
+      this.groupByDate();
+      this.ThisTimeAlarmInfo();
+      this.sumRtimeOfMachineTop();
+    });
   },
   methods: {
     //获取用户登录cId
@@ -157,7 +159,10 @@ export default {
     },
     // 月报警趋势
     alarmGroupMonth() {
-      API.alarmGroupMonth().then(res => {
+      const params = {
+        cId: localStorage.getItem("comId")
+      };
+      API.alarmGroupMonth(params).then(res => {
         this.Xaxis1 = [];
         this.data1 = [];
         for (var i = 0; i < res.info.length; i++) {
@@ -171,7 +176,8 @@ export default {
     // 设备报警排名
     alarmOfMachineTop() {
       const params = {
-        limit: 5
+        limit: 5,
+        cId: localStorage.getItem("comId")
       };
       API.alarmOfMachineTop(params).then(res => {
         // console.log(res)
@@ -194,7 +200,8 @@ export default {
     // 设备报警类型排名
     alarmTypeTop() {
       const params = {
-        limit: 5
+        limit: 5,
+        cId: localStorage.getItem("comId")
       };
       API.alarmTypeTop(params).then(res => {
         // console.log(res)
@@ -211,7 +218,7 @@ export default {
     outputOfMachineTop() {
       const params = {
         limit: 5,
-        cid: this.comId
+        cId: localStorage.getItem("comId")
       };
       API.outputOfMachineTop(params).then(res => {
         this.data5 = [];
@@ -263,7 +270,7 @@ export default {
     ThisTimeAlarmInfo() {
       const params = {
         limit: 7,
-        cId: this.comId
+        cId: localStorage.getItem("comId")
       };
       API.ThisTimeAlarmInfo(params).then(res => {
         this.alarmData = [];
@@ -289,7 +296,7 @@ export default {
     sumRtimeOfMachineTop() {
       const params = {
         limit: 7,
-        cId: this.comId
+        cId: localStorage.getItem("comId")
       };
       API.sumRtimeOfMachineTop(params).then(res => {
         // console.log(res)

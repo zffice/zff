@@ -237,7 +237,7 @@ export default {
                   const comId = res.info.com_id;
                   localStorage.setItem("comId", comId);
                 } else {
-                  localStorage.setItem("comId", 1);
+                  // localStorage.setItem("comId", 1);
                 }
                 if (res.info.type == 1) {
                   this.$router.push("/index");

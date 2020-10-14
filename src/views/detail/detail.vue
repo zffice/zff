@@ -119,8 +119,8 @@
                   <div class="item_2">
                     <div id="cirInfo"></div>
                     <div class="cirinfo_text">
-                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
-                      >42<span style="font-size:0.25rem">%</span>
+                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
+                      >42<span style="font-size:0.2rem">%</span>
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
@@ -130,8 +130,46 @@
                   <div class="item_2">
                     <div id="cirSetInfo"></div>
                     <div class="cirinfo_text">
-                      30<span style="margin-right:8%;font-size:0.25rem">℃</span
-                      >30<span style="font-size:0.25rem">%</span>
+                      30<span style="margin-right:8%;font-size:0.2rem">℃</span
+                      >30<span style="font-size:0.2rem">%</span>
+                    </div>
+                  </div>
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                </div>
+                <div class="imgdata2">
+                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
+                  <div class="item_2">
+                    <div>
+                      <div
+                        class="showinfo"
+                        style="border-bottom: 2px solid #2e7fc8;"
+                      >
+                        2203
+                        <span style="color:#476699;font-size:0.1rem">小时</span
+                        ><br />
+                        <span style="color:#91ABC6;font-size:0.25rem"
+                          >运行时间</span
+                        >
+                      </div>
+                      <div
+                        class="showinfo"
+                        style="border-bottom: 2px solid #2e7fc8;"
+                      >
+                        2203
+                        <span style="color:#476699;font-size:0.1rem">小时</span
+                        ><br />
+                        <span style="color:#91ABC6;font-size:0.25rem"
+                          >制冷时间</span
+                        >
+                      </div>
+                      <div class="showinfo">
+                        2203
+                        <span style="color:#476699;font-size:0.1rem">小时</span
+                        ><br />
+                        <span style="color:#91ABC6;font-size:0.25rem"
+                          >除湿时间</span
+                        >
+                      </div>
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
@@ -1440,8 +1478,8 @@ export default {
               },
               textStyle: {
                 color: '#fff',
-                fontSize: '10',
-                lineHeight: 12,
+                fontSize: '12',
+                lineHeight: 10,
               },
             },
             splitLine: {
@@ -1518,13 +1556,13 @@ export default {
       var outRadiusData = [0, 0] //外圆
       var option = {
         title: {
-          top: '5%',
+          top: '8%',
           text: '环境温湿度',
           subtext: '',
           x: 'center',
           textStyle: {
             color: '#ccc',
-            fontSize: 13,
+            fontSize: 10,
           },
         },
         grid: {
@@ -1635,7 +1673,7 @@ export default {
                 },
               },
             },
-            barWidth: 13,
+            barWidth: 10,
             itemStyle: {
               normal: {
                 barBorderRadius: 13,
@@ -1653,7 +1691,7 @@ export default {
             yAxisIndex: 1,
             barGap: '-100%',
             data: framData,
-            barWidth: 18,
+            barWidth: 14,
             itemStyle: {
               normal: {
                 borderColor: 'rgb(0, 136, 231)',
@@ -1669,7 +1707,7 @@ export default {
             yAxisIndex: 2,
             barGap: '-120%',
             data: outData,
-            barWidth: 30,
+            barWidth: 26,
             itemStyle: {
               normal: {
                 color: 'transparent',
@@ -1684,7 +1722,7 @@ export default {
             hoverAnimation: false,
             data: outRadiusData,
             yAxisIndex: 2,
-            symbolSize: 22,
+            symbolSize: 20,
             symbolOffset: [-5, 0], //相对于原本位置的偏移量
 
             itemStyle: {
@@ -1715,13 +1753,13 @@ export default {
       var outRadiusData = [0, 0] //外圆
       var option = {
         title: {
-          top: '5%',
+          top: '8%',
           text: '设定温湿度',
           subtext: '',
           x: 'center',
           textStyle: {
             color: '#ccc',
-            fontSize: 13,
+            fontSize: 10,
           },
         },
         grid: {
@@ -1832,7 +1870,7 @@ export default {
                 },
               },
             },
-            barWidth: 13,
+            barWidth: 10,
             itemStyle: {
               normal: {
                 barBorderRadius: 13,
@@ -1850,7 +1888,7 @@ export default {
             yAxisIndex: 1,
             barGap: '-100%',
             data: framData,
-            barWidth: 18,
+            barWidth: 14,
             itemStyle: {
               normal: {
                 borderColor: 'rgb(0, 136, 231)',
@@ -1866,7 +1904,7 @@ export default {
             yAxisIndex: 2,
             barGap: '-120%',
             data: outData,
-            barWidth: 30,
+            barWidth: 26,
             itemStyle: {
               normal: {
                 color: 'transparent',
@@ -1881,7 +1919,7 @@ export default {
             hoverAnimation: false,
             data: outRadiusData,
             yAxisIndex: 2,
-            symbolSize: 22,
+            symbolSize: 20,
             symbolOffset: [-5, 0], //相对于原本位置的偏移量
 
             itemStyle: {
@@ -1983,6 +2021,26 @@ border-top-color: blue;
 {
 border-top-color: blue ;
 } */
+/* .el-dialog__header {
+  background: rgba(20, 35, 90, 0.4);
+}
+.el-dialog__footer {
+  background: rgba(20, 35, 90, 0.4) !important;
+} */
+.el-dialog {
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.el-dialog,
+.el-pager li {
+  background: rgba(59, 71, 206, 0.612);
+}
+.el-dialog__title {
+  line-height: 0.25rem;
+  font-size: 0.35rem;
+  color: #fff;
+  font-weight: 600;
+}
 .popperTooltip {
   line-height: 1.8 !important;
   background: rgba(161, 176, 203, 0.2) !important;
@@ -2132,9 +2190,9 @@ border-top-color: blue ;
               }
             }
             .imgdata2 {
-              width: 42%;
+              width: 28%;
               height: 60%;
-              margin: 0 0.15rem;
+              margin: 0 0.05rem;
               float: left;
               background: rgba(21, 49, 122, 0.5);
               .item_1 {
@@ -2155,10 +2213,20 @@ border-top-color: blue ;
                 }
                 .cirinfo_text {
                   font-family: 'electronicFont';
-                  font-size: 0.5rem;
+                  font-size: 0.35rem;
                   text-align: center;
                   padding: 0.1rem;
                   margin: 0.1rem 0;
+                  color: #00ffff;
+                }
+                .showinfo {
+                  width: 80%;
+                  // float: left;
+                  font-family: 'electronicFont';
+                  font-size: 0.3rem;
+                  text-align: center;
+                  padding: 0.5rem 0.15rem;
+                  // margin: 0.2rem 0;
                   color: #00ffff;
                 }
               }
@@ -2201,6 +2269,7 @@ border-top-color: blue ;
     margin: 0.1rem 0;
     .coninfo {
       float: left;
+      color: #fff;
     }
   }
 }

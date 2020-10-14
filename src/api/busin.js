@@ -57,5 +57,9 @@ export default {
   // 根据车间编号查询车间信息（车间名、dpuCode、状态）
   findMachineByWsId: params => {
     return API.POST("alarm/findMachineByWsId", params);
+  },
+  //各公司产量排名
+  outputOfCompanyTop: params => { 
+    return API.POST("alarm/outputOfCompanyTop",params)
   }
 };

@@ -2,7 +2,9 @@
   <div class="login">
     <div class="earth1" id="earth"></div>
     <div class="logbox">
-      <div class="titled">智能工厂生产车间大屏</div>
+      <div class="titled">
+        智能工厂生产车间大屏
+      </div>
       <div class="loginbox">
         <div class="title">
           <p class="p1">登录</p>
@@ -70,15 +72,28 @@ export default {
       },
       userToken: "",
       mapChart: {},
-      //立体球形纹路
-      option: {
+      img: require("../assets/earth_atmos_4096.jpg"),
+      cloud: require("../assets/clouds.png")
+    };
+  },
+  mounted() {
+    this.earth();
+  },
+  methods: {
+    earth() {
+      //获取容器并对其初始化
+      this.myChart = this.$echarts.init(document.getElementById("earth"));
+
+      var option = {
         globe: {
           globeRadius: 83,
           // baseTexture: '',//贴图 球形和平面的吻合
           silent: true,
-          baseTexture: require("../assets/earth_atmos_4096.jpg"), //背景
-          heightTexture: require("../assets/earth_atmos_4096.jpg"), //地球的整个纹路
-          shading: "realistic",
+          baseTexture: this.img, //背景
+          // heightTexture: require("../assets/earth_atmos_4096.jpg"), //地球的整个纹路
+          // baseTexture: "../assets/earth_atmos_4096.jpg",
+          /*baseTexture: 'world.topo.bathy.200401.jpg',*/
+          shading: "lambert",
           light: {
             main: {
               color: "#fff",
@@ -93,6 +108,14 @@ export default {
               intensity: 1
             }
           },
+          layers: [
+            {
+              type: "overlay",
+              blendTo: "lambert",
+              texture: this.cloud,
+              distance: 5
+            }
+          ],
           postEffect: {
             enable: false,
             SSAO: {
@@ -104,6 +127,7 @@ export default {
           //地球是否自己转动 autoRotate为true时自己转动
           viewControl: {
             autoRotate: true,
+            zoomSensitivity: 0,
             animationDurationUpdate: 2000,
             targetCoord: ""
           }
@@ -164,88 +188,14 @@ export default {
             silent: false
           }
         ]
-      },
-
-      //平面地球 主要是设置地球的样式
-      mapOption: {
-        backgroundColor: "rgba(20,104,121,0.71)", //当和立体球形贴图是海洋的颜色
-        visualMap: {
-          show: false,
-          min: 0,
-          max: 100000
-        },
-        series: [
-          {
-            type: "map",
-            map: "world",
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            environment: "rgba(0,0,0,0)",
-            boundingCoords: [
-              [-180, 90],
-              [180, -90]
-            ],
-            itemStyle: {
-              normal: {
-                borderWidth: 2,
-                borderColor: "rgb(0,232,232)", //地球纹路的颜色
-                areaColor: {
-                  type: "linear",
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  //相邻每个板块 从上到下的颜色变化
-                  colorStops: [
-                    {
-                      offset: 0.2,
-                      color: "rgb(0,48,62)" // 0% 处的颜色
-                    },
-                    {
-                      offset: 0.8,
-                      color: "rgba(0,179,188,0.8)" // 100% 处的颜色
-                    }
-                  ],
-                  global: false // 缺省为 false
-                }
-              }
-            }
-          }
-        ]
-      }
-    };
-  },
-  mounted() {
-    this.earth();
-  },
-  methods: {
-    earth() {
-      this.mapChart = this.$echarts.init(
-        document.createElement("canvas"),
-        null,
-        {
-          width: 3086,
-          height: 3048
-        }
-      );
-      //获取容器并对其初始化
-      this.myChart = this.$echarts.init(document.getElementById("earth"));
-
-      //将平面地球和立体球形的纹路重叠
-      this.mapChart.setOption(this.mapOption);
-      // this.option.globe.baseTexture = this.mapChart
+      };
 
       //随机划多条线
       for (let i = 0; i < 10; i++) {
-        this.option.series[0].data = this.option.series[0].data.concat(
-          this.rodamData()
-        );
+        option.series[0].data = option.series[0].data.concat(this.rodamData());
       }
 
-      this.myChart.setOption(this.option);
-      // this.myChart.setOption(this.mapOption);// 平面展开图
+      this.myChart.setOption(option);
     },
 
     //调用划线方法
@@ -274,7 +224,6 @@ export default {
             pwd: this.user.pwd
           };
           API.login(params).then(res => {
-            console.log(res);
             if (res.code == 200) {
               const token = res.info;
               localStorage.setItem("token", token);
@@ -413,7 +362,7 @@ export default {
   letter-spacing: 8px;
 }
 .logbox {
-  // margin-left:35%;
+  margin-left: 12%;
 }
 .login {
   // background: url("../assets/log_b.png") no-repeat;
@@ -427,11 +376,14 @@ export default {
   .titled {
     font-family: MicrosoftYaHei-Bold;
     font-size: 0.6rem;
-    font-weight: normal;
+    font-weight: 900;
     font-stretch: normal;
     line-height: 90px;
     letter-spacing: 5px;
     color: #0c2fff;
+    text-shadow: 0 0 5px #55ffff, 0 0 10px #55ffff, 0 0 15px #55ffff,
+      0 0 20px #0c2fff, 0 0 35px #0c2fff, 0 0 40px #0c2fff, 0 0 50px #0c2fff,
+      0 0 75px #0c2fff;
   }
   .loginbox {
     width: 6rem;

@@ -11,6 +11,8 @@ import axios from "axios";
 
 import echarts from "echarts";
 
+// import echartsGL from "./assets/js/echarts-gl";
+
 import $ from "jquery";
 
 import echartsGL from "echarts-gl"; // 引入echarts

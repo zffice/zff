@@ -291,25 +291,25 @@
         <div class="coninfo" style="margin-right:2%">
           车间名：<span
             style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
-            >{{ alarmCount.content[i].wsname }}</span
+            >{{ item.wsname }}</span
           >
         </div>
         <div class="coninfo" style="margin-right:2%">
           设备名：<span
             style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
-            >{{ alarmCount.content[i].mname }}</span
+            >{{ item.mname }}</span
           >
         </div>
         <div class="coninfo" style="margin-right:2%">
           报警信息：<span
             style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
-            >{{ alarmCount.content[i].info }}</span
+            >{{ item.info }}</span
           >
         </div>
         <div class="coninfo">
           时间：<span
             style="font-weight:600;font-size:0.3rem;color: #36A0F7;"
-            >{{ alarmCount.content[i].time }}</span
+            >{{ item.time }}</span
           >
         </div>
       </div>
@@ -348,6 +348,7 @@ export default {
       dialogVisible: false,
       machineList: [],
       workshopList: [],
+      alarmInfoList: [],
       id: 1
     };
   },
@@ -385,12 +386,11 @@ export default {
     alarmCount: {
       get() {
         var statis = {};
+        var alarmInfoList = [];
         var count = 0;
         var rcount = 0;
         var standbycount = 0;
         var acount = 0;
-        var alarmInfoList = [];
-        alarmInfoList.length = 0;
         this.machineList.forEach(item => {
           if (item.acount !== undefined) {
             count = item.acount + count;
@@ -501,12 +501,20 @@ export default {
                   item.today_production = 0;
                   item.count = 0;
                 }
+                if (JSON.parse(msg.data).data.status == "1") {
+                  if (item.content !== undefined) {
+                    item.content = [];
+                  }
+                }
               }
             });
             if (JSON.parse(msg.data).data.status == "1") {
               this.productCharts[dpuCode].productDate.xData.shift();
               this.productCharts[dpuCode].productDate.xData.push(
-                JSON.parse(msg.data).data.time
+                JSON.parse(msg.data).data.time.substring(
+                  JSON.parse(msg.data).data.time.length - 8,
+                  JSON.parse(msg.data).data.time.length
+                )
               );
               this.productCharts[dpuCode].productDate.pNum.shift();
               this.productCharts[dpuCode].productDate.pNum.push(
@@ -599,18 +607,11 @@ export default {
       });
 
       for (var i = 0; i < roseCharts.length; i++) {
+        console.log();
         var productDate = {
-          xData: [
-            "21:43:02",
-            "21:43:22",
-            "21:43:42",
-            "21:44:02",
-            "21:44:22",
-            "21:44:42",
-            "21:45:02"
-          ],
-          pNum: [0, 0, 0, 0, 0, 0, 0],
-          bNum: [0, 0, 0, 0, 0, 0, 0]
+          xData: this.getDateArray(),
+          pNum: [0, 0, 0, 0, 0],
+          bNum: [0, 0, 0, 0, 0]
         };
         // 通过for循环，在相同class的dom内绘制元素
         var productCharts = echarts.init(roseCharts[i]);
@@ -1988,6 +1989,65 @@ export default {
       window.addEventListener("resize", function() {
         myChart.resize();
       });
+    },
+    getDateArray() {
+      var endDate = new Date();
+      var startDate = new Date(new Date().getTime() - 1 * 80 * 1000);
+      var space = 20 * 1000;
+      var endTime = endDate.getTime();
+      var startTime = startDate.getTime();
+      var mod = endTime - startTime;
+
+      var dateArray = [];
+      while (mod >= space) {
+        var d = new Date();
+        d.setTime(startTime + space);
+        dateArray.push(
+          this.timeFormat(d).substring(
+            this.timeFormat(d).length - 8,
+            this.timeFormat(d).length
+          )
+        );
+        mod = mod - space;
+        startTime = startTime + space;
+      }
+      var start = startDate.getTime();
+      dateArray.unshift(
+        this.timeFormat(new Date(start)).substring(
+          this.timeFormat(new Date(start)).length - 8,
+          this.timeFormat(new Date(start)).length
+        )
+      ); // 插入开头时间
+      return dateArray;
+      // 正序
+      // return dateArray.sort((a, b) => {
+      //   return Date.parse(a) - Date.parse(b);
+      // });
+    },
+
+    // 时间格式化
+    timeFormat(dt) {
+      return (
+        this.spliceZero(dt.getFullYear()) +
+        "-" +
+        this.spliceZero(dt.getMonth() + 1) +
+        "-" +
+        this.spliceZero(dt.getDate()) +
+        " " +
+        this.spliceZero(dt.getHours()) +
+        ":" +
+        this.spliceZero(dt.getMinutes()) +
+        ":" +
+        this.spliceZero(dt.getSeconds())
+      );
+    },
+
+    // 时间格式化、1位数时，前面拼接0
+    spliceZero(i) {
+      if (i.toString().length == 1) {
+        i = "0" + i;
+      }
+      return i;
     }
   }
 };

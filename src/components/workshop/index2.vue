@@ -157,6 +157,8 @@ export default {
         this.down = res.info.down;
         this.tp = res.info.tp;
         this.sp = res.info.sp;
+        // console.log(this.tp)
+        // console.log(this.sp)
         this.chart9();
         this.chart10();
         this.chart11();
@@ -433,6 +435,7 @@ export default {
               {
                 name: "本次开机产量",
                 value: this.tp,
+                // value: 30000,
                 trueVal: "77",
                 symbolPosition: "end",
                 itemStyle: {
@@ -464,6 +467,7 @@ export default {
               {
                 name: "本次开机产量",
                 value: this.tp,
+                // value: 30000,
                 trueVal: "77",
                 itemStyle: {
                   normal: {
@@ -493,6 +497,7 @@ export default {
               {
                 name: "本次开机产量",
                 value: this.tp,
+                // value: 30000,
                 trueVal: "77",
                 itemStyle: {
                   normal: {
@@ -526,6 +531,7 @@ export default {
               {
                 name: "本次开机产量",
                 value: this.tp,
+                // value: 30000,
                 trueVal: "77",
                 itemStyle: {
                   normal: {
@@ -571,7 +577,8 @@ export default {
               {
                 name: "本次开机产量",
                 value: this.tp,
-                trueVal: "98",
+                // value: 30000,
+                trueVal: "77",
                 itemStyle: {
                   normal: {
                     color: {
@@ -598,7 +605,7 @@ export default {
               {
                 name: "总产量",
                 value: this.sp,
-                trueVal: "499",
+                trueVal: "99",
                 itemStyle: {
                   normal: {
                     color: {
@@ -1617,6 +1624,8 @@ li {
   }
   #devicenum {
     width: 100%;
+    height: 100%;
+    // background-color: transparent;
   }
   .mid {
     align-items: center;

@@ -40,7 +40,10 @@
                     <img src="../../assets/images/sb.png" alt="" />
                   </div>
                   <div class="text-desc">
-                    <h3>{{ item.machine_name }}</h3>
+                    <h3 style=" text-align:center;">
+                      {{ item.machine_name }}
+                    </h3>
+                    <dv-decoration-5 style="width:100%" />
                     <p>
                       品牌：{{ item.machine_brand }}<br />
                       型号：{{ item.machine_model }}<br />
@@ -133,7 +136,8 @@
                     <img src="../../assets/images/sb.png" alt="" />
                   </div>
                   <div class="text-desc">
-                    <h3>环境</h3>
+                    <h3 style=" text-align:center;">环境</h3>
+                    <dv-decoration-5 style="width:100%" />
                     <p>
                       品牌：三星<br />
                       型号：XXX<br />
@@ -175,8 +179,10 @@
                   <div class="image-box">
                     <img src="../../assets/images/sb.png" alt="" />
                   </div>
+
                   <div class="text-desc">
-                    <h3>学校设备</h3>
+                    <h3 style=" text-align:center;">学校设备</h3>
+                    <dv-decoration-5 style="width:100%" />
                     <p>
                       品牌：西门子<br />
                       型号：XXX<br />
@@ -2147,8 +2153,9 @@ border-top-color: blue ;
               opacity: 0;
               transition: 0.6s;
             }
+
             .port-6.effect-2:hover .text-desc {
-              transform: translate(70%, -140%);
+              transform: translate(70%, -115%);
               opacity: 1;
               color: #00ffff;
               border: 1.5px solid #00d3e7;
@@ -2175,6 +2182,9 @@ border-top-color: blue ;
                 20 20;
               // font-size: 0.25rem;
               line-height: 1.8 !important;
+              p {
+                padding: 5%;
+              }
             }
 
             .imgdata4 {

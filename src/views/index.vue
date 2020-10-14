@@ -290,6 +290,12 @@ export default {
       shopmnumber: [],
       //公司名称
       companyname: [],
+      //地图散点
+      mapDataList: [],
+      // 公司名
+      com_name: [],
+      // 产量
+      sum_pro: [],
     }
   },
   mounted() {
@@ -302,10 +308,11 @@ export default {
     //字体间隔逐字显示
     this.fontstyle()
     //苏州地图
-    this.mapinit()
+    // this.mapinit()
     //车间柱状图
     this.comshop()
     this.statistics()
+    this.outputOfCompanyTop()
   },
   methods: {
     fontstyle() {
@@ -329,6 +336,7 @@ export default {
       start()
     },
     mapinit() {
+      var self = this
       //网页中获取苏州市的geojson制作苏州市地图
       //   var dataurl = '../public/china.json'
       var geoCoordMap = {}
@@ -424,7 +432,7 @@ export default {
       var self = this
       $.getJSON('json/china.json', function(geoJson) {
         echarts.registerMap('china', geoJson)
-        var mapDate = [{ name: '苏州砺行', value: [120.62, 31.32] }]
+        var mapDate = self.mapDataList
         var option = {
           title: {
             top: 5,
@@ -531,6 +539,7 @@ export default {
       })
     },
     comshop() {
+      var self = this
       var myChart = echarts.init(document.getElementById('rank'))
       var option = {
         title: {
@@ -561,10 +570,8 @@ export default {
               "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:rgba(36,207,233,0.9)'></span>" +
               params[0].seriesName +
               ' : ' +
-              Number(
-                (params[0].value.toFixed(4) / 10000).toFixed(2)
-              ).toLocaleString() +
-              ' 万元<br/>'
+              Number((params[0].value / 10000).toFixed(2)).toLocaleString() +
+              ' 万<br/>'
             )
           },
         },
@@ -591,7 +598,7 @@ export default {
             axisLine: {
               show: false,
             },
-            data: ['大米', '玉米', '蔬菜', '鸡蛋', '坚果'],
+            data: self.com_name,
           },
           {
             type: 'category',
@@ -606,13 +613,13 @@ export default {
               },
               formatter: function(value) {
                 if (value >= 10000) {
-                  return (value / 10000).toLocaleString() + '万'
+                  return (value / 10000).toFixed(2) + '万'
                 } else {
                   return value.toLocaleString()
                 }
               },
             },
-            data: [50000000, 22000000, 10000000, 5000000, 1],
+            data: self.sum_pro,
           },
         ],
         series: [
@@ -636,14 +643,14 @@ export default {
               },
             },
             barWidth: 10,
-            data: [50000000, 22000000, 10000000, 5000000, 1],
+            data: self.sum_pro,
           },
           {
             name: '背景',
             type: 'bar',
             barWidth: 10,
             barGap: '-100%',
-            data: [50000000, 50000000, 50000000, 50000000, 1],
+            data: [5000000, 5000000, 5000000, 5000000, 5000000],
             itemStyle: {
               normal: {
                 color: 'rgba(24,31,68,1)',
@@ -675,6 +682,27 @@ export default {
         this.down = res.info.down
         this.sp = res.info.sp
         this.userate = res.info.userate
+      })
+    },
+    outputOfCompanyTop() {
+      const params = {
+        limit: 5,
+      }
+      API.outputOfCompanyTop(params).then((res) => {
+        this.mapDataList = []
+        this.com_name = []
+        this.sum_pro = []
+        for (var i = 0; i < res.info.length; i++) {
+          this.mapDataList.push({
+            name: res.info[i].company_name,
+            value: [res.info[i].com_lon, res.info[i].com_lat],
+          })
+          this.com_name.push(res.info[i].company_name)
+          this.sum_pro.push(res.info[i].sum_production)
+        }
+        console.log(this.mapDataList)
+        this.mapinit()
+        this.comshop()
       })
     },
   },

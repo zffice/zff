@@ -2238,7 +2238,7 @@ border-top-color: blue ;
             .imgdata4 {
               width: 92%;
               height: 24.5%;
-              margin: 0.3rem 0.2rem;
+              margin: 0.2rem 0.2rem;
               background: rgba(21, 49, 122, 0.5);
               .item_2 {
                 width: 100%;
@@ -2301,7 +2301,7 @@ border-top-color: blue ;
             }
             .imgdata2 {
               width: 28%;
-              height: 60%;
+              height: 55%;
               margin: 0 0.05rem;
               float: left;
               background: rgba(21, 49, 122, 0.5);
@@ -2322,11 +2322,13 @@ border-top-color: blue ;
                   height: 80%;
                 }
                 .cirinfo_text {
+                  // width: 100%;
+                  // height: 10%;
                   font-family: 'electronicFont';
                   font-size: 0.35rem;
                   text-align: center;
                   padding: 0.1rem;
-                  margin: 0.1rem 0;
+                  margin: 0.25rem 0;
                   color: #00ffff;
                 }
                 .showinfo {
@@ -2335,7 +2337,7 @@ border-top-color: blue ;
                   font-family: 'electronicFont';
                   font-size: 0.3rem;
                   text-align: center;
-                  padding: 0.5rem 0.15rem;
+                  padding: 0.4rem 0.15rem;
                   // margin: 0.2rem 0;
                   color: #00ffff;
                 }

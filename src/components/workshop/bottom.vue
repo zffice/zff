@@ -13,7 +13,9 @@
                 <div class="item_4">
                   <span class="title">车间名</span>
                   <br />
-                  <h2 class="content">{{ workshopInfo.workshop_name }}</h2>
+                  <span class="content">
+                    {{ workshopInfo.workshop_name }}
+                  </span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -131,6 +133,7 @@ export default {
     float: left;
   }
   .item_4 {
+    width: 50%;
     margin-left: 7%;
     height: 94%;
     float: left;

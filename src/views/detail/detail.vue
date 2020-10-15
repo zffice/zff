@@ -3,9 +3,13 @@
     <section class="section">
       <div class="cloum">
         <div class="navmenu">
-          <el-menu class="navone" default-active="1" style="left: -100px;">
+          <el-menu
+            class="navone"
+            style="left: -100px;"
+            :default-active="activeIndex"
+          >
             <el-menu-item
-              :index="index"
+              :index="index + 1"
               v-for="(item, index) in workshopList"
               :key="item.ws_id"
               @click="changeWs(item.ws_id)"
@@ -43,7 +47,8 @@
                     <h3 style=" text-align:center;">
                       {{ item.machine_name }}
                     </h3>
-                    <dv-decoration-5 style="width:100%" />
+                    <hr />
+                    <!-- <dv-decoration-5 style="width:100%" /> -->
                     <p>
                       品牌：{{ item.machine_brand }}<br />
                       型号：{{ item.machine_model }}<br />
@@ -129,7 +134,7 @@
             </el-carousel-item>
             <!-- 其他设备 -->
             <el-carousel-item class="items">
-              <div class="mask">环境</div>
+              <div class="mask">轮毂加工设备01</div>
               <div class="item">
                 <div class="port-6 effect-2">
                   <div class="image-box">
@@ -137,7 +142,7 @@
                   </div>
                   <div class="text-desc">
                     <h3>环境</h3>
-                    <dv-decoration-5 style="width:100%" />
+                    <hr />
                     <p>
                       品牌：三星<br />
                       型号：XXX<br />
@@ -349,12 +354,14 @@ export default {
       machineList: [],
       workshopList: [],
       alarmInfoList: [],
-      id: 1
+      id: 1,
+      activeIndex: 1
     };
   },
   created() {
     //根据车间编号查询车间信息（车间名、dpuCode、状态）
     var id = this.$route.query.id;
+    this.activeIndex = id;
     this.findMachineByWsId(id);
     this.findMachineListByCompany();
     this.getWsId();

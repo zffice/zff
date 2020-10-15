@@ -6,10 +6,13 @@
           <img src="../../assets/车间.png" usemap="#Map" id="pic" />
           <div v-show="seen" class="hover_con" :style="positionStyle">
             <p>车间名：{{ content.ws_name }}</p>
+            <hr />
             <p>机器数：{{ content.machine_count }}</p>
             <p>作业数：{{ content.run_count }}</p>
             <p>报警数：{{ content.alarm_count }}</p>
             <p>闲置数：{{ content.stop_count }}</p>
+            <p>温度：25 ℃</p>
+            <p>湿度：40 %</p>
           </div>
           <map name="Map" id="Map">
             <area
@@ -57,7 +60,8 @@
           <div class="indicator mid">
             <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
-              <div class="mid_con" id="ybp"></div>
+              <div class="mid_con" id="ybp3"></div>
+
               <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="mid_items">
@@ -67,12 +71,13 @@
             </div>
             <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
-              <div class="mid_con" id="ybp3"></div>
+              <div class="mid_con" id="ybp4"></div>
               <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="mid_items">
               <img src="../../assets/images/line3.png" alt="" />
-              <div class="mid_con" id="ybp4"></div>
+
+              <div class="mid_con" id="ybp"></div>
               <img src="../../assets/images/line3.png" alt="" />
             </div>
             <div class="mid_items">
@@ -208,6 +213,7 @@ export default {
       alert(top_rel_to_parent + "," + left_rel_to_parent + ",");
     },
     detail(id) {
+      localStorage.setItem("wsName", this.content.ws_name);
       this.$router.push({ path: "detail", query: { id: id } });
     },
     chart9() {
@@ -1538,12 +1544,15 @@ li {
     }
     .hover_con {
       position: absolute;
-      width: 20%;
-      height: 25%;
+      width: 10%;
+      height: 30%;
       padding: 0.1rem;
       background: rgba(1, 19, 67, 0.8);
       border: 2px solid #00a1ff;
       border-radius: 8px;
+      hr {
+        border: 0.5px solid #00a1ff;
+      }
     }
     .hover_con p {
       font-size: 0.3rem;
@@ -1552,7 +1561,7 @@ li {
       // text-align: center;
       color: #00a1ff;
       font-weight: 600;
-      text-shadow: 2px 2px 2px grey;
+      // text-shadow: 2px 2px 2px grey;
     }
   }
 }

@@ -109,14 +109,24 @@
             <em>11时：29.742 Erl</em>
           </h3>
           <span class="pandect-area-left">
-            <b></b>
+            <!-- <b></b> -->
           </span>
           <div class="pandect-area-center">
+            <div class="retPro">
+              <a
+                href="javascript:void(0);"
+                @click="goBackProeMap"
+                style="color:#fff"
+              >
+                返回全国地图
+              </a>
+            </div>
             <div id="map"></div>
+            <div id="map2"></div>
             <div id="rank"></div>
           </div>
           <span class="pandect-area-right">
-            <b></b>
+            <!-- <b></b> -->
           </span>
         </div>
         <div class="details1-area">
@@ -125,13 +135,14 @@
             <h3>总体电耗情况</h3>
             <div id="eleInfo">
               <dl>
-                <dt>上月平均值</dt>
+                <dt>上月平均耗电量</dt>
                 <dd>
                   <div class="mavg">
                     <el-progress
                       :text-inside="true"
                       :stroke-width="15"
                       :percentage="50"
+                      :format="format"
                     ></el-progress>
                   </div>
                   <div class="minfo">182305A</div>
@@ -179,6 +190,7 @@
                       :text-inside="true"
                       :stroke-width="15"
                       :percentage="70"
+                      :format="format"
                     ></el-progress>
                   </div>
                   <div class="minfo">1178t</div>
@@ -191,17 +203,19 @@
                       :stroke-width="15"
                       :percentage="50"
                       status="exception"
+                      :format="format"
                     ></el-progress>
                   </div>
                   <div class="minfo">10t</div>
                 </dd>
-                <dt>今日耗电率</dt>
+                <dt>今日耗水量</dt>
                 <dd>
                   <div class="mavg">
                     <el-progress
                       :text-inside="true"
                       :stroke-width="15"
                       :percentage="30"
+                      :format="format"
                       status="success"
                     ></el-progress>
                   </div>
@@ -215,10 +229,10 @@
         </div>
       </div>
       <div class="right-area">
-        <h3>
+        <!-- <h3>
           总体设备利用情况
           <b></b>
-        </h3>
+        </h3> -->
         <div class="area-inbox-1">
           <dl>
             <dt>本次开机报警率</dt>
@@ -239,17 +253,18 @@
           </dl>
           <div class="round-1"></div>
           <div class="round-2"></div>
-          <div class="round-3">50%</div>
+          <!-- <div class="round-3">50%</div> -->
+          <div class="round-3"></div>
           <div class="round-4"></div>
         </div>
-        <div class="area-inbox-2">
+        <!-- <div class="area-inbox-2">
           <div class="area-text">
             <b class="animation-line1"></b>
             <h4>系统说明：</h4>
             <p class="text_container"></p>
             <b class="animation-line2"></b>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -258,6 +273,8 @@
 <script>
 import API from "@/api/busin";
 import echarts from "echarts";
+import "../assets/js/china.js";
+import "../assets/js/省/江苏";
 export default {
   name: "index",
   data() {
@@ -315,6 +332,9 @@ export default {
     this.outputOfCompanyTop();
   },
   methods: {
+    format(percentage) {
+      return ``;
+    },
     fontstyle() {
       var s =
         "（该系统模拟智能车间，通过各种传感器数据对相应环境信息或设备信息进行可视化分析处理，便于用户直观了解）";
@@ -429,167 +449,328 @@ export default {
           }
         }, 2000);
       });
-      var self = this;
-      $.getJSON("json/china.json", function(geoJson) {
-        echarts.registerMap("china", geoJson);
-        var mapDate = self.mapDataList;
-        var option = {
-          title: {
-            top: 5,
-            text: "公司分布",
-            subtext: "",
-            x: "center",
-            textStyle: {
-              color: "#ccc"
-            }
-          },
-          tooltip: {
-            trigger: "item",
-            formatter: function(params) {
-              if (params.seriesType != "map") {
-                if (typeof params.value[2] == "undefined") {
-                  return "";
-                } else {
-                  return params.name + " : " + params.value[3];
-                }
+      // $.getJSON("json/china.json", function(geoJson) {
+      //   echarts.registerMap("china", geoJson);
+      var mapDate = self.mapDataList;
+      var option = {
+        title: {
+          top: 5,
+          text: "公司分布",
+          subtext: "",
+          x: "center",
+          textStyle: {
+            color: "#ccc"
+          }
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: function(params) {
+            if (params.seriesType != "map") {
+              if (typeof params.value[2] == "undefined") {
+                return "";
               } else {
-                return null;
+                return params.name + " : " + params.value[3];
+              }
+            } else {
+              return null;
+            }
+          }
+        },
+        geo: {
+          map: "china",
+          aspectScale: 0.75, //长宽比
+          zoom: 1.1,
+          roam: false,
+          itemStyle: {
+            normal: {
+              areaColor: {
+                type: "radial",
+                x: 0.5,
+                y: 0.5,
+                r: 0.8,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "#09132c" // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: "#274d68" // 100% 处的颜色
+                  }
+                ],
+                globalCoord: true // 缺省为 false
+              },
+              shadowColor: "rgb(58,115,192)",
+              shadowOffsetX: 10,
+              shadowOffsetY: 11
+            },
+            emphasis: {
+              areaColor: "#2AB8FF",
+              borderWidth: 0,
+              color: "green",
+              label: {
+                show: false
               }
             }
           },
-          geo: {
-            map: "china",
-            aspectScale: 0.75, //长宽比
-            zoom: 1.1,
-            roam: false,
+          regions: [
+            {
+              name: "南海诸岛",
+              itemStyle: {
+                areaColor: "rgba(0, 10, 52, 1)",
+
+                borderColor: "rgba(0, 10, 52, 1)",
+                normal: {
+                  opacity: 0,
+                  label: {
+                    show: false,
+                    color: "#009cc9"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        series: [
+          {
+            type: "map",
+            label: {
+              normal: {
+                show: false,
+                textStyle: {
+                  color: "#fff"
+                }
+              },
+              emphasis: {
+                textStyle: {
+                  color: "#fff"
+                }
+              }
+            },
             itemStyle: {
               normal: {
-                areaColor: {
-                  type: "radial",
-                  x: 0.5,
-                  y: 0.5,
-                  r: 0.8,
-                  colorStops: [
-                    {
-                      offset: 0,
-                      color: "#09132c" // 0% 处的颜色
-                    },
-                    {
-                      offset: 1,
-                      color: "#274d68" // 100% 处的颜色
-                    }
-                  ],
-                  globalCoord: true // 缺省为 false
-                },
-                shadowColor: "rgb(58,115,192)",
-                shadowOffsetX: 10,
-                shadowOffsetY: 11
+                borderColor: "#2ab8ff",
+                borderWidth: 1.5,
+                areaColor: "#12235c"
               },
               emphasis: {
                 areaColor: "#2AB8FF",
                 borderWidth: 0,
-                color: "green",
-                label: {
-                  show: false
-                }
+                color: "green"
               }
             },
-            regions: [
-              {
-                name: "南海诸岛",
-                itemStyle: {
-                  areaColor: "rgba(0, 10, 52, 1)",
+            zoom: 1.1,
+            roam: false,
+            map: "china" //使用
+            // data: this.difficultData //热力图数据   不同区域 不同的底色
+          },
+          {
+            name: "Top 5",
+            type: "effectScatter",
+            coordinateSystem: "geo",
+            data: mapDate,
+            symbolSize: 15,
+            showEffectOn: "render",
+            rippleEffect: {
+              brushType: "stroke"
+            },
+            hoverAnimation: true,
+            label: {
+              normal: {
+                formatter: "{b}",
+                position: "left",
+                show: false
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "yellow",
+                shadowBlur: 10,
+                shadowColor: "yellow"
+              }
+            },
+            zlevel: 1
+          }
+        ]
+      };
+      myChart.on("click", params => {
+        if (params.value[2] == 1) {
+          self.home(params.value[2]);
+          localStorage.setItem("comName", params.name);
+        }
+        if (params.value[2] != 1 && params.seriesType != "map") {
+          self.$message({
+            message: "暂未接入该公司数据",
+            type: "warning"
+          });
+        }
+        if (params.seriesType == "map" && params.name == "江苏") {
+          // window.location.href = '@/views/Home'
+          var selectCity = params.name;
 
-                  borderColor: "rgba(0, 10, 52, 1)",
+          setTimeout(function() {
+            $("#map").css("display", "none");
+            $("#map2").css("display", "block");
+            $(".retPro").css("display", "block");
+          }, 500);
+
+          //alert(selectCity);
+          //    调取后台数据
+          // $.get("../assets/js/省/" + selectCity + ".json", function(Citymap) {
+          //   echarts.registerMap(selectCity, Citymap);
+          setTimeout(() => {
+            var myChartCity = echarts.init(document.getElementById("map2"));
+            myChartCity.setOption({
+              tooltip: {
+                trigger: "item",
+                formatter: function loadData(result) {
+                  if (result.seriesType != "map") {
+                    return result.name + "<br />数据:" + result.value[3];
+                  }
+                }
+              },
+              title: {
+                text: selectCity + "地图公司分布",
+                top: 5,
+                subtext: "",
+                x: "center",
+                textStyle: {
+                  color: "#ccc"
+                }
+              },
+              geo: {
+                map: "江苏",
+                aspectScale: 0.75, //长宽比
+                zoom: 1.1,
+                roam: false,
+                itemStyle: {
                   normal: {
-                    opacity: 0,
+                    areaColor: {
+                      type: "radial",
+                      x: 0.5,
+                      y: 0.5,
+                      r: 0.8,
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: "#09132c" // 0% 处的颜色
+                        },
+                        {
+                          offset: 1,
+                          color: "#274d68" // 100% 处的颜色
+                        }
+                      ],
+                      globalCoord: true // 缺省为 false
+                    },
+                    shadowColor: "rgb(58,115,192)",
+                    shadowOffsetX: 10,
+                    shadowOffsetY: 11
+                  },
+                  emphasis: {
+                    areaColor: "#2AB8FF",
+                    borderWidth: 0,
+                    color: "green",
                     label: {
-                      show: false,
-                      color: "#009cc9"
+                      show: false
                     }
                   }
                 }
-              }
-            ]
-          },
-          series: [
-            {
-              type: "map",
-              label: {
-                normal: {
-                  show: false,
-                  textStyle: {
-                    color: "#fff"
-                  }
+              },
+              series: [
+                {
+                  type: "map",
+                  map: "江苏", //要和echarts.registerMap（）中第一个参数一致
+                  scaleLimit: { min: 0.8, max: 1.9 }, //缩放
+                  mapLocation: {
+                    y: 60
+                  },
+                  label: {
+                    normal: {
+                      show: false,
+                      textStyle: {
+                        color: "#fff"
+                      }
+                    },
+                    emphasis: {
+                      textStyle: {
+                        color: "#fff"
+                      }
+                    }
+                  },
+                  itemStyle: {
+                    normal: {
+                      borderColor: "#2ab8ff",
+                      borderWidth: 1.5,
+                      areaColor: "#12235c"
+                    },
+                    emphasis: {
+                      areaColor: "#2AB8FF",
+                      borderWidth: 0,
+                      color: "green"
+                    }
+                  },
+                  zoom: 1.1,
+                  roam: false
                 },
-                emphasis: {
-                  textStyle: {
-                    color: "#fff"
-                  }
+                {
+                  name: "Top 5",
+                  type: "effectScatter",
+                  coordinateSystem: "geo",
+                  data: mapDate,
+                  symbolSize: 15,
+                  showEffectOn: "render",
+                  rippleEffect: {
+                    brushType: "stroke"
+                  },
+                  hoverAnimation: true,
+                  label: {
+                    normal: {
+                      formatter: "{b}",
+                      position: "left",
+                      show: false
+                    }
+                  },
+                  itemStyle: {
+                    normal: {
+                      color: "yellow",
+                      shadowBlur: 10,
+                      shadowColor: "yellow"
+                    }
+                  },
+                  zlevel: 1
                 }
-              },
-              itemStyle: {
-                normal: {
-                  borderColor: "#2ab8ff",
-                  borderWidth: 1.5,
-                  areaColor: "#12235c"
-                },
-                emphasis: {
-                  areaColor: "#2AB8FF",
-                  borderWidth: 0,
-                  color: "green"
-                }
-              },
-              zoom: 1.1,
-              roam: false,
-              map: "china" //使用
-              // data: this.difficultData //热力图数据   不同区域 不同的底色
-            },
-            {
-              name: "Top 5",
-              type: "effectScatter",
-              coordinateSystem: "geo",
-              data: mapDate,
-              symbolSize: 20,
-              showEffectOn: "render",
-              rippleEffect: {
-                brushType: "stroke"
-              },
-              hoverAnimation: true,
-              label: {
-                normal: {
-                  formatter: "{b}",
-                  position: "left",
-                  show: false
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: "yellow",
-                  shadowBlur: 10,
-                  shadowColor: "yellow"
-                }
-              },
-              zlevel: 1
-            }
-          ]
-        };
-        myChart.on("click", params => {
-          // window.location.href = '@/views/Home'
-          if (params.value[2] == 1) {
-            self.home(params.value[2]);
-          } else {
-            self.$message({
-              message: "暂未接入该公司数据",
-              type: "warning"
+              ]
             });
-          }
-        });
-        myChart.setOption(option);
-        window.addEventListener("resize", function() {
-          myChart.resize();
-        });
+            myChartCity.on("click", function(params) {
+              if (params.value[2] == 1) {
+                self.home(params.value[2]);
+                localStorage.setItem("comName", params.name);
+              } else {
+                self.$message({
+                  message: "暂未接入该公司数据",
+                  type: "warning"
+                });
+              }
+              // setTimeout(function() {
+              //   //$('#cont_pro_map').css('display','block');
+              //   //$('#cont_city_map').css('display','none');
+              // }, 500);
+            });
+          }, 500);
+        }
+        // });
       });
+
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
+      // });
+    },
+    goBackProeMap() {
+      $("#map").css("display", "block");
+      $("#map2").css("display", "none");
+      $(".retPro").css("display", "none");
     },
     comshop() {
       var self = this;
@@ -677,7 +858,7 @@ export default {
         ],
         series: [
           {
-            name: "金额",
+            name: "产量",
             type: "bar",
             zlevel: 1,
             itemStyle: {
@@ -703,7 +884,7 @@ export default {
             type: "bar",
             barWidth: 10,
             barGap: "-100%",
-            data: [5000000, 5000000, 5000000, 5000000, 5000000],
+            data: [500, 500, 500, 500, 500],
             itemStyle: {
               normal: {
                 color: "rgba(24,31,68,1)",
@@ -758,7 +939,6 @@ export default {
           this.com_name.push(res.info[i].company_name);
           this.sum_pro.push(res.info[i].sum_production);
         }
-        console.log(this.mapDataList);
         this.mapinit();
         this.comshop();
       });

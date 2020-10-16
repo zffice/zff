@@ -582,23 +582,18 @@ export default {
 
       this.alarmOption = {
         tooltip: {
-          show: true,
-          textStyle: {
-            fontSize: 10
-          }
-          //trigger: 'axis',
-          //axisPointer: {
-          //    type: 'shadow'
-          //}
+          trigger: "item",
+          show: true
         },
         legend: {
-          show: false
+          show: false,
+          selectedMode: false
         },
         grid: {
-          left: "40%",
-          right: "15%",
-          bottom: "5%",
-          top: "5%"
+          left: "35%",
+          right: "12%",
+          bottom: "3%",
+          top: 0
         },
         dataZoom: [
           {
@@ -610,7 +605,7 @@ export default {
             handleSize: 0,
             showDetail: false,
             start: 0,
-            end: 40,
+            end: 50,
             handleIcon:
               "path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z",
             // handleSize: "110%",
@@ -630,156 +625,64 @@ export default {
             moveOnMouseWheel: true
           }
         ],
-        xAxis: {
-          type: "value",
-          splitLine: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLine: {
+        xAxis: [
+          {
+            splitLine: {
+              show: false
+            },
+            type: "value",
             show: false
           }
-        },
-        yAxis: {
-          type: "category",
-          inverse: true,
-          axisLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisPointer: {
-            label: {
-              show: true,
-              margin: 30
-            }
-          },
-          data: attackSourcesName,
-          axisLabel: {
-            margin: 140,
-            fontSize: 14,
-            align: "left",
-            color: "#333",
-            rich: {
-              nt1: {
-                color: "#fff",
-                backgroundColor: attackSourcesColor[0],
-                width: 20,
-                height: 20,
-                align: "center",
-                borderRadius: 100
-              },
-              nt2: {
-                color: "#fff",
-                backgroundColor: attackSourcesColor[1],
-                width: 20,
-                height: 20,
-                align: "center",
-                borderRadius: 100
-              },
-              nt3: {
-                color: "#fff",
-                backgroundColor: attackSourcesColor[2],
-                width: 20,
-                height: 20,
-                align: "center",
-                borderRadius: 100
-              },
-              nt: {
-                color: "#fff",
-                backgroundColor: attackSourcesColor[3],
-                width: 20,
-                height: 20,
-                align: "center",
-                borderRadius: 100
-              },
-              title1: {
-                backgroundColor: attackSourcesColor[0],
-                color: "#fff",
-                width: 90,
-                align: "left",
-                borderRadius: 5,
-                padding: 5
-              },
-              title2: {
-                backgroundColor: attackSourcesColor[1],
-                color: "#fff",
-                width: 90,
-                align: "left",
-                borderRadius: 5,
-                padding: 5
-              },
-              title3: {
-                backgroundColor: attackSourcesColor[2],
-                color: "#fff",
-                width: 90,
-                align: "left",
-                borderRadius: 5,
-                padding: 5
-              },
-              title: {
-                backgroundColor: attackSourcesColor[3],
-                color: "#fff",
-                width: 90,
-                align: "left",
-                borderRadius: 5,
-                padding: 5
+        ],
+        yAxis: [
+          {
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              //y轴
+              show: false
+            },
+            type: "category",
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#00C2FF",
+                fontSize: 10
               }
             },
-            formatter: function(value, index) {
-              index = contains(attackSourcesName, value) + 1;
-              if (index - 1 < 3) {
-                return [
-                  "{nt" +
-                    index +
-                    "|" +
-                    index +
-                    "}" +
-                    "  {title" +
-                    index +
-                    "|" +
-                    value +
-                    "}"
-                ].join("\n");
-              } else {
-                return ["{nt|" + index + "}" + "  {title|" + value + "}"].join(
-                  "\n"
-                );
-              }
-            }
+            data: this.Xaxis2
           }
-        },
+        ],
         series: [
           {
-            z: 2,
-            //name: 'value',
+            name: "报警信息",
             type: "bar",
-            barWidth: "10",
-            animationDuration: 150,
-            data: attackSourcesDataFmt(attackSourcesData),
-            itemStyle: {
-              normal: {
-                color: function(params) {
-                  return attackSourcesColor[
-                    params.dataIndex > 3 ? 3 : params.dataIndex
-                  ];
-                },
-                barBorderRadius: 5
-              }
-            },
+            barWidth: 10, // 柱子宽度
             label: {
               show: true,
-              position: "right",
-              color: "#00C2FF",
+              position: "right", // 位置
+              color: "#1CD8A8",
               fontSize: 10,
-              offset: [10, 0]
-            }
+              fontWeight: "bold", // 加粗
+              distance: 5 // 距离
+            }, // 柱子上方的数值
+            itemStyle: {
+              barBorderRadius: [0, 20, 20, 0], // 圆角（左上、右上、右下、左下）
+              color: new echarts.graphic.LinearGradient(
+                0,
+                0,
+                1,
+                0,
+                ["#2FAEF2", "#1CD8A8"].map((color, offset) => ({
+                  color,
+                  offset
+                }))
+              ) // 渐变
+            },
+            data: this.data2
           }
         ]
       };
@@ -796,7 +699,7 @@ export default {
           Number(this.alarmOption.dataZoom[0].end) ===
           this.data2.length - 1
         ) {
-          this.alarmOption.dataZoom[0].end = 40;
+          this.alarmOption.dataZoom[0].end = 50;
           this.alarmOption.dataZoom[0].start = 0;
         } else {
           this.alarmOption.dataZoom[0].end =
@@ -805,7 +708,7 @@ export default {
             this.alarmOption.dataZoom[0].start + 10;
         }
         if (this.alarmOption.dataZoom[0].end == 100) {
-          this.alarmOption.dataZoom[0].end = 40;
+          this.alarmOption.dataZoom[0].end = 50;
           this.alarmOption.dataZoom[0].start = 0;
         }
         this.chart.setOption(this.alarmOption);

@@ -25,7 +25,7 @@
                 <div class="item_4">
                   <span class="title">设备数量</span>
                   <br />
-                  <span class="content">{{ workshopInfo.mCount }}</span>
+                  <span class="content">{{ workshopInfo.mCount + 1 }}</span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -35,7 +35,7 @@
                 <div class="item_4">
                   <span class="title">作业数量</span>
                   <br />
-                  <span class="content">{{ workshopInfo.runCount }}</span>
+                  <span class="content">{{ workshopInfo.runCount + 1 }}</span>
                 </div>
               </el-col>
               <el-col :span="5">
@@ -133,7 +133,7 @@ export default {
     float: left;
   }
   .item_4 {
-    width: 50%;
+    width: 40%;
     margin-left: 7%;
     height: 94%;
     float: left;

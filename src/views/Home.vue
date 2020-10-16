@@ -9,7 +9,12 @@
         </div>
         <div class="items">
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
-          <div class="item" id="box_02"></div>
+          <!-- <div class="item" id="box_02"></div> -->
+          <dv-scroll-ranking-board
+            :config="config"
+            class="item"
+            style="width:80%;margin:0 auto;"
+          />
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
         <div class="items">
@@ -91,6 +96,7 @@ export default {
       Xaxis2: [],
       //图二数据
       data2: [],
+      dataAlarm: [],
 
       //图三数据
       data3: [],
@@ -119,7 +125,27 @@ export default {
       chart: "",
       // 报警次数
       alarmCount: 0,
-      comId: ""
+      comId: "",
+      config: {
+        data: [],
+        waitTime: 4000,
+        carousel: "page",
+        colors: [
+          "#f36c6c",
+          "#e6cf4e",
+          "#20d180",
+          "#0093ff",
+          "#1089E7",
+          "#F57474",
+          "#56D0E3",
+          "#1089E7",
+          "#F57474",
+          "#1089E7",
+          "#F57474",
+          "#F57474"
+        ],
+        unit: "次"
+      }
     };
   },
   created() {
@@ -207,12 +233,41 @@ export default {
         // console.log(res)
         this.Xaxis2 = [];
         this.data2 = [];
+        this.dataAlarm = [];
         for (var i = 0; i < res.info.length; i++) {
           this.Xaxis2.push(res.info[i].info);
           this.data2.push(res.info[i].count);
+          this.dataAlarm.push({
+            name:
+              '<span style="color:#37a2da;">' + res.info[i].info + "</span>",
+            value: res.info[i].count
+          });
         }
-        this.chart2();
+        // this.chart2();
+        this.chartAlarmTypeTop();
       });
+    },
+    chartAlarmTypeTop() {
+      this.config = {
+        data: this.dataAlarm,
+        waitTime: 4000,
+        unit: "次",
+        rowNum: 3,
+        colors: [
+          "#f36c6c",
+          "#e6cf4e",
+          "#20d180",
+          "#0093ff",
+          "#1089E7",
+          "#F57474",
+          "#56D0E3",
+          "#1089E7",
+          "#F57474",
+          "#1089E7",
+          "#F57474",
+          "#F57474"
+        ]
+      };
     },
     // 各设备产量排名【limit true，cId false】
     outputOfMachineTop() {
@@ -482,6 +537,9 @@ export default {
       });
     },
     chart2() {
+      var attackSourcesData = this.data2;
+      var attackSourcesName = this.Xaxis2;
+      console.log(attackSourcesData);
       this.chart = echarts.init(document.getElementById("box_02"));
       function contains(arr, dst) {
         var i = arr.length;
@@ -493,8 +551,6 @@ export default {
         return false;
       }
 
-      var attackSourcesData = this.data2;
-      var attackSourcesName = this.Xaxis2;
       var attackSourcesColor = [
         "#f36c6c",
         "#e6cf4e",
@@ -735,7 +791,7 @@ export default {
     },
     //自动滚动
     autoMave() {
-      this.timeOut = setInterval(() => {
+      setInterval(() => {
         if (
           Number(this.alarmOption.dataZoom[0].end) ===
           this.data2.length - 1
@@ -958,6 +1014,15 @@ export default {
       var data1 = this.data5;
       var data2 = this.sumpro;
       var option = {
+        title: {
+          text: "设备产量",
+          left: "5%",
+          top: "12%",
+          textStyle: {
+            color: "#fff",
+            fontSize: "15"
+          }
+        },
         tooltip: {
           trigger: "axis",
           formatter(params) {
@@ -990,7 +1055,7 @@ export default {
           left: "6%",
           right: "2%",
           bottom: "1%",
-          top: "15%",
+          top: "32%",
           containLabel: true
         },
         xAxis: {
@@ -1011,6 +1076,9 @@ export default {
           }
         },
         yAxis: {
+          type: "value",
+          // name: "产量",
+          // color: "#fff",
           splitLine: {
             show: false
           },
@@ -1277,6 +1345,15 @@ export default {
     chart6() {
       var myChart = echarts.init(document.getElementById("box_03"));
       var option = {
+        title: {
+          text: "月报警趋势",
+          left: "5%",
+          top: "10%",
+          textStyle: {
+            color: "#D5CBE8",
+            fontSize: "15"
+          }
+        },
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -1316,7 +1393,7 @@ export default {
         yAxis: [
           {
             type: "value",
-            // name: '单位（%）',
+            name: "单位（%）",
             axisTick: {
               show: false
             },
@@ -1551,7 +1628,7 @@ export default {
           }
         },
         yAxis: {
-          name: "时长:小时",
+          name: "运行时长:小时",
           nameTextStyle: {
             color: "#fff",
             fontSize: 10

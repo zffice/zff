@@ -155,15 +155,91 @@
                 <div class="imgdata2" style="margin-left:5%">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                   <div class="item_2">
-                    <div id="cirInfo"></div>
+                    <!-- <div id="cirInfo"></div>
                     <div class="cirinfo_text">
                       30<span style="margin-right:8%;font-size:0.2rem">℃</span
                       >42<span style="font-size:0.2rem">%</span>
+                    </div> -->
+                    <div class="leftitem">
+                      <div class="runType">
+                        <div class="runtext">运行状态</div>
+                        <div class="runimg">
+                          <div class="red"></div>
+                          <div class="green"></div>
+                          <div class="yellow"></div>
+                        </div>
+                      </div>
+                      <div class="wheel">
+                        <div class="runtext2">加工轮毂数量</div>
+                        <div class="wheelsum">2000</div>
+                      </div>
+                      <div class="speed">
+                        <div class="runtext">主轴转速</div>
+                        <div id="speedShow"></div>
+                      </div>
+                    </div>
+                    <div class="rightitem">
+                      <div class="axistext">坐标</div>
+                      <div class="axis">
+                        <div class="axisinfo">
+                          <span style="margin-right:5%">X:</span
+                          ><span style="margin-right:5%">558</span
+                          ><span>mm</span>
+                        </div>
+                        <div class="axisinfo">
+                          <span style="margin-right:5%">Y:</span
+                          ><span style="margin-right:5%">333</span
+                          ><span>mm</span>
+                        </div>
+                        <div class="axisinfo">
+                          <span style="margin-right:5%">Z:</span
+                          ><span style="margin-right:5%">444</span
+                          ><span>mm</span>
+                        </div>
+                      </div>
+                      <div class="switchStatus">
+                        <div class="offInfo">
+                          <div class="offText">前门状态</div>
+                          <div class="offA">
+                            <el-tooltip
+                              :content="'前门状态: ' + offvalue"
+                              placement="top"
+                            >
+                              <el-switch
+                                v-model="offvalue"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0"
+                              >
+                              </el-switch>
+                            </el-tooltip>
+                          </div>
+                        </div>
+                        <div class="onInfo">
+                          <div class="offText">后门状态</div>
+                          <div class="offA">
+                            <el-tooltip
+                              :content="'后门状态: ' + onvalue"
+                              placement="top"
+                            >
+                              <el-switch
+                                v-model="onvalue"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0"
+                              >
+                              </el-switch>
+                            </el-tooltip>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                 </div>
-                <div class="imgdata2">
+                <!-- <div class="imgdata2">
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
                   <div class="item_2">
                     <div id="cirSetInfo"></div>
@@ -173,45 +249,7 @@
                     </div>
                   </div>
                   <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                </div>
-                <div class="imgdata2">
-                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                  <div class="item_2">
-                    <div>
-                      <div
-                        class="showinfo"
-                        style="border-bottom: 2px solid #2e7fc8;"
-                      >
-                        2203
-                        <span style="color:#476699;font-size:0.1rem">小时</span
-                        ><br />
-                        <span style="color:#91ABC6;font-size:0.25rem"
-                          >运行时间</span
-                        >
-                      </div>
-                      <div
-                        class="showinfo"
-                        style="border-bottom: 2px solid #2e7fc8;"
-                      >
-                        2203
-                        <span style="color:#476699;font-size:0.1rem">小时</span
-                        ><br />
-                        <span style="color:#91ABC6;font-size:0.25rem"
-                          >制冷时间</span
-                        >
-                      </div>
-                      <div class="showinfo">
-                        2203
-                        <span style="color:#476699;font-size:0.1rem">小时</span
-                        ><br />
-                        <span style="color:#91ABC6;font-size:0.25rem"
-                          >除湿时间</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <dv-decoration-10 style="width:100%;height:5px;margin:auto" />
-                </div>
+                </div> -->
                 <div class="clear"></div>
               </div>
             </el-carousel-item>
@@ -376,8 +414,9 @@ export default {
       this.schoolInData();
       this.schoolOutData();
       //环境
-      this.cirTem();
-      this.cirSetTem();
+      // this.cirTem()
+      // this.cirSetTem()
+      this.speedStatus();
     });
     this.product();
   },
@@ -502,6 +541,9 @@ export default {
                     JSON.parse(msg.data).data.alarming.length;
                   item.content = JSON.parse(msg.data).data.alarming;
                   this.dialogVisible = true;
+                  setTimeout(() => {
+                    this.dialogVisible = false;
+                  }, 5000);
                 }
                 if (JSON.parse(msg.data).data.status == "0") {
                   item.today_rtime = 0;
@@ -647,6 +689,18 @@ export default {
             right: "4%",
             bottom: "8%",
             containLabel: true
+          },
+          legend: {
+            show: true,
+            x: "center",
+            y: "1%",
+            itemWidth: 45,
+            itemHeight: 18,
+            textStyle: {
+              color: "#fff",
+              fontSize: "12"
+            },
+            data: ["产量", "回退量"]
           },
           xAxis: [
             {
@@ -2055,6 +2109,146 @@ export default {
         i = "0" + i;
       }
       return i;
+    },
+    speedStatus() {
+      var option = {
+        series: [
+          {
+            type: "gauge",
+            name: "外层辅助",
+            radius: "92%",
+            startAngle: "225",
+            endAngle: "-45",
+            splitNumber: "120",
+            pointer: {
+              show: false
+            },
+            detail: {
+              show: false
+            },
+            data: [
+              {
+                value: 1
+              }
+            ],
+            // data: [{value: 1, name: 90}],
+            title: {
+              show: true,
+              offsetCenter: [0, 30],
+              textStyle: {
+                color: "#fff",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontFamily: "微软雅黑",
+                fontSize: 10
+              }
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: [[1, "#1AF7E4"]],
+                width: 2,
+                opacity: 1
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              length: 10,
+              lineStyle: {
+                color: "#051932",
+                width: 0,
+                type: "solid"
+              }
+            },
+            axisLabel: {
+              show: false
+            }
+          },
+          {
+            name: "内层数据刻度",
+            type: "gauge",
+            radius: "80%",
+            center: ["50%", "50%"],
+            axisLine: {
+              lineStyle: {
+                width: 5,
+                color: [
+                  [
+                    0.8,
+                    new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+                      {
+                        offset: 0,
+                        color: "#123AFB"
+                      }
+                    ])
+                  ],
+                  // [0.9, new echarts.graphic.LinearGradient(
+                  //     0, 1, 0, 0,
+                  //     [{
+                  //         offset: 0,
+                  //         color: '#3BD671'
+                  //     }, {
+                  //         offset: 0.6,
+                  //         color: '#3BD671'
+                  //     }]
+                  // )],
+                  [1, "#3BD671"]
+                ]
+              }
+            },
+            splitLine: {
+              length: 5,
+              lineStyle: {
+                width: 1,
+                color: "none"
+              }
+            },
+            axisTick: {
+              lineStyle: {
+                width: 1,
+                color: "#ffffff"
+              }
+            },
+            axisLabel: {
+              color: "rgb(0,191,255)",
+              distance: 5,
+              fontSize: 8
+            },
+            detail: {
+              show: true,
+              offsetCenter: ["0", "84%"],
+              formatter: 50 + "rpm",
+              fontSize: 10,
+              fontFamily: "SF Digital Readout Heavy",
+              color: "#01F2F6"
+            },
+            itemStyle: {
+              normal: {
+                color: "#FFFFFF"
+              }
+            },
+            pointer: {
+              width: 2,
+              length: "45%"
+            },
+            data: [
+              {
+                value: 50
+              }
+            ],
+            silent: false
+          }
+        ]
+      };
+      let chart = document.getElementById("speedShow");
+      var myChart = echarts.init(chart);
+      myChart.setOption(option);
+      window.addEventListener("resize", function() {
+        myChart.resize();
+      });
     }
   }
 };
@@ -2189,7 +2383,7 @@ border-top-color: blue ;
       margin: 0.2rem;
       width: 18%;
       height: 90vh;
-      background: url("../../assets/images/椭圆 1.png") center no-repeat;
+      background: url("../../assets/images/left.png") center no-repeat;
       background-size: 100% 100%;
       display: flex;
       justify-content: right;
@@ -2200,7 +2394,7 @@ border-top-color: blue ;
       }
     }
     .cloum:nth-child(3) {
-      background: url("../../assets/images/椭圆 2.png") center no-repeat;
+      background: url("../../assets/images/right.png") center no-repeat;
       background-size: 100% 100%;
     }
     .cloum2 {
@@ -2370,47 +2564,181 @@ border-top-color: blue ;
               }
             }
             .imgdata2 {
-              width: 28%;
+              width: 92%;
               height: 55%;
-              margin: 0 0.05rem;
-              float: left;
+              margin: 0 0.03rem;
+              // float: left;
               background: rgba(21, 49, 122, 0.5);
-              .item_1 {
-                width: 100%;
-                height: 97%;
-              }
+              // .item_1 {
+              //   width: 100%;
+              //   height: 97%;
+              // }
               .item_2 {
                 width: 100%;
                 height: 97%;
-                #cirInfo {
-                  width: 100%;
-                  height: 80%;
-                  // border: 1px solid red;
+                .leftitem {
+                  width: 48%;
+                  height: 100%;
+                  float: left;
+                  margin-right: 1%;
+                  .runtext {
+                    width: 90%;
+                    font-size: 0.25rem;
+                    color: #fff;
+                    font-weight: 600;
+                    text-align: center;
+                    margin: 0.1rem 0.1rem;
+                  }
+                  .runtext2 {
+                    width: 90%;
+                    font-size: 0.2rem;
+                    color: #fff;
+                    font-weight: 600;
+                    text-align: center;
+                    margin: 0.1rem 0.1rem;
+                  }
+                  .runType {
+                    width: 100%;
+                    height: 20%;
+                    border-bottom: 1px solid #2e7fc8;
+                    .runimg {
+                      width: 100%;
+                      height: 40%;
+                      .red {
+                        width: 28%;
+                        height: 100%;
+                        float: left;
+                        margin-right: 3%;
+                        margin-left: 3%;
+                        background-color: #3a2426;
+                      }
+                      .green {
+                        width: 28%;
+                        height: 100%;
+                        float: left;
+                        margin-right: 3%;
+                        background-color: #24e379;
+                      }
+                      .yellow {
+                        width: 28%;
+                        height: 100%;
+                        float: left;
+                        background-color: #3e3623;
+                      }
+                      // margin: 0 35%;
+                    }
+                  }
+                  .wheel {
+                    width: 100%;
+                    height: 20%;
+                    .wheelsum {
+                      width: 100%;
+                      height: 5%;
+                      font-size: 0.3rem;
+                      color: #00ffff;
+                      font-weight: 600;
+                      text-align: center;
+                      font-family: "electronicFont";
+                    }
+                  }
+                  .speed {
+                    width: 100%;
+                    height: 60%;
+                    border-top: 1px solid #2e7fc8;
+                    #speedShow {
+                      width: 90%;
+                      height: 70%;
+                      margin: 0.1rem 0.1rem;
+                    }
+                  }
                 }
-                #cirSetInfo {
-                  width: 100%;
-                  height: 80%;
+                .rightitem {
+                  width: 46%;
+                  height: 100%;
+                  float: left;
+                  border-left: 1px solid #2e7fc8;
+                  .axistext {
+                    font-size: 0.25rem;
+                    color: #fff;
+                    font-weight: 600;
+                    text-align: center;
+                    margin: 0.05rem 0.1rem;
+                  }
+                  .axis {
+                    width: 100%;
+                    height: 40%;
+                  }
+                  .axisinfo {
+                    width: 100%;
+                    height: 20%;
+                    font-size: 0.35rem;
+                    color: #00ffff;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 0.1rem 0;
+                    font-family: "electronicFont";
+                  }
+                  .switchStatus {
+                    width: 100%;
+                    height: 42%;
+                    .offInfo {
+                      width: 100%;
+                      height: 45%;
+                      padding-top: 0.1rem;
+                      border-top: 1px solid #2e7fc8;
+                    }
+                    .onInfo {
+                      width: 100%;
+                      height: 45%;
+                      padding-top: 0.1rem;
+                      margin-top: 0.2rem;
+                      border-top: 1px solid #2e7fc8;
+                    }
+                    .offText {
+                      font-size: 0.25rem;
+                      color: #fff;
+                      font-weight: 600;
+                      text-align: center;
+                      margin: 0.05rem 0.1rem;
+                    }
+                    .offA {
+                      width: 100%;
+                      height: 50%;
+                      // border: 1px solid red;
+                      // margin-left: 0.6rem;
+                      padding: 0.1rem 0.6rem;
+                    }
+                  }
                 }
-                .cirinfo_text {
-                  // width: 100%;
-                  // height: 10%;
-                  font-family: "electronicFont";
-                  font-size: 0.35rem;
-                  text-align: center;
-                  padding: 0.1rem;
-                  margin: 0.25rem 0;
-                  color: #00ffff;
-                }
-                .showinfo {
-                  width: 80%;
-                  // float: left;
-                  font-family: "electronicFont";
-                  font-size: 0.3rem;
-                  text-align: center;
-                  padding: 0.4rem 0.15rem;
-                  // margin: 0.2rem 0;
-                  color: #00ffff;
-                }
+                // #cirInfo {
+                //   width: 100%;
+                //   height: 80%;
+                //   // border: 1px solid red;
+                // }
+                // #cirSetInfo {
+                //   width: 100%;
+                //   height: 80%;
+                // }
+                // .cirinfo_text {
+                //   // width: 100%;
+                //   // height: 10%;
+                //   font-family: 'electronicFont';
+                //   font-size: 0.35rem;
+                //   text-align: center;
+                //   padding: 0.1rem;
+                //   margin: 0.25rem 0;
+                //   color: #00ffff;
+                // }
+                // .showinfo {
+                //   width: 80%;
+                //   // float: left;
+                //   font-family: 'electronicFont';
+                //   font-size: 0.3rem;
+                //   text-align: center;
+                //   padding: 0.4rem 0.15rem;
+                //   // margin: 0.2rem 0;
+                //   color: #00ffff;
+                // }
               }
             }
             .imgdata:nth-child(3) {

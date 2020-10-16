@@ -3,16 +3,19 @@
     <section class="boxwrap">
       <div class="gc">
         <div class="machines-grid">
-          <img src="../../assets/车间.png" usemap="#Map" id="pic" />
+          <img src="../../assets/work.png" usemap="#Map" id="pic" />
           <div v-show="seen" class="hover_con" :style="positionStyle">
-            <p>车间名：{{ content.ws_name }}</p>
+            <br />
+            <span style="font-Size:0.3rem;">
+              {{ content.ws_name }}
+            </span>
             <hr />
-            <p>机器数：{{ content.machine_count }}</p>
-            <p>作业数：{{ content.run_count }}</p>
-            <p>报警数：{{ content.alarm_count }}</p>
-            <p>闲置数：{{ content.stop_count }}</p>
-            <p>温度：25 ℃</p>
-            <p>湿度：40 %</p>
+            <p><span>机器数：</span>{{ content.machine_count + 1 }}</p>
+            <p><span>作业数：</span>{{ content.run_count + 1 }}</p>
+            <p><span>报警数：</span>{{ content.alarm_count }}</p>
+            <p><span>闲置数：</span>{{ content.stop_count }}</p>
+            <p><span>温度：</span>25 ℃</p>
+            <p><span>湿度：</span>40 %</p>
           </div>
           <map name="Map" id="Map">
             <area
@@ -155,10 +158,10 @@ export default {
       };
       API.statistics(params).then(res => {
         this.standby = res.info.standby;
-        this.mcount = res.info.mcount;
+        this.mcount = res.info.mcount + 1;
         this.alarm = res.info.alarm;
         this.wscount = res.info.wscount;
-        this.run = res.info.run;
+        this.run = res.info.run + 1;
         this.down = res.info.down;
         this.tp = res.info.tp;
         this.sp = res.info.sp;
@@ -400,12 +403,12 @@ export default {
       var myChart = echarts.init(document.getElementById("devicenum"));
       var option = {
         grid: {
-          top: "20%",
-          bottom: "10%"
+          top: "10%",
+          bottom: "20%"
         },
-        tooltip: {},
+        tooltip: { show: false },
         xAxis: {
-          data: ["本次开机产量", "总产量"],
+          data: ["本次产量", "总产量"],
           axisTick: {
             show: false
           },
@@ -413,7 +416,9 @@ export default {
             show: false
           },
           axisLabel: {
-            show: false
+            margin: 20,
+            color: "#D5CBE8",
+            fontSize: "10"
           }
         },
         yAxis: {
@@ -1545,7 +1550,6 @@ li {
     .hover_con {
       position: absolute;
       width: 10%;
-      height: 30%;
       padding: 0.1rem;
       background: rgba(1, 19, 67, 0.8);
       border: 2px solid #00a1ff;
@@ -1553,15 +1557,23 @@ li {
       hr {
         border: 0.5px solid #00a1ff;
       }
-    }
-    .hover_con p {
-      font-size: 0.3rem;
-      line-height: 0.3rem;
-      padding: 0.2rem;
-      // text-align: center;
-      color: #00a1ff;
-      font-weight: 600;
-      // text-shadow: 2px 2px 2px grey;
+      span {
+        font-size: 0.1rem;
+        line-height: 0.15rem;
+        padding: 0.2rem;
+        // text-align: center;
+        color: #00a1ff;
+        font-weight: 600;
+      }
+      p {
+        font-size: 0.1rem;
+        line-height: 0.15rem;
+        padding: 0.2rem;
+        // text-align: center;
+        color: #fff;
+        font-weight: 600;
+        // text-shadow: 2px 2px 2px grey;
+      }
     }
   }
 }

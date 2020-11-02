@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="hello" style="height:100%;">
     <div id="wrapper">
       <h1>智能工厂生产车间大屏</h1>
       <h2>
@@ -454,13 +454,16 @@ export default {
       var mapDate = self.mapDataList;
       var option = {
         title: {
-          top: 5,
+          top: "10%",
           text: "公司分布",
           subtext: "",
           x: "center",
           textStyle: {
             color: "#ccc"
           }
+        },
+        grid: {
+          top: "%"
         },
         tooltip: {
           trigger: "item",
@@ -777,7 +780,6 @@ export default {
       var myChart = echarts.init(document.getElementById("rank"));
       var option = {
         title: {
-          top: 5,
           text: "公司产量排名",
           subtext: "",
           x: "center",
@@ -788,8 +790,8 @@ export default {
         grid: {
           left: "5%",
           right: "5%",
-          bottom: "5%",
-          top: "10%",
+          bottom: "0%",
+          top: "30%",
           containLabel: true
         },
         tooltip: {

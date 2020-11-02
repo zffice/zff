@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <div id="container"></div>
-
     <section class="section">
       <div class="cloum">
         <div class="items">
@@ -43,7 +41,6 @@
           <dv-decoration-10 style="width:90%;height:5px;margin:auto" />
         </div>
       </div>
-
       <div class="cloum2">
         <workShop></workShop>
       </div>
@@ -74,24 +71,6 @@
       </div>
       <div class="clear"></div>
     </section>
-    <div v-show="seen" class="hover_con" :style="positionStyle">
-      <br />
-      <span style="font-Size:0.3rem;">
-        {{ content.ws_name }}
-        <a
-          @click="detail(1)"
-          style=" font-size: 0.1rem;line-height: 0.15rem;padding: 0.2rem;color: #00a1ff; cursor: pointer;"
-          >进入车间</a
-        >
-      </span>
-      <hr />
-      <p><span>机器数：</span>{{ content.machine_count + 1 }}</p>
-      <p><span>作业数：</span>{{ content.run_count + 1 }}</p>
-      <p><span>报警数：</span>{{ content.alarm_count }}</p>
-      <p><span>闲置数：</span>{{ content.stop_count }}</p>
-      <p><span>温度：</span>25 ℃</p>
-      <p><span>湿度：</span>40 %</p>
-    </div>
   </div>
 </template>
 
@@ -100,11 +79,6 @@ import API from "@/api/busin";
 import workShop from "@/components/workshop/index2";
 // import Vue from "vue";
 // import { scrollBoard } from "@jiaminghi/data-view";
-import * as THREE from "three";
-import { OBJLoader, MTLLoader } from "three-obj-mtl-loader";
-import { TGALoader } from "three/examples/jsm/loaders/TGALoader";
-
-const OrbitControls = require("three-orbit-controls")(THREE);
 import echarts from "echarts";
 export default {
   name: "Home",
@@ -113,24 +87,6 @@ export default {
   },
   data() {
     return {
-      seen: false,
-      x: 0,
-      y: 0,
-      positionStyle: { top: "20px", left: "20px" },
-      content: {
-        ws_name: "",
-        machine_count: 0,
-        run_count: 0,
-        standby_count: 0,
-        stop_count: 0,
-        alarm_count: 0
-      },
-      scene: "",
-      // light: "",
-      camera: "",
-      controls: "",
-      renderer: "",
-      container: null,
       //图一横坐标
       Xaxis1: [],
       //图一数据
@@ -189,11 +145,7 @@ export default {
           "#F57474"
         ],
         unit: "次"
-      },
-      objects: null,
-      raycaster: null,
-      mouse: null,
-      workshopList: []
+      }
     };
   },
   created() {
@@ -201,14 +153,9 @@ export default {
     this.play();
   },
   mounted() {
-    // 场景建立
-    this.initScene();
-    // 加载模型
-    this.loadObj();
-    this.animate();
     require("../assets/js/common.js");
+    // this.getComId();
     this.$nextTick(() => {
-      this.findMachineListByCompany();
       this.alarmGroupMonth();
       this.alarmOfMachineTop();
       this.alarmTypeTop();
@@ -221,162 +168,6 @@ export default {
     });
   },
   methods: {
-    findMachineListByCompany() {
-      const params = {
-        cId: localStorage.getItem("comId")
-      };
-      API.findMachineListByCompany(params).then(res => {
-        this.workshopList = res.info;
-      });
-    },
-    initScene() {
-      this.scene = new THREE.Scene();
-      this.scene.add(new THREE.AmbientLight("#1370fb")); //环境光
-      // this.scene.add(new THREE.SpotLight(0xffffff));
-      this.scene.add(new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1)); //半球光
-      let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5); //从正上方（不是位置）照射过来的平行光，0.45的强度
-      // directionalLight.position.setset(50, 200, 100);
-      // directionalLight.position.multiplyScalar(0.3);
-      this.scene.add(directionalLight);
-
-      //初始化相机
-      this.camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerWidth,
-        1,
-        1000
-      );
-      this.camera.position.set(500, 500, 350);
-      this.camera.lookAt(this.scene.position);
-
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-
-      //初始化控制器
-      this.controls = new OrbitControls(this.camera);
-      this.controls.target.set(0, 0, 0);
-      this.controls.minDistance = 80;
-      this.controls.maxDistance = 400;
-      this.controls.maxPolarAngle = Math.PI / 3;
-      this.controls.update();
-
-      //渲染
-      this.renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true
-      });
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-      const container = document.getElementById("container");
-      container.appendChild(this.renderer.domElement);
-
-      window.addEventListener("click", this.selectHandler, false);
-      window.addEventListener("resize", this.onWindowResize, false); //添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
-      // window.addEventListener("mousemove", this.updateXY, false);
-      window.addEventListener("mouseleave", this.leave, false);
-      // window.addEventListener("dblclick", this.detail(1), false);
-      // window.addEventListener("mouseenter", this.enter(1), false);
-    },
-    detail(id) {
-      localStorage.setItem("wsName", this.content.ws_name);
-      this.$router.push({ path: "detail", query: { id: id } });
-    },
-    selectHandler(ev) {
-      this.updateXY(ev);
-      var raycaster = new THREE.Raycaster();
-      var mouse = new THREE.Vector2();
-
-      //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
-      mouse.x = (ev.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(ev.clientY / window.innerHeight) * 2 + 1;
-      raycaster.setFromCamera(mouse, this.camera);
-
-      // 获取raycaster直线和所有模型相交的数组集合
-      var intersects = raycaster.intersectObjects(this.scene.children, true);
-
-      var SELECTED;
-      if (SELECTED == undefined) {
-        if (intersects.length > 0) {
-          if (SELECTED != intersects[0].object) {
-            SELECTED = intersects[0].object;
-            var material = new THREE.MeshLambertMaterial({
-              color: "#1370fb",
-              transparent: true,
-              opacity: 0.8
-            });
-            SELECTED.material = material;
-
-            this.enter(1);
-          }
-        } else {
-          document.body.style.cursor = "auto";
-          if (SELECTED) SELECTED.material.color.set(SELECTED.currentHex); //恢复选择前的默认颜色
-          SELECTED = null;
-        }
-      } else {
-        SELECTED.material.color.set(SELECTED.currentHex);
-        SELECTED = null;
-      }
-    },
-
-    updateXY: function(event) {
-      this.x = event.pageX;
-      this.y = event.pageY;
-      this.positionStyle = {
-        top: this.y - 100 + "px",
-        left: this.x + 50 + "px"
-      };
-    },
-    //窗口监听函数
-    onWindowResize() {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    },
-    animate() {
-      requestAnimationFrame(this.animate);
-      this.renderer.render(this.scene, this.camera);
-    },
-    //外部模型加载函数
-    loadObj() {
-      new TGALoader()
-        .setPath("static/models/")
-        .load("Map__6_VR_____.tga", function() {});
-      //包含材质
-      new MTLLoader()
-        .setPath("static/models/")
-        .load("factory.mtl", materials => {
-          materials.preload();
-          new OBJLoader()
-            .setMaterials(materials)
-            .setPath("static/models/")
-            .load("factory.obj", obj => {
-              console.log("materials", materials);
-              obj.scale.set(0.0025, 0.0025, 0.0025);
-              obj.position.set(20, 150, -5);
-              this.scene.add(obj);
-            });
-          console.log("materials", materials);
-        });
-    },
-
-    enter(i) {
-      this.workshopList.forEach((item, index, Array) => {
-        if (item.ws_id == i) {
-          this.content = {
-            ws_name: item.workshop_name,
-            machine_count: item.mCount,
-            run_count: item.runCount,
-            standby_count: item.standbyCount,
-            stop_count: item.stopCount,
-            alarm_count: item.alarmCount
-          };
-        }
-      });
-      this.seen = true;
-    },
-
     //获取用户登录cId
     getComId() {
       this.comId = localStorage.getItem("comId");
@@ -1885,14 +1676,9 @@ export default {
   src: url("~@/assets/font/DS-DIGIT.TTF");
 }
 .home {
-  position: relative;
   width: 100%;
   height: calc(100% - 1.1rem);
   .section {
-    top: 0;
-    left: 0;
-    z-index: 2;
-    position: absolute;
     width: 99.8%;
     // display: flex;
     // border: 1px solid red;
@@ -1991,46 +1777,6 @@ export default {
     .clear {
       clear: both;
     }
-  }
-}
-#container {
-  top: 0;
-  left: 0;
-  z-index: 1;
-  height: 99.8%;
-  position: absolute;
-  width: 95%;
-  margin: 0 auto;
-  // height: 800px;
-  overflow: hidden;
-}
-.hover_con {
-  z-index: 999;
-  position: absolute;
-  width: 10%;
-  padding: 0.1rem;
-  background: rgba(1, 19, 67, 0.8);
-  border: 2px solid #00a1ff;
-  border-radius: 8px;
-  hr {
-    border: 0.5px solid #00a1ff;
-  }
-  span {
-    font-size: 0.1rem;
-    line-height: 0.15rem;
-    padding: 0.2rem;
-    // text-align: center;
-    color: #00a1ff;
-    font-weight: 600;
-  }
-  p {
-    font-size: 0.1rem;
-    line-height: 0.15rem;
-    padding: 0.2rem;
-    // text-align: center;
-    color: #fff;
-    font-weight: 600;
-    // text-shadow: 2px 2px 2px grey;
   }
 }
 </style>

@@ -1,6 +1,13 @@
 <template>
   <div class="home">
     <div id="container"></div>
+    <div
+      class="moveText"
+      :style="{ top: dragTop + 'px', left: dragLeft + 'px' }"
+    >
+      <p>机柜编号: {{ texts.code }}</p>
+      <p>设备类型: {{ texts.type }}</p>
+    </div>
 
     <section class="section">
       <div class="cloum">
@@ -78,11 +85,6 @@
       <br />
       <span style="font-Size:0.3rem;">
         {{ content.ws_name }}
-        <a
-          @click="detail(1)"
-          style=" font-size: 0.1rem;line-height: 0.15rem;padding: 0.2rem;color: #00a1ff; cursor: pointer;"
-          >进入车间</a
-        >
       </span>
       <hr />
       <p><span>机器数：</span>{{ content.machine_count + 1 }}</p>
@@ -102,6 +104,7 @@ import workShop from "@/components/workshop/index2";
 // import { scrollBoard } from "@jiaminghi/data-view";
 import * as THREE from "three";
 import { OBJLoader, MTLLoader } from "three-obj-mtl-loader";
+import { CSS2DRenderer, CSS2DObject } from "three-css2drender";
 import { TGALoader } from "three/examples/jsm/loaders/TGALoader";
 
 const OrbitControls = require("three-orbit-controls")(THREE);
@@ -124,6 +127,18 @@ export default {
         standby_count: 0,
         stop_count: 0,
         alarm_count: 0
+      },
+      dragTop: -100,
+      dragLeft: -200,
+      widthBox: "",
+      heightBox: "",
+      cabinetData: [
+        { code: "Mesh1", type: "交换机" },
+        { code: "Mesh2", type: "路由器" }
+      ],
+      texts: {
+        code: "",
+        type: ""
       },
       scene: "",
       // light: "",
@@ -192,8 +207,7 @@ export default {
       },
       objects: null,
       raycaster: null,
-      mouse: null,
-      workshopList: []
+      mouse: null
     };
   },
   created() {
@@ -201,14 +215,12 @@ export default {
     this.play();
   },
   mounted() {
-    // 场景建立
-    this.initScene();
-    // 加载模型
+    require("../assets/js/common.js");
+    this.init();
     this.loadObj();
     this.animate();
-    require("../assets/js/common.js");
+    // this.getComId();
     this.$nextTick(() => {
-      this.findMachineListByCompany();
       this.alarmGroupMonth();
       this.alarmOfMachineTop();
       this.alarmTypeTop();
@@ -221,24 +233,21 @@ export default {
     });
   },
   methods: {
-    findMachineListByCompany() {
-      const params = {
-        cId: localStorage.getItem("comId")
-      };
-      API.findMachineListByCompany(params).then(res => {
-        this.workshopList = res.info;
-      });
-    },
-    initScene() {
+    //初始化three.js相关内容
+    init() {
+      // this.camera = new THREE.PerspectiveCamera(
+      //   70,
+      //   window.innerWidth / window.clientHeight,
+      //   1,
+      //   1000
+      // );
       this.scene = new THREE.Scene();
       this.scene.add(new THREE.AmbientLight("#1370fb")); //环境光
-      // this.scene.add(new THREE.SpotLight(0xffffff));
-      this.scene.add(new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1)); //半球光
-      let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5); //从正上方（不是位置）照射过来的平行光，0.45的强度
-      // directionalLight.position.setset(50, 200, 100);
-      // directionalLight.position.multiplyScalar(0.3);
-      this.scene.add(directionalLight);
-
+      this.scene.add(new THREE.SpotLight(0xffffff)); //环境光
+      this.light = new THREE.DirectionalLight(0xdfebff, 0.45); //从正上方（不是位置）照射过来的平行光，0.45的强度
+      this.light.position.set(50, 200, 100);
+      this.light.position.multiplyScalar(0.3);
+      this.scene.add(this.light);
       //初始化相机
       this.camera = new THREE.PerspectiveCamera(
         60,
@@ -246,12 +255,8 @@ export default {
         1,
         1000
       );
-      this.camera.position.set(500, 500, 350);
+      this.camera.position.set(250, 150, 400);
       this.camera.lookAt(this.scene.position);
-
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-
       //初始化控制器
       this.controls = new OrbitControls(this.camera);
       this.controls.target.set(0, 0, 0);
@@ -259,67 +264,24 @@ export default {
       this.controls.maxDistance = 400;
       this.controls.maxPolarAngle = Math.PI / 3;
       this.controls.update();
-
       //渲染
       this.renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true
+        alpha: true
       });
-      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setClearColor(0xeeeeee, 0.0);
+      // this.renderer.setClearColor(0x000000);
+      this.renderer.setPixelRatio(window.devicePixelRatio); //为了兼容高清屏幕
       this.renderer.setSize(window.innerWidth, window.innerHeight);
 
       const container = document.getElementById("container");
-      container.appendChild(this.renderer.domElement);
 
-      window.addEventListener("click", this.selectHandler, false);
+      container.appendChild(this.renderer.domElement);
       window.addEventListener("resize", this.onWindowResize, false); //添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
+      window.addEventListener("dblclick", this.onMouseClick, false);
       // window.addEventListener("mousemove", this.updateXY, false);
       window.addEventListener("mouseleave", this.leave, false);
-      // window.addEventListener("dblclick", this.detail(1), false);
       // window.addEventListener("mouseenter", this.enter(1), false);
     },
-    detail(id) {
-      localStorage.setItem("wsName", this.content.ws_name);
-      this.$router.push({ path: "detail", query: { id: id } });
-    },
-    selectHandler(ev) {
-      this.updateXY(ev);
-      var raycaster = new THREE.Raycaster();
-      var mouse = new THREE.Vector2();
-
-      //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
-      mouse.x = (ev.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(ev.clientY / window.innerHeight) * 2 + 1;
-      raycaster.setFromCamera(mouse, this.camera);
-
-      // 获取raycaster直线和所有模型相交的数组集合
-      var intersects = raycaster.intersectObjects(this.scene.children, true);
-
-      var SELECTED;
-      if (SELECTED == undefined) {
-        if (intersects.length > 0) {
-          if (SELECTED != intersects[0].object) {
-            SELECTED = intersects[0].object;
-            var material = new THREE.MeshLambertMaterial({
-              color: "#1370fb",
-              transparent: true,
-              opacity: 0.8
-            });
-            SELECTED.material = material;
-
-            this.enter(1);
-          }
-        } else {
-          document.body.style.cursor = "auto";
-          if (SELECTED) SELECTED.material.color.set(SELECTED.currentHex); //恢复选择前的默认颜色
-          SELECTED = null;
-        }
-      } else {
-        SELECTED.material.color.set(SELECTED.currentHex);
-        SELECTED = null;
-      }
-    },
-
     updateXY: function(event) {
       this.x = event.pageX;
       this.y = event.pageY;
@@ -336,6 +298,9 @@ export default {
     },
     animate() {
       requestAnimationFrame(this.animate);
+      this.render();
+    },
+    render() {
       this.renderer.render(this.scene, this.camera);
     },
     //外部模型加载函数
@@ -353,30 +318,90 @@ export default {
             .setPath("static/models/")
             .load("factory.obj", obj => {
               console.log("materials", materials);
-              obj.scale.set(0.0025, 0.0025, 0.0025);
-              obj.position.set(20, 150, -5);
+              obj.scale.set(0.002, 0.002, 0.002);
+              obj.position.set(0, 100, 0);
               this.scene.add(obj);
             });
           console.log("materials", materials);
         });
     },
-
     enter(i) {
-      this.workshopList.forEach((item, index, Array) => {
-        if (item.ws_id == i) {
-          this.content = {
-            ws_name: item.workshop_name,
-            machine_count: item.mCount,
-            run_count: item.runCount,
-            standby_count: item.standbyCount,
-            stop_count: item.stopCount,
-            alarm_count: item.alarmCount
-          };
-        }
-      });
+      // this.workshopList.forEach((item, index, Array) => {
+      //   if (item.ws_id == i) {
+      //     this.content = {
+      //       ws_name: item.workshop_name,
+      //       machine_count: item.mCount,
+      //       run_count: item.runCount,
+      //       standby_count: item.standbyCount,
+      //       stop_count: item.stopCount,
+      //       alarm_count: item.alarmCount
+      //     };
+      //   }
+      // });
       this.seen = true;
     },
+    leave: function() {
+      this.seen = false;
+    },
+    onMouseClick(event) {
+      this.updateXY(event);
+      var raycaster = new THREE.Raycaster();
+      var mouse = new THREE.Vector2();
 
+      //通过鼠标点击的位置计算出raycaster所需要的点的位置，以屏幕中心为原点，值的范围为-1到1.
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // 通过鼠标点的位置和当前相机的矩阵计算出raycaster
+      raycaster.setFromCamera(mouse, this.camera);
+
+      // 获取raycaster直线和所有模型相交的数组集合
+      var intersects = raycaster.intersectObjects(this.scene.children, true);
+
+      // console.log(intersects);
+      console.log(intersects[0].object.name);
+      // let Mname = intersects[0].object.name;
+      // intersects[0].object.material.color.set("blue");
+
+      var SELECTED;
+      if (SELECTED == undefined) {
+        //拾取物体数大于0时
+        if (intersects.length > 0) {
+          //获取第一个物体
+          if (SELECTED != intersects[0].object) {
+            //鼠标的变换
+            document.body.style.cursor = "pointer";
+            intersects[0].object.material.transparent = true; //透明度的变化
+            intersects[0].object.material.opacity = 0.5;
+            if (SELECTED) SELECTED.material.color.setHex(SELECTED.currentHex);
+            SELECTED = intersects[0].object;
+            SELECTED.currentHex = SELECTED.material.color.getHex(); //记录当前选择的颜色
+            //改变物体的颜色(红色)
+            SELECTED.material.color.set("#1370fb");
+            this.seen = true;
+          }
+        } else {
+          document.body.style.cursor = "auto";
+          if (SELECTED) SELECTED.material.color.set(SELECTED.currentHex); //恢复选择前的默认颜色
+          SELECTED = null;
+        }
+      } else {
+        SELECTED.material.color.set(SELECTED.currentHex);
+        SELECTED = null;
+      }
+
+      //将所有的相交的模型的颜色设置为红色，如果只需要将第一个触发事件，那就数组的第一个模型改变颜色即可
+      // for (var i = 0; i < intersects.length; i++) {
+      //   console.log(intersects[i].object.material.color);
+      //   // console.log(intersects[ i ]);
+      //   // intersects[ i ].object.material.color.set( 0xff0000 );
+
+      //   // console.log(intersects[ 0 ].object.name)
+      //   // console.log(intersects[0].object);
+      //   // console.log(intersects[ 0 ].object)
+      // }
+    },
     //获取用户登录cId
     getComId() {
       this.comId = localStorage.getItem("comId");

@@ -1056,12 +1056,16 @@ h2 {
 }
 
 .center-area {
-  margin: 8% 20% 0 18%;
-  position: relative;
+  left: 18%;
+  top: 25%;
+  /* margin: 8% 20% 0% 18%; */
+  height: 75%;
+  width: 60%;
+  position: absolute;
 }
 .pandect-area {
   background: url(../images/bg02pandect.png) center top no-repeat;
-  height: 8rem;
+  height: 50%;
   margin: 0 8%;
   position: relative;
 }
@@ -1157,6 +1161,7 @@ h2 {
 .pandect-area-center #map {
   float: left;
   width: 60%;
+  margin-top: -2%;
   height: 100%;
   top: 0;
   left: 0;
@@ -1190,9 +1195,9 @@ h2 {
   width: 38%;
   position: absolute;
   left: 3%;
-  margin-top: 2%;
+  margin-top: 8%;
   text-align: center;
-  height: 50%;
+  height: 30%;
   /* border: 1px solid red; */
 }
 .detailsl-area-left {
@@ -1237,8 +1242,8 @@ h2 {
   width: 38%;
   position: absolute;
   right: 3%;
-  margin-top: 2%;
-  height: 48%;
+  margin-top: 8%;
+  height: 28%;
   text-align: center;
 }
 .details2-area h3,

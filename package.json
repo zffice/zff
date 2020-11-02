@@ -19,6 +19,8 @@
     "js-cookie": "^2.2.1",
     "lib-flexible": "^0.3.2",
     "qs": "^6.9.4",
+    "three-css2drender": "^1.0.0",
+    "three-orbit-controls": "^82.1.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.5.1",
@@ -39,6 +41,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "three": "^0.121.1",
     "vue-template-compiler": "^2.6.11"
   }
 }

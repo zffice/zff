@@ -167,9 +167,9 @@ h2 strong {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  width: 9%;
+  width: 8%;
   height: 100%;
-  padding: 2% 0 1% 2%;
+  padding: 1% 0 0.5% 2.5%;
   /* border: 1px solid red; */
   background: url(../images/bg01bigindex.png) 0 0 no-repeat;
   background-size: cover;
@@ -179,13 +179,13 @@ h2 strong {
   display: block;
   color: #fff;
   font-family: 'electronicFont';
-  font-size: 0.5rem;
+  font-size: 0.4rem;
   font-weight: normal;
 }
 .big-index-1 li p {
   display: block;
   color: #b8b9bb;
-  font-size: 0.25rem;
+  font-size: 0.22rem;
   padding-bottom: 1.5%;
 }
 .big-index-1 li .animation-1 {
@@ -194,7 +194,7 @@ h2 strong {
   -webkit-animation-duration: 9000ms;
   position: absolute;
   left: 2%;
-  bottom: 1%;
+  bottom: 2%;
   height: 6%;
   width: 200%;
   background: url(../images/bg04bigindex.png) 0 0 repeat-x;

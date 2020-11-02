@@ -25,6 +25,7 @@ Vue.prototype.$echarts = echarts;
 Vue.use(ElementUI);
 
 import dataV from "@jiaminghi/data-view";
+import "./assets/iconfont/iconfont.css";
 Vue.use(dataV);
 
 Vue.config.productionTip = false;

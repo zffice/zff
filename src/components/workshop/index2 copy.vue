@@ -2,14 +2,58 @@
   <div class="workshop">
     <section class="boxwrap">
       <div class="gc">
-        <div class="machines-grid" id="container">
-          <!-- <model-obj
-            src="static/models/factory.obj"
-            mtl="static/models/factory.mtl"
-            :lights="light"
-            @on-load="onLoad"
-            backgroundColor="rgba(0,0,0,0)"
-          ></model-obj> -->
+        <div class="machines-grid">
+          <img src="../../assets/work.png" usemap="#Map" id="pic" />
+          <div v-show="seen" class="hover_con" :style="positionStyle">
+            <br />
+            <span style="font-Size:0.3rem;">
+              {{ content.ws_name }}
+            </span>
+            <hr />
+            <p><span>机器数：</span>{{ content.machine_count + 1 }}</p>
+            <p><span>作业数：</span>{{ content.run_count + 1 }}</p>
+            <p><span>报警数：</span>{{ content.alarm_count }}</p>
+            <p><span>闲置数：</span>{{ content.stop_count }}</p>
+            <p><span>温度：</span>25 ℃</p>
+            <p><span>湿度：</span>40 %</p>
+          </div>
+          <map name="Map" id="Map">
+            <area
+              shape="poly"
+              coords="392,51,713,193,711,241,599,254,319,112"
+              @mouseenter="enter(1)"
+              @mouseleave="leave"
+              @mousemove="updateXY"
+              @click="detail(1)"
+            />
+            <area
+              shape="poly"
+              coords="301,83,321,105,318,163,262,172,259,119,204,95"
+              @mouseenter="enter(2)"
+              @mouseleave="leave"
+              @mousemove="updateXY"
+              @click="detail(2)"
+            />
+            <area
+              shape="poly"
+              coords="125,46,259,144,259,194,186,212,37,117,39,60"
+              @mouseenter="enter(3)"
+              @mouseleave="leave"
+              @mousemove="updateXY"
+              @click="detail(3)"
+            />
+            <area
+              shape="poly"
+              coords="33,122,182,223,261,195,430,311,424,385,323,400,37,173"
+              @mouseenter="enter(4)"
+              @mouseleave="leave"
+              @mousemove="updateXY"
+              @click="detail(4)"
+            />
+            <area shape="poly" coords="18,211,182,260" @click="detail(4)" />
+            <!--<area shape="rect" coords="12,444,182,490" href="sm-textfile.html" target="pcs"/> -->
+            <!-- onFocus="this.blur()"   去掉虚线框 -->
+          </map>
         </div>
 
         <div class="pannel">
@@ -64,52 +108,11 @@
 import API from "@/api/busin";
 import echarts from "echarts";
 import { ModelObj } from "vue-3d-model";
-import * as THREE from "three";
-import { OBJLoader, MTLLoader } from "three-obj-mtl-loader";
-import { CSS2DRenderer, CSS2DObject } from "three-css2drender";
-
-const OrbitControls = require("three-orbit-controls")(THREE);
 export default {
   components: { ModelObj },
   name: "workShop",
   data() {
     return {
-      scene: "",
-      // light: "",
-      camera: "",
-      controls: "",
-      renderer: "",
-      light: [
-        // {
-        //   type: "HemisphereLight",
-        //   position: { x: 0, y: 1, z: 0 },
-        //   skyColor: 0xaaaaff,
-        //   groundColor: 0x806060,
-        //   intensity: 0.2
-        // },
-        {
-          type: "DirectionalLight",
-          position: { x: 800, y: 800, z: 800 },
-          color: "#ffffff",
-          intensity: 0.5
-        },
-        {
-          type: "AmbientLight",
-          color: "#f7fdf9",
-          // intensity: 0.8,
-          castShadow: true
-        },
-        {
-          type: "SpotLight",
-          color: 0xffffff
-        }
-      ],
-      intersected: null,
-      rotation: {
-        x: -Math.PI / 2,
-        y: 0,
-        z: 0
-      },
       machineData: [],
       state: "point bstandby",
       seen: false,
@@ -147,110 +150,10 @@ export default {
     };
   },
   mounted() {
-    this.container;
     this.findMachineListByCompany();
     this.statistics();
-    // this.init();
-    // this.loadObj();
-    // this.animate();
   },
   methods: {
-    onMouseMove(event) {
-      console.log(this.intersected); // event: { distance, face, faceIndex, point, index, uv, object }
-
-      if (!event) {
-        if (this.intersected) {
-          this.intersected.material.color.setStyle("#fff");
-        }
-
-        this.intersected = null;
-        return;
-      }
-
-      this.intersected = event.object;
-      this.intersected.material.color.setStyle("#13ce66");
-    },
-    onLoad() {
-      this.rotate();
-    },
-    //初始化three.js相关内容
-    init() {
-      this.container = document.getElementById("container");
-      this.camera = new THREE.PerspectiveCamera(
-        70,
-        this.container.clientWidth / this.container.clientHeight,
-        1,
-        1000
-      );
-      this.scene = new THREE.Scene();
-      this.scene.add(new THREE.AmbientLight(0x999999)); //环境光
-      this.light = new THREE.DirectionalLight(0xdfebff, 0.45); //从正上方（不是位置）照射过来的平行光，0.45的强度
-      this.light.position.set(50, 200, 100);
-      this.light.position.multiplyScalar(0.3);
-      this.scene.add(this.light);
-      //初始化相机
-      this.camera = new THREE.PerspectiveCamera(
-        45,
-        this.container.clientWidth / this.container.clientHeight,
-        1,
-        1000
-      );
-      this.camera.position.set(10, 90, 65);
-      this.camera.lookAt(this.scene.position);
-      //初始化控制器
-      this.controls = new OrbitControls(this.camera);
-      this.controls.target.set(0, 0, 0);
-      this.controls.minDistance = 80;
-      this.controls.maxDistance = 400;
-      this.controls.maxPolarAngle = Math.PI / 3;
-      this.controls.update();
-      //渲染
-      this.renderer = new THREE.WebGLRenderer({
-        alpha: true
-      });
-      this.renderer.setClearColor(0x000000);
-      this.renderer.setPixelRatio(window.devicePixelRatio); //为了兼容高清屏幕
-      this.renderer.setSize(
-        this.container.clientWidth,
-        this.container.innerHeight
-      );
-
-      const container = document.getElementById("container");
-      container.appendChild(this.renderer.domElement);
-      window.addEventListener("resize", this.onWindowResize, false); //添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
-    },
-    //窗口监听函数
-    onWindowResize() {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    },
-    animate() {
-      requestAnimationFrame(this.animate);
-      this.render();
-    },
-    render() {
-      this.renderer.render(this.scene, this.camera);
-    },
-    //外部模型加载函数
-    loadObj() {
-      //包含材质
-      new MTLLoader()
-        .setPath("static/models/")
-        .load("factory.mtl", materials => {
-          materials.preload();
-          new OBJLoader()
-            .setMaterials(materials)
-            .setPath("static/models/")
-            .load("factory.obj", obj => {
-              console.log("materials", materials);
-              obj.scale.set(0.00075, 0.00075, 0.00075);
-              obj.position.set(0, 10, 0);
-              this.scene.add(obj);
-            });
-          console.log("materials", materials);
-        });
-    },
     statistics() {
       const params = {
         cId: localStorage.getItem("comId")
@@ -1824,10 +1727,4 @@ li {
 //     min-height: 400px;
 //   }
 // }
-#container {
-  // width: 1200px;
-  margin: 0 auto;
-  // height: 800px;
-  overflow: hidden;
-}
 </style>
